@@ -21,7 +21,7 @@ class App:
         af.handle_btn_press()
 
     def handle_btn3_press(self):
-        self.last_pressed = 1
+        self.last_pressed = 3
         up.handle_btn_press()
 
     def __init__(self):
