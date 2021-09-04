@@ -4,6 +4,8 @@ import epd
 import affirmations as af
 import uptime as up
 
+from settings import TIME
+
 
 def handle_btn0_press():
     app.handle_btn0_press()
@@ -35,7 +37,7 @@ class App:
                 af.print_to_display()
             if self.last_pressed == 3:
                 up.print_to_display()
-            time.sleep(1000)
+            time.sleep(TIME)
 
 
 app = App()
