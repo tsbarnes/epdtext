@@ -1,12 +1,10 @@
 import time
 import epd
-from datetime import timedelta
+import humanreadable
 
 
 def print_to_display():
-    ms = time.clock_gettime(time.CLOCK_BOOTTIME)
-    td = timedelta(microseconds=ms)
-    string = str(td)
+    string = humanreadable.Time(time.clock_gettime(time.CLOCK_BOOTTIME))
     epd.print_to_display(string)
 
 
