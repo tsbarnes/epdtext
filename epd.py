@@ -22,7 +22,7 @@ def get_buttons():
     return btns
 
 
-def print_to_display(string, font=settings.FONT, fontsize=20):
+def print_to_display(string, font=settings.FONT, fontsize=20, margin=25):
     display = get_epd()
     h_black_image = Image.new('1', get_size(), 255)
     h_red_image = Image.new('1', get_size(), 255)
@@ -30,5 +30,5 @@ def print_to_display(string, font=settings.FONT, fontsize=20):
     draw = ImageDraw.Draw(h_black_image)
     # Create our font, passing in the font file and font size
     font = ImageFont.truetype(font, fontsize)
-    draw.text((25, 25), string, font=font, fill=0)
+    draw.text((margin, margin), string, font=font, fill=0)
     display.display(display.getbuffer(h_black_image), display.getbuffer(h_red_image))

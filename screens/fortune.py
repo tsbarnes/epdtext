@@ -5,7 +5,7 @@ import subprocess
 def print_to_display():
     child = subprocess.Popen(['fortune'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     string = child.stdout.read().decode()
-    epd.print_to_display(string, fontsize=6)
+    epd.print_to_display(string, fontsize=7, margin=5)
 
 
 def handle_btn_press(button_number=1):
