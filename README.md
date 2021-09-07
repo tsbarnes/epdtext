@@ -25,6 +25,12 @@ python3 setup.py install
 git clone https://github.com/tsbarnes/epdtext.git ~/epdtext
 ```
 
+* Install the remaining Python dependencies
+```shell
+cd ~/epdtext
+sudo pip3 install -r requirements.txt
+```
+
 * Then (optionally) create local_settings.py and add your settings overrides there.
 * Also optional is installing the systemd unit.
 
