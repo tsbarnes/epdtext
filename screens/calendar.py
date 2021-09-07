@@ -47,14 +47,16 @@ def get_events_from_caldav(url, username, password):
 
 
 def get_latest_events():
+    print("Started reading calendars...")
     text = ''
 
     for connection in CALENDAR_URLS:
-        if str(connection.type).lower() == 'webcal':
-            text += get_events_from_webcal(connection.url)
+        if str(connection["type"]).lower() == 'webcal':
+            text += get_events_from_webcal(connection["url"])
         elif str(connection.type).lower() == 'caldav':
-            text += get_events_from_caldav(connection.url, connection.username, connection.password)
+            text += get_events_from_caldav(connection["url"], connection["username"], connection["password"])
 
+    print("done!")
     return text
 
 

@@ -1,6 +1,7 @@
 import random
 import epd
 import settings
+import textwrap
 
 
 class Affirmation:
@@ -19,7 +20,13 @@ affirm = Affirmation()
 
 
 def print_to_display():
-    epd.print_to_display(affirm.get_random_affirmation(), fontsize=25)
+    text = ''
+    affirmation = affirm.get_random_affirmation()
+    lines = textwrap.wrap(affirmation, width=28)
+    for line in lines:
+        text += line + '\n'
+
+    epd.print_to_display(text, fontsize=16)
 
 
 def handle_btn_press(button_number=1):
