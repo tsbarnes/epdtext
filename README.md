@@ -1,6 +1,6 @@
 # epdtext
 
-A simple display manager app for the WaveShare 2.7in e-Paper Display
+A simple display manager app for the [WaveShare 2.7in e-Paper HAT](https://www.waveshare.com/2.7inch-e-paper-hat.htm)
 
 ## Setup on Raspberry Pi OS
 
