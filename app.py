@@ -54,9 +54,13 @@ class App:
             self.screens.append(importlib.import_module("screens." + module))
 
     def loop(self):
+        loop = 1
         while True:
-            self.screens[self.current_screen].print_to_display()
-            time.sleep(TIME)
+            if loop == TIME:
+                self.screens[self.current_screen].print_to_display()
+                loop = 0
+            time.sleep(1)
+            loop += 1
 
 
 app = App()
