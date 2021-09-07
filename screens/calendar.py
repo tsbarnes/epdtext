@@ -1,5 +1,6 @@
 import epd
 import humanize
+import textwrap
 from icalevents.icalevents import events
 from icalendar import Event
 from settings import CALENDAR_URLS
@@ -14,7 +15,10 @@ def get_latest_event():
             event: Event
             for event in timeline:
                 text += '\t' + humanize.naturalday(event.start) + '\n'
-                text += event.summary.replace('\n', ' ') + '\n'
+                summary = event.summary.replace('\n', ' ')
+                lines = textwrap.wrap(summary, width=28)
+                for line in lines:
+                    text += line + '\n'
         except ValueError:
             print('Error reading calendar "{0}"'.format(CALENDAR_URL))
             pass
