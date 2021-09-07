@@ -9,6 +9,6 @@ except ImportError:
     TIME = 1000
 
 try:
-    from local_settings import CALENDAR_URL
+    from local_settings import CALENDAR_URLS
 except ImportError:
-    CALENDAR_URL = None
+    CALENDAR_URLS = []

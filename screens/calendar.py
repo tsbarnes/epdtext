@@ -1,13 +1,15 @@
 import epd
 from icalevents.icalevents import events
-from settings import CALENDAR_URL
+from settings import CALENDAR_URLS
 
 
 def get_latest_event():
-    timeline = events(CALENDAR_URL)
     text = ''
-    for event in timeline:
-        text += event.summary + '\n'
+
+    for CALENDAR_URL in CALENDAR_URLS:
+        timeline = events(CALENDAR_URL)
+        for event in timeline:
+            text += event.summary + '\n'
 
     return text
 
