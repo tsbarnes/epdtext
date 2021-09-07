@@ -13,7 +13,7 @@ def get_latest_event():
             timeline = events(CALENDAR_URL)
             event: Event
             for event in timeline:
-                text += humanize.naturalday(event.start) + '\n'
+                text += '\t' + humanize.naturalday(event.start) + '\n'
                 text += event.summary.replace('\n', ' ') + '\n'
         except ValueError:
             print('Error reading calendar "{0}"'.format(CALENDAR_URL))
