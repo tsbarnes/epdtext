@@ -22,7 +22,7 @@ def get_buttons():
     return btns
 
 
-def print_to_display(string, font=settings.FONT, fontsize=20, margin=25):
+def print_to_display(string, font=settings.FONT, fontsize=20, margin=5):
     display = get_epd()
     h_black_image = Image.new('1', get_size(), 255)
     h_red_image = Image.new('1', get_size(), 255)
