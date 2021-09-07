@@ -17,7 +17,7 @@ def get_latest_event():
 def print_to_display():
     text = get_latest_event()
     if text != '':
-        epd.print_to_display(text, fontsize=20)
+        epd.print_to_display(text, fontsize=16)
     else:
         epd.print_to_display('No current\nevents', fontsize=30)
 

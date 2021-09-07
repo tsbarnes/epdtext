@@ -12,3 +12,13 @@ try:
     from local_settings import CALENDAR_URLS
 except ImportError:
     CALENDAR_URLS = []
+
+try:
+    from local_settings import SCREENS
+except ImportError:
+    SCREENS = [
+        'affirmations',
+        'calendar',
+        'fortune',
+        'uptime',
+    ]
