@@ -1,4 +1,5 @@
 import epd
+import humanize
 from icalevents.icalevents import events
 from icalendar import Event
 from settings import CALENDAR_URLS
@@ -12,8 +13,7 @@ def get_latest_event():
             timeline = events(CALENDAR_URL)
             event: Event
             for event in timeline:
-                text += '{0}-{1}-{2} {3}:{4}\n'.format(event.start.year, event.start.month, event.start.day,
-                                                       event.start.hour, str(event.start.minute).zfill(2))
+                text += humanize.naturalday(event.start) + '\n'
                 text += event.summary.replace('\n', ' ') + '\n'
         except ValueError:
             print('Error reading calendar "{0}"'.format(CALENDAR_URL))

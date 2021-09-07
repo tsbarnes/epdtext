@@ -3,3 +3,4 @@ gpiozero~=1.5.1
 icalendar~=4.0.7
 icalevents~=0.1.25
 humanreadable~=0.1.0
+humanize~=3.11.0
