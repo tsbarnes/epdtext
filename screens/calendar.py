@@ -1,33 +1,65 @@
 import epd
 import humanize
 import textwrap
+import caldav
+from datetime import datetime
 from icalevents.icalevents import events
 from icalendar import Event
 from settings import CALENDAR_URLS
 
 
-def get_latest_event():
+def get_events_from_webcal(url):
     text = ''
 
-    for CALENDAR_URL in CALENDAR_URLS:
-        try:
-            timeline = events(CALENDAR_URL)
-            event: Event
-            for event in timeline:
-                text += '\t' + humanize.naturalday(event.start) + '\n'
-                summary = event.summary.replace('\n', ' ')
-                lines = textwrap.wrap(summary, width=28)
-                for line in lines:
-                    text += line + '\n'
-        except ValueError:
-            print('Error reading calendar "{0}"'.format(CALENDAR_URL))
-            pass
+    try:
+        timeline = events(url)
+        event: Event
+        for event in timeline:
+            text += '\t' + humanize.naturalday(event.start) + '\n'
+            summary = event.summary.replace('\n', ' ')
+            lines = textwrap.wrap(summary, width=28)
+            for line in lines:
+                text += line + '\n'
+    except ValueError:
+        print('Error reading calendar "{0}"'.format(url))
+        pass
+
+    return text
+
+
+def get_events_from_caldav(url, username, password):
+    text = ''
+
+    client = caldav.DAVClient(url=url, username=username, password=password)
+    principal = client.principal()
+    calendars = principal.calendars()
+
+    for calendar in calendars:
+        calendar_events = calendar.date_search(start=datetime.today(), end=datetime.today(), expand=True)
+        for event in calendar_events:
+            text += '\t' + humanize.naturalday(event.start) + '\n'
+            summary = event.summary.replace('\n', ' ')
+            lines = textwrap.wrap(summary, width=28)
+            for line in lines:
+                text += line + '\n'
+
+    return text
+
+
+def get_latest_events():
+    text = ''
+
+    for connection in CALENDAR_URLS:
+        if str(connection.type).lower() == 'webcal':
+            text += get_events_from_webcal(connection.url)
+        elif str(connection.type).lower() == 'caldav':
+            text += get_events_from_caldav(connection.url, connection.username, connection.password)
 
     return text
 
 
 def print_to_display():
-    text = get_latest_event()
+    text = get_latest_events()
     if text != '':
         epd.print_to_display(text, fontsize=16)
     else:
