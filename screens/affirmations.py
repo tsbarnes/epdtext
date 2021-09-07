@@ -21,5 +21,8 @@ def print_to_display():
     epd.print_to_display(get_random_affirmation(), fontsize=30)
 
 
-def handle_btn_press():
-    print_to_display()
+def handle_btn_press(button_number=1):
+    if button_number == 1:
+        print_to_display()
+    elif button_number == 2:
+        pass

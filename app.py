@@ -29,19 +29,19 @@ class App:
             self.current_screen -= 1
         else:
             self.current_screen = len(self.screens) - 1
-            self.screens[self.current_screen].handle_btn_press()
+            self.screens[self.current_screen].print_to_display()
 
     def handle_btn1_press(self):
-        self.screens[self.current_screen].handle_btn_press()
+        self.screens[self.current_screen].handle_btn_press(button_number=1)
 
     def handle_btn2_press(self):
-        pass
+        self.screens[self.current_screen].handle_btn_press(button_number=2)
 
     def handle_btn3_press(self):
         self.current_screen += 1
         if self.current_screen >= len(self.screens):
             self.current_screen = 0
-        self.screens[self.current_screen].handle_btn_press()
+        self.screens[self.current_screen].print_to_display()
 
     def __init__(self):
         btns = epd.get_buttons()
