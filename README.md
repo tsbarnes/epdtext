@@ -2,6 +2,10 @@
 
 A simple display manager app for the [WaveShare 2.7in e-Paper HAT](https://www.waveshare.com/2.7inch-e-paper-hat.htm)
 
+The app provides a number of screens that can be displayed on the e-paper HAT, and allows switching between them with the builtin buttons.
+
+The framework is extensible, so you can write your own screens as well, each screen is a Python module providing the `handle_btn_press` and `print_to_display` functions.
+
 ## Setup on Raspberry Pi OS
 
 * First, enable the SPI inferface on the Pi if you haven't already.
