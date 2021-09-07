@@ -1,3 +1,4 @@
 Pillow~=5.4.1
 gpiozero~=1.5.1
 caldav~=0.8.0
+icalevents~=0.1.25
