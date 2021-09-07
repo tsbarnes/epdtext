@@ -22,3 +22,17 @@ except ImportError:
         'fortune',
         'uptime',
     ]
+
+try:
+    from local_settings import AFFIRMATIONS
+except ImportError:
+    AFFIRMATIONS = [
+        "You are\nenough",
+        "You are loved",
+        "You are safe",
+        "Be yourself",
+        "They can't\nhurt you\nanymore",
+        "You are\nbeautiful",
+        "You are\nstrong",
+        "You have\ncome a\nlong way"
+    ]

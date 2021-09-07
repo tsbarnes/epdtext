@@ -1,18 +1,10 @@
 import random
 import epd
+import settings
 
 
 class Affirmation:
-    affirmations = [
-        "You are\nenough",
-        "You are loved",
-        "You are safe",
-        "Be yourself",
-        "They can't\nhurt you\nanymore",
-        "You are\nbeautiful",
-        "You are\nstrong",
-        "You have\ncome a\nlong way"
-    ]
+    affirmations = settings.AFFIRMATIONS
     current_affirmation = affirmations[0]
 
     def get_random_affirmation(self):

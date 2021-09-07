@@ -7,3 +7,6 @@ SCREENS = [
     'fortune',
     'uptime',
 ]
+AFFIRMATIONS = [
+    '<list your affirmations here>',
+]
