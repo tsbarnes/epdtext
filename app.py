@@ -29,7 +29,7 @@ class App:
             self.current_screen -= 1
         else:
             self.current_screen = len(self.screens) - 1
-            self.screens[self.current_screen].print_to_display()
+        self.screens[self.current_screen].print_to_display()
 
     def handle_btn1_press(self):
         self.screens[self.current_screen].handle_btn_press(button_number=1)

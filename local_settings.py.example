@@ -3,7 +3,7 @@ TIME = 1000
 CALENDAR_URLS = ['<enter your webcal address>']
 SCREENS = [
     'affirmations',
-    # 'calendar',
+    'calendar',
     'fortune',
     'uptime',
 ]

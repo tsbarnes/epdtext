@@ -7,9 +7,13 @@ def get_latest_event():
     text = ''
 
     for CALENDAR_URL in CALENDAR_URLS:
-        timeline = events(CALENDAR_URL)
-        for event in timeline:
-            text += event.summary + '\n'
+        try:
+            timeline = events(CALENDAR_URL)
+            for event in timeline:
+                text += event.summary + '\n'
+        except ValueError:
+            print('Error reading calendar "{0}"'.format(CALENDAR_URL))
+            pass
 
     return text
 
