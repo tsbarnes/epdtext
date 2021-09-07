@@ -56,8 +56,9 @@ class App:
     def loop(self):
         loop = 1
         while True:
-            if loop == TIME:
+            if loop == 1:
                 self.screens[self.current_screen].print_to_display()
+            if loop == TIME:
                 loop = 0
             time.sleep(1)
             loop += 1
