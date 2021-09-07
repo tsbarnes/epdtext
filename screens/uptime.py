@@ -1,14 +1,12 @@
 import time
+import datetime
 import epd
-import humanreadable
+import humanize
 
 
 def print_to_display():
-    tm = humanreadable.Time(str(time.clock_gettime(time.CLOCK_BOOTTIME)) + ' seconds')
-    days = int(tm.days)
-    hours = int(tm.hours) % 24
-    minutes = int(tm.minutes) % 60
-    string = "{0} days\n{1} hours\n{2} minutes".format(days, hours, minutes)
+    string = '\tSystem Uptime:\n'
+    string += humanize.naturaldelta(datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME)))
     epd.print_to_display(string, fontsize=20)
 
 
