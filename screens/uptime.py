@@ -9,7 +9,7 @@ def print_to_display():
     hours = int(tm.hours) % 24
     minutes = int(tm.minutes) % 60
     string = "{0} days\n{1} hours\n{2} minutes".format(days, hours, minutes)
-    epd.print_to_display(string)
+    epd.print_to_display(string, fontsize=20)
 
 
 def handle_btn_press(button_number=1):

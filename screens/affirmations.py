@@ -10,6 +10,7 @@ affirmations = [
     "They can't\nhurt you\nanymore",
     "You are\nbeautiful",
     "You are\nstrong",
+    "You have\ncome a\nlong way"
 ]
 
 
@@ -18,7 +19,7 @@ def get_random_affirmation():
 
 
 def print_to_display():
-    epd.print_to_display(get_random_affirmation(), fontsize=30)
+    epd.print_to_display(get_random_affirmation(), fontsize=25)
 
 
 def handle_btn_press(button_number=1):

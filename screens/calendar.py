@@ -19,7 +19,7 @@ def print_to_display():
     if text != '':
         epd.print_to_display(text, fontsize=16)
     else:
-        epd.print_to_display('No current\nevents', fontsize=30)
+        epd.print_to_display('No current\nevents', fontsize=25)
 
 
 def handle_btn_press(button_number=1):
