@@ -4,7 +4,8 @@ import humanreadable
 
 
 def print_to_display():
-    string = humanreadable.Time(time.clock_gettime(time.CLOCK_BOOTTIME))
+    tm = humanreadable.Time(str(time.clock_gettime(time.CLOCK_BOOTTIME)) + ' seconds')
+    string = "{0} days\n{1} hours\n{2} minutes".format(round(tm.days), round(tm.hours), round(tm.minutes))
     epd.print_to_display(string)
 
 
