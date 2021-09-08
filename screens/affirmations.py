@@ -20,11 +20,7 @@ affirm = Affirmation()
 
 
 def print_to_display():
-    text = ''
-    affirmation = affirm.get_random_affirmation()
-    lines = textwrap.wrap(affirmation, width=16)
-    for line in lines:
-        text += line + '\n'
+    text = affirm.get_random_affirmation()
 
     epd.print_to_display(text, fontsize=25)
 

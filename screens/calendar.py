@@ -81,11 +81,8 @@ def print_to_display():
 
     objects = get_latest_events()
     for obj in objects:
-        text += '\t' + humanize.naturalday(obj["start"]) + '\n'
-        summary = obj["summary"].replace('\n', ' ')
-        lines = textwrap.wrap(summary, width=28)
-        for line in lines:
-            text += line + '\n'
+        text += '* ' + humanize.naturalday(obj["start"]) + '\n'
+        text += obj["summary"].replace('\n', ' ') + '\n'
 
     if text != '':
         epd.print_to_display(text, fontsize=16)

@@ -1,4 +1,5 @@
 import epd
+import humanize
 import textwrap
 import caldav
 import logging
@@ -7,7 +8,9 @@ from settings import CALENDAR_URLS
 
 
 def sort_by_date(obj):
-    return obj["due"]
+    if obj["due"]:
+        return obj["due"]
+    return datetime(4000, 1, 1)
 
 
 def get_tasks_from_caldav(url, username, password):
@@ -63,10 +66,9 @@ def print_to_display():
 
     objects = get_current_tasks()
     for obj in objects:
-        summary = obj["summary"].replace('\n', ' ')
-        lines = textwrap.wrap(summary, width=28)
-        for line in lines:
-            text += line + '\n'
+        text += "* " + obj["summary"].replace('\n', ' ') + '\n'
+        if obj["due"]:
+            text += "-- Due: " + humanize.naturalday(obj["due"]) + "\n"
 
     if text != '':
         epd.print_to_display(text, fontsize=16)

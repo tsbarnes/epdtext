@@ -9,6 +9,7 @@ from settings import FONT, LOGO
 
 def print_to_display():
     display = epd.get_epd()
+
     h_black_image = Image.new('1', epd.get_size(), 255)
     h_red_image = Image.new('1', epd.get_size(), 255)
 
