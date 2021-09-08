@@ -1,6 +1,5 @@
 import epd
 import subprocess
-import textwrap
 import logging
 
 

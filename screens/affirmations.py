@@ -1,7 +1,6 @@
 import random
 import epd
 import settings
-import textwrap
 
 
 class Affirmation:

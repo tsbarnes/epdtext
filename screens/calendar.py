@@ -1,6 +1,5 @@
 import epd
 import humanize
-import textwrap
 import caldav
 import logging
 from datetime import date, datetime, timedelta
