@@ -4,7 +4,7 @@ import platform
 import epd
 import humanize
 from PIL import Image, ImageDraw, ImageFont
-from settings import FONT
+from settings import FONT, LOGO
 
 
 def print_to_display():
@@ -12,8 +12,8 @@ def print_to_display():
     h_black_image = Image.new('1', epd.get_size(), 255)
     h_red_image = Image.new('1', epd.get_size(), 255)
 
-    with Image.open('/home/pi/epdtext/logo.png') as logo:
-        Image.alpha_composite(h_black_image, logo)
+    logo = Image.open(LOGO)
+    h_black_image.paste(logo, (100, 5))
 
     # Create draw object and pass in the image layer we want to work with (HBlackImage)
     draw = ImageDraw.Draw(h_black_image)

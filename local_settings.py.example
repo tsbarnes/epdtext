@@ -1,4 +1,5 @@
 DEBUG = False
+LOGO = '/home/pi/epdtext/logo.png'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 TIME = 1000
 CALENDAR_URLS = [

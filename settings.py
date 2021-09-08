@@ -4,6 +4,11 @@ except ImportError:
     DEBUG = False
 
 try:
+    from local_settings import LOGO
+except ImportError:
+    LOGO = '/home/pi/epdtext/logo.png'
+
+try:
     from local_settings import FONT
 except ImportError:
     FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
