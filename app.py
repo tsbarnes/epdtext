@@ -1,9 +1,9 @@
 import time
 import epd
 import importlib
+import logging
 
 from settings import TIME, SCREENS
-from utils import log
 
 
 def handle_btn0_press():
@@ -30,7 +30,7 @@ class App:
             self.current_screen -= 1
         else:
             self.current_screen = len(self.screens) - 1
-        log("Current screen: {0}".format(self.current_screen))
+        logging.debug("Current screen: {0}".format(self.current_screen))
         self.screens[self.current_screen].print_to_display()
 
     def handle_btn1_press(self):
@@ -43,7 +43,7 @@ class App:
         self.current_screen += 1
         if self.current_screen >= len(self.screens):
             self.current_screen = 0
-        log("Current screen: {0}".format(self.current_screen))
+        logging.debug("Current screen: {0}".format(self.current_screen))
         self.screens[self.current_screen].print_to_display()
 
     def __init__(self):

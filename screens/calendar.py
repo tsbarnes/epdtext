@@ -2,10 +2,10 @@ import epd
 import humanize
 import textwrap
 import caldav
+import logging
 from datetime import date, datetime, timedelta
 from icalevents.icalevents import events
 from settings import CALENDAR_URLS
-from utils import log
 
 
 def sort_by_date(obj):
@@ -25,7 +25,7 @@ def get_events_from_webcal(url):
 
             objects.append({'start': start, 'summary': summary})
     except ValueError:
-        log('Error reading calendar "{0}"'.format(url))
+        logging.error('Error reading calendar "{0}"'.format(url))
         pass
 
     return objects
@@ -57,7 +57,7 @@ def get_events_from_caldav(url, username, password):
 
 
 def get_latest_events():
-    log("Started reading calendars...")
+    logging.debug("Started reading calendars...")
     objects = []
 
     for connection in CALENDAR_URLS:
@@ -67,11 +67,11 @@ def get_latest_events():
             objects.extend(get_events_from_caldav(connection["url"],
                                                   connection["username"], connection["password"]))
         else:
-            log("calendar type not recognized: {0}".format(str(connection["type"])))
+            logging.error("calendar type not recognized: {0}".format(str(connection["type"])))
 
     objects.sort(key=sort_by_date)
 
-    log("done!")
+    logging.debug("done!")
     return objects
 
 
