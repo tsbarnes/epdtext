@@ -1,19 +1,26 @@
 DEBUG = False
 # ** Leave commented to log to console **
 # LOGFILE = '/home/pi/epd.log'
+
 LOGO = '/home/pi/epdtext/logo.png'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+
 TIME = 1000
+
+# Note: you *must* define at least one calendar to use the 'calendar' screen,
+#       and at least one caldav calendar to use the 'tasks' screen.
 CALENDAR_URLS = [
     { type: 'webcal', url: '<enter your webcal address>' },
     { type: 'caldav', url: '<enter your caldav address>', username: '<caldav username>', password: '<caldav password' },
 ]
+
 SCREENS = [
     'affirmations',
     'calendar',
     'fortune',
     'uptime',
 ]
+
 AFFIRMATIONS = [
     '<list your affirmations here>',
 ]
