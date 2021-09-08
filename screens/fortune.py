@@ -6,7 +6,7 @@ import logging
 
 def print_to_display():
     try:
-        child = subprocess.Popen(['fortune'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        child = subprocess.Popen(['/usr/games/fortune'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         string = child.stdout.read().decode().replace('\n', ' ')
     except OSError:
         logging.error("couldn't run application 'fortune'")
