@@ -7,8 +7,8 @@ from icalevents.icalevents import events
 from settings import CALENDAR_URLS
 
 
-def sort_by_date(e):
-    return e.start
+def sort_by_date(obj):
+    return obj["start"]
 
 
 def get_events_from_webcal(url):
@@ -16,7 +16,7 @@ def get_events_from_webcal(url):
     try:
         timeline = events(url)
         for event in timeline:
-            objects.append(event)
+            objects.append({'start': event.start, 'summary': event.summary})
     except ValueError:
         print('Error reading calendar "{0}"'.format(url))
         pass
@@ -35,7 +35,7 @@ def get_events_from_caldav(url, username, password):
         calendar_events = calendar.date_search(start=datetime.today(), end=datetime.today() + timedelta(days=7),
                                                expand=True)
         for event in calendar_events:
-            objects.append(event)
+            objects.append({'start': event.dtstart.value, 'summary': event.summary.value})
 
     return objects
 
@@ -50,6 +50,8 @@ def get_latest_events():
         elif str(connection['type']).lower() == 'caldav':
             objects.extend(get_events_from_caldav(connection["url"],
                                                   connection["username"], connection["password"]))
+        else:
+            print("calendar type not recognized: {0}".format(str(connection["type"])))
 
     objects.sort(key=sort_by_date)
 
@@ -63,8 +65,8 @@ def print_to_display():
 
     objects = get_latest_events()
     for obj in objects:
-        text += '\t' + humanize.naturalday(obj.start) + '\n'
-        summary = obj.summary.replace('\n', ' ')
+        text += '\t' + humanize.naturalday(obj["start"]) + '\n'
+        summary = obj["summary"].replace('\n', ' ')
         lines = textwrap.wrap(summary, width=28)
         for line in lines:
             text += line + '\n'
