@@ -4,31 +4,28 @@ import textwrap
 import caldav
 from datetime import datetime, timedelta
 from icalevents.icalevents import events
-from icalendar import Event
 from settings import CALENDAR_URLS
 
 
-def get_events_from_webcal(url):
-    text = ''
+def sort_by_date(e):
+    return e.start
 
+
+def get_events_from_webcal(url):
+    objects = []
     try:
         timeline = events(url)
-        event: Event
         for event in timeline:
-            text += '\t' + humanize.naturalday(event.start) + '\n'
-            summary = event.summary.replace('\n', ' ')
-            lines = textwrap.wrap(summary, width=28)
-            for line in lines:
-                text += line + '\n'
+            objects.append(event)
     except ValueError:
         print('Error reading calendar "{0}"'.format(url))
         pass
 
-    return text
+    return objects
 
 
 def get_events_from_caldav(url, username, password):
-    text = ''
+    objects = []
 
     client = caldav.DAVClient(url=url, username=username, password=password)
     principal = client.principal()
@@ -38,32 +35,40 @@ def get_events_from_caldav(url, username, password):
         calendar_events = calendar.date_search(start=datetime.today(), end=datetime.today() + timedelta(days=7),
                                                expand=True)
         for event in calendar_events:
-            text += '\t' + humanize.naturalday(event.start) + '\n'
-            summary = event.summary.replace('\n', ' ')
-            lines = textwrap.wrap(summary, width=28)
-            for line in lines:
-                text += line + '\n'
+            objects.append(event)
 
-    return text
+    return objects
 
 
 def get_latest_events():
     print("Started reading calendars...")
-    text = ''
+    objects = []
 
     for connection in CALENDAR_URLS:
         if str(connection["type"]).lower() == 'webcal':
-            text += get_events_from_webcal(connection["url"])
+            objects.extend(get_events_from_webcal(connection["url"]))
         elif str(connection['type']).lower() == 'caldav':
-            text += get_events_from_caldav(connection["url"], connection["username"], connection["password"])
+            objects.extend(get_events_from_caldav(connection["url"],
+                                                  connection["username"], connection["password"]))
+
+    objects.sort(key=sort_by_date)
 
     print("done!")
-    return text
+    return objects
 
 
 def print_to_display():
     epd.print_to_display('Loading calendars...', fontsize=25)
-    text = get_latest_events()
+    text = ''
+
+    objects = get_latest_events()
+    for obj in objects:
+        text += '\t' + humanize.naturalday(obj.start) + '\n'
+        summary = obj.summary.replace('\n', ' ')
+        lines = textwrap.wrap(summary, width=28)
+        for line in lines:
+            text += line + '\n'
+
     if text != '':
         epd.print_to_display(text, fontsize=16)
     else:
