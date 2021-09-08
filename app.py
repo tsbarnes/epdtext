@@ -29,6 +29,7 @@ class App:
             self.current_screen -= 1
         else:
             self.current_screen = len(self.screens) - 1
+        print("Current screen: {0}".format(self.current_screen))
         self.screens[self.current_screen].print_to_display()
 
     def handle_btn1_press(self):
@@ -41,6 +42,7 @@ class App:
         self.current_screen += 1
         if self.current_screen >= len(self.screens):
             self.current_screen = 0
+        print("Current screen: {0}".format(self.current_screen))
         self.screens[self.current_screen].print_to_display()
 
     def __init__(self):
