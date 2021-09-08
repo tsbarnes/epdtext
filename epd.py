@@ -32,3 +32,8 @@ def print_to_display(string, font=settings.FONT, fontsize=20, margin=5):
     font = ImageFont.truetype(font, fontsize)
     draw.text((margin, margin), string, font=font, fill=0)
     display.display(display.getbuffer(h_black_image), display.getbuffer(h_red_image))
+
+
+def clear_screen():
+    display = get_epd()
+    display.Clear(0xFF)

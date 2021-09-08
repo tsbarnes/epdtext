@@ -44,6 +44,7 @@ class App:
         self.screens[self.current_screen].print_to_display()
 
     def __init__(self):
+        epd.clear_screen()
         btns = epd.get_buttons()
         btns[0].when_pressed = handle_btn0_press
         btns[1].when_pressed = handle_btn1_press

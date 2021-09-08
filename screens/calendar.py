@@ -61,6 +61,7 @@ def get_latest_events():
 
 
 def print_to_display():
+    epd.print_to_display('Loading calendars...', fontsize=25)
     text = get_latest_events()
     if text != '':
         epd.print_to_display(text, fontsize=16)
