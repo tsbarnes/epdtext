@@ -4,6 +4,11 @@ except ImportError:
     DEBUG = False
 
 try:
+    from local_settings import LOGFILE
+except ImportError:
+    LOGFILE = None
+
+try:
     from local_settings import LOGO
 except ImportError:
     LOGO = '/home/pi/epdtext/logo.png'

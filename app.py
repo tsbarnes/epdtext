@@ -3,7 +3,7 @@ import epd
 import importlib
 import logging
 
-from settings import TIME, SCREENS, DEBUG
+from settings import TIME, SCREENS, DEBUG, LOGFILE
 
 
 def handle_btn0_press():
@@ -71,7 +71,7 @@ class App:
 
 
 if DEBUG:
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(filename=LOGFILE, level=logging.DEBUG)
 
 app = App()
 app.loop()

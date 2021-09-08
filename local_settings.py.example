@@ -1,4 +1,6 @@
 DEBUG = False
+# ** Leave commented to log to console **
+# LOGFILE = '/home/pi/epd.log'
 LOGO = '/home/pi/epdtext/logo.png'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 TIME = 1000
