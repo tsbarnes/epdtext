@@ -3,7 +3,7 @@ import epd
 import importlib
 import logging
 
-from settings import TIME, SCREENS
+from settings import TIME, SCREENS, DEBUG
 
 
 def handle_btn0_press():
@@ -34,9 +34,11 @@ class App:
         self.screens[self.current_screen].print_to_display()
 
     def handle_btn1_press(self):
+        logging.debug("Screen '{0}' handling button 1".format(self.current_screen))
         self.screens[self.current_screen].handle_btn_press(button_number=1)
 
     def handle_btn2_press(self):
+        logging.debug("Screen '{0}' handling button 2".format(self.current_screen))
         self.screens[self.current_screen].handle_btn_press(button_number=2)
 
     def handle_btn3_press(self):
@@ -67,6 +69,9 @@ class App:
             time.sleep(1)
             loop += 1
 
+
+if DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
 
 app = App()
 app.loop()
