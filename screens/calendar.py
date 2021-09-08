@@ -33,16 +33,12 @@ def get_events_from_caldav(url, username, password):
     client = caldav.DAVClient(url=url, username=username, password=password)
     principal = client.principal()
     calendars = principal.calendars()
-    print(calendars)
 
     for calendar in calendars:
         calendar_events = calendar.date_search(start=datetime.today(), end=datetime.today() + timedelta(days=7),
                                                expand=True)
         for event in calendar_events:
-            try:
-                text += '\t' + humanize.naturalday(event.start) + '\n'
-            except AttributeError:
-                text += '\tNo start date\n'
+            text += '\t' + humanize.naturalday(event.start) + '\n'
             summary = event.summary.replace('\n', ' ')
             lines = textwrap.wrap(summary, width=28)
             for line in lines:
