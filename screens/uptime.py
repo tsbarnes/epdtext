@@ -3,19 +3,43 @@ import datetime
 import platform
 import epd
 import humanize
+from PIL import Image, ImageDraw, ImageFont
+from settings import FONT
 
 
 def print_to_display():
-    dist = " ".join(x for x in platform.dist())
-    uptime = datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
+    display = epd.get_epd()
+    h_black_image = Image.new('1', epd.get_size(), 255)
+    h_red_image = Image.new('1', epd.get_size(), 255)
+
+    with Image.open('/home/pi/epdtext/logo.png') as logo:
+        Image.alpha_composite(h_black_image, logo)
+
+    # Create draw object and pass in the image layer we want to work with (HBlackImage)
+    draw = ImageDraw.Draw(h_black_image)
+    # Create our font, passing in the font file and font size
+    font = ImageFont.truetype(FONT, 14)
+
     string = ''
+
+    with open('/sys/firmware/devicetree/base/model', 'r') as model_file:
+        model = model_file.read()
+        string += model + '\n'
+
     string += '\tSystem:  ' + platform.system() + '\n'
-    string += '\tDistrib: ' + dist + '\n'
+
+    dist = " ".join(x for x in platform.dist())
+    string += '\tOS:      ' + dist + '\n'
+
     string += '\tMachine: ' + platform.machine() + '\n'
     string += '\tNode:    ' + platform.node() + '\n'
     string += '\tArch:    ' + platform.architecture()[0] + '\n'
-    string += '\tUptime:\n' + humanize.naturaldelta(uptime)
-    epd.print_to_display(string, fontsize=16)
+
+    uptime = datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
+    string += '\tUptime:  ' + humanize.naturaldelta(uptime)
+
+    draw.text((5, 50), string, font=font, fill=0)
+    display.display(display.getbuffer(h_black_image), display.getbuffer(h_red_image))
 
 
 def handle_btn_press(button_number=1):

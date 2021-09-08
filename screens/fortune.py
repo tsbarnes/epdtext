@@ -12,10 +12,10 @@ def print_to_display():
         logging.error("couldn't run application 'fortune'")
         string = ''
     text = ''
-    lines = textwrap.wrap(string, width=40)
+    lines = textwrap.wrap(string, width=32)
     for line in lines:
         text += line + '\n'
-    epd.print_to_display(text, fontsize=10, margin=5)
+    epd.print_to_display(text, fontsize=14, margin=5)
 
 
 def handle_btn_press(button_number=1):
