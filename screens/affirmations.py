@@ -22,11 +22,11 @@ affirm = Affirmation()
 def print_to_display():
     text = ''
     affirmation = affirm.get_random_affirmation()
-    lines = textwrap.wrap(affirmation, width=28)
+    lines = textwrap.wrap(affirmation, width=20)
     for line in lines:
         text += line + '\n'
 
-    epd.print_to_display(text, fontsize=16)
+    epd.print_to_display(text, fontsize=25)
 
 
 def handle_btn_press(button_number=1):
