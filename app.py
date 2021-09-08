@@ -2,6 +2,7 @@ import time
 import epd
 import importlib
 import logging
+import posix_ipc
 
 from settings import TIME, SCREENS, DEBUG, LOGFILE
 
@@ -49,6 +50,9 @@ class App:
         self.screens[self.current_screen].print_to_display()
 
     def __init__(self):
+        self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
+        self.mq.block = False
+
         epd.clear_screen()
         btns = epd.get_buttons()
         btns[0].when_pressed = handle_btn0_press
@@ -66,6 +70,25 @@ class App:
                 self.screens[self.current_screen].print_to_display()
             if loop == TIME:
                 loop = 0
+
+            try:
+                message = self.mq.receive(timeout=10)
+            except posix_ipc.BusyError:
+                message = None
+
+            if message:
+                command = message[0].decode()
+                if command == "previous" or command == "button0":
+                    self.handle_btn0_press()
+                elif command == "next" or command == "button3":
+                    self.handle_btn3_press()
+                elif command == "button1":
+                    self.handle_btn1_press()
+                elif command == "button2":
+                    self.handle_btn2_press()
+                elif command == "reload":
+                    loop = 0
+
             time.sleep(1)
             loop += 1
 

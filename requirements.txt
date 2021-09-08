@@ -4,3 +4,4 @@ caldav~=0.8.0
 icalendar~=4.0.7
 icalevents~=0.1.25
 humanize~=3.11.0
+posix_ipc~=1.0.5
