@@ -59,6 +59,7 @@ class App:
         btns[1].when_pressed = handle_btn1_press
         btns[2].when_pressed = handle_btn2_press
         btns[3].when_pressed = handle_btn3_press
+
         self.screens = []
         for module in SCREENS:
             self.screens.append(importlib.import_module("screens." + module))
@@ -77,7 +78,10 @@ class App:
                 message = None
 
             if message:
-                command = message[0].decode()
+                parts = message[0].decode().split()
+
+                command = parts[0]
+                logging.debug("Received IPC command: " + command)
                 if command == "previous" or command == "button0":
                     self.handle_btn0_press()
                 elif command == "next" or command == "button3":
@@ -88,6 +92,8 @@ class App:
                     self.handle_btn2_press()
                 elif command == "reload":
                     loop = 0
+                else:
+                    logging.error("Command '{0}' not recognized".format(command))
 
             time.sleep(1)
             loop += 1
