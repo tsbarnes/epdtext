@@ -6,7 +6,7 @@ The app provides a number of screens that can be displayed on the e-paper HAT, a
 
 The framework is extensible, so you can write your own screens as well, each screen is a Python module providing the `handle_btn_press` and `print_to_display` functions.
 
-There's also a message queue interface to control the screen remotely. (example command line client coming soon)
+There's also a message queue interface to control the screen remotely. (example command line client available in `cli.py`)
 
 ## Setup on Raspberry Pi OS
 
