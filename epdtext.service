@@ -5,6 +5,7 @@ After=local-fs.target network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 /home/pi/epdtext/app.py
+User=pi
 Restart=always
 
 [Install]
