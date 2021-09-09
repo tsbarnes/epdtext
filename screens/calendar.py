@@ -3,7 +3,7 @@ import humanize
 import caldav
 import logging
 import pytz
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, tzinfo
 from icalevents.icalevents import events
 from settings import CALENDAR_URLS, TIMEZONE
 
@@ -13,7 +13,13 @@ def sort_by_date(obj):
 
 
 class Calendar:
-    timezone = pytz.timezone(TIMEZONE)
+    timezone = None
+
+    def __init__(self):
+        if isinstance(TIMEZONE, tzinfo):
+            self.timezone = TIMEZONE
+        else:
+            self.timezone = pytz.timezone(TIMEZONE)
 
     def standardize_date(self, arg, ignore_timezone=False):
         if isinstance(arg, datetime) and (not arg.tzinfo or ignore_timezone):

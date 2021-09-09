@@ -74,6 +74,12 @@ class App:
             return None
 
     def __init__(self):
+        if DEBUG:
+            logging.basicConfig(level=logging.DEBUG, filename=LOGFILE)
+            logging.info("Debug messages enabled")
+        else:
+            logging.basicConfig(filename=LOGFILE)
+
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
         self.mq.block = False
 
@@ -143,11 +149,6 @@ class App:
             if loop == 1:
                 self.current_screen().print_to_display()
 
-
-if DEBUG:
-    logging.basicConfig(level=logging.DEBUG)
-if LOGFILE:
-    logging.basicConfig(filename=LOGFILE)
 
 app = App()
 app.loop()
