@@ -25,6 +25,7 @@ def handle_btn3_press():
 
 class App:
     current_screen = 0
+    screens = []
 
     def handle_btn0_press(self):
         if self.current_screen > 0:
@@ -60,18 +61,12 @@ class App:
         btns[2].when_pressed = handle_btn2_press
         btns[3].when_pressed = handle_btn3_press
 
-        self.screens = []
         for module in SCREENS:
             self.screens.append(importlib.import_module("screens." + module))
 
     def loop(self):
         loop = 1
         while True:
-            if loop == 1:
-                self.screens[self.current_screen].print_to_display()
-            if loop == TIME:
-                loop = 0
-
             try:
                 message = self.mq.receive(timeout=10)
             except posix_ipc.BusyError:
@@ -92,11 +87,27 @@ class App:
                     self.handle_btn2_press()
                 elif command == "reload":
                     loop = 0
+                elif command == "screen":
+                    logging.debug("Attempting switch to screen '{0}'".format(parts[1]))
+                    was_set = False
+                    for index in range(0, len(self.screens)):
+                        if self.screens[index].__name__.split('.')[1] == parts[1]:
+                            self.current_screen = index
+                            was_set = True
+                    if not was_set:
+                        logging.error("Screen '{0}' doesn't exist".format(parts[1]))
                 else:
                     logging.error("Command '{0}' not recognized".format(command))
 
             time.sleep(1)
+
+            if loop == TIME:
+                loop = 0
+
             loop += 1
+
+            if loop == 1:
+                self.screens[self.current_screen].print_to_display()
 
 
 if DEBUG:
