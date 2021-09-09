@@ -29,7 +29,8 @@ def print_to_display(string, font=settings.FONT, fontsize=20, margin=5):
 
     text = ''
     line_width = (get_size()[1] / (fontsize / 2.5))
-    logging.debug("Horizontal size: {0}, font size: {1}, line wrap: {2}".format(get_size()[1], fontsize, line_width))
+    logging.debug("Size: {0} x {1}, font size: {2}, line wrap: {3}".format(get_size()[0], get_size()[1],
+                                                                           fontsize, line_width))
     for string_line in string.split('\n'):
         lines = textwrap.wrap(string_line, width=line_width)
         for line in lines:

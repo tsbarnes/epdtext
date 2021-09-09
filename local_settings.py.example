@@ -8,7 +8,7 @@ DEBUG = False
 LOGO = '/home/pi/epdtext/logo.png'
 
 # Monospace fonts are recommended, as the text wrapping is based on character length
-FONT = '/usr/share/fonts/truetype/dejavu/DejaVuMono.ttf'
+FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'
 
 # How long to wait (in seconds) before automatically redrawing the screen
 TIME = 1000
