@@ -1,10 +1,16 @@
 DEBUG = False
+
 # ** Leave commented to log to console **
 # LOGFILE = '/home/pi/epd.log'
 
+# Path to the logo to print on the `uptime` screen
+# ** Must be a black and white 45x45 image file **
 LOGO = '/home/pi/epdtext/logo.png'
-FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 
+# Monospace fonts are recommended, as the text wrapping is based on character length
+FONT = '/usr/share/fonts/truetype/dejavu/DejaVuMono.ttf'
+
+# How long to wait (in seconds) before automatically redrawing the screen
 TIME = 1000
 
 # Note: you *must* define at least one calendar to use the 'calendar' screen,
@@ -13,8 +19,11 @@ CALENDAR_URLS = [
     { type: 'webcal', url: '<enter your webcal address>' },
     { type: 'caldav', url: '<enter your caldav address>', username: '<caldav username>', password: '<caldav password' },
 ]
+
+# Default timezone to use for calendar and tasks screens
 TIMEZONE = "UTC"
 
+# See the `screens` directory for available screens, or create your own (see the wiki)
 SCREENS = [
     'affirmations',
     'calendar',
@@ -22,6 +31,7 @@ SCREENS = [
     'uptime',
 ]
 
+# The affirmations to display, include anything that would help to be occasionally reminded of!
 AFFIRMATIONS = [
     '<list your affirmations here>',
 ]
