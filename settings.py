@@ -41,8 +41,6 @@ try:
 except ImportError:
     SCREENS = [
         'affirmations',
-        # The calendar app is a work in progress!
-        'calendar',
         'fortune',
         'uptime',
     ]
