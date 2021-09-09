@@ -52,3 +52,15 @@ To start up the app, run this command:
 cd ~/epdtext
 python3 app.py
 ```
+
+To reload using the CLI client:
+```shell
+cd ~/epdtext
+./cli.py reload
+```
+
+To switch to the uptime screen with the CLI:
+```shell
+cd ~/epdtext
+./cli.py screen uptime
+```

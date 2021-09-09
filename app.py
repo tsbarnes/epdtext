@@ -50,6 +50,10 @@ class App:
         logging.debug("Current screen: {0}".format(self.current_screen))
         self.screens[self.current_screen].print_to_display()
 
+    def add_screen(self, screen_name):
+        screen = importlib.import_module("screens." + screen_name)
+        self.screens.append(screen)
+
     def find_screen_index_by_name(self, screen_name):
         for index in range(0, len(self.screens)):
             name = self.screens[index].__name__
@@ -57,6 +61,14 @@ class App:
                 return index
         logging.error("Screen '{0}' doesn't exist".format(screen_name))
         return -1
+
+    def get_screen_by_name(self, screen_name):
+        index = self.find_screen_index_by_name(screen_name)
+        if index >= 0:
+            return self.screens[index]
+        else:
+            logging.error("Screen '{0}' not found".format(screen_name))
+            return None
 
     def __init__(self):
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
@@ -101,6 +113,19 @@ class App:
                     if self.current_screen < 0:
                         self.current_screen = 0
                     loop = 0
+                elif command == "remove_screen":
+                    logging.debug("Attempting to remove screen '{0}'".format(parts[1]))
+                    if self.current_screen == self.find_screen_index_by_name(parts[1]):
+                        self.current_screen = 0
+                        self.screens[self.current_screen].print_to_display()
+                    self.screens.remove(self.get_screen_by_name(parts[1]))
+
+                elif command == "add_screen":
+                    logging.debug("Attempting to add screen '{0}'".format(parts[1]))
+                    if self.get_screen_by_name(parts[1]):
+                        logging.error("Screen '{0}' already added".format(parts[1]))
+                    else:
+                        self.add_screen(parts[1])
 
                 else:
                     logging.error("Command '{0}' not recognized".format(command))
