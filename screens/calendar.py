@@ -80,7 +80,7 @@ def print_to_display():
 
     objects = get_latest_events()
     for obj in objects:
-        text += '* ' + humanize.naturalday(obj["start"]) + '\n'
+        text += '* ' + humanize.naturaltime(obj["start"]) + '\n'
         text += obj["summary"].replace('\n', ' ') + '\n'
 
     if text != '':
