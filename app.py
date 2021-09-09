@@ -24,31 +24,34 @@ def handle_btn3_press():
 
 
 class App:
-    current_screen = 0
+    current_screen_index = 0
     screens = []
 
+    def current_screen(self):
+        return self.screens[self.current_screen_index]
+
     def handle_btn0_press(self):
-        if self.current_screen > 0:
-            self.current_screen -= 1
+        if self.current_screen_index > 0:
+            self.current_screen_index -= 1
         else:
-            self.current_screen = len(self.screens) - 1
-        logging.debug("Current screen: {0}".format(self.current_screen))
-        self.screens[self.current_screen].print_to_display()
+            self.current_screen_index = len(self.screens) - 1
+        logging.debug("Current screen: {0}".format(self.current_screen().__name__))
+        self.current_screen().print_to_display()
 
     def handle_btn1_press(self):
-        logging.debug("Screen '{0}' handling button 1".format(self.current_screen))
-        self.screens[self.current_screen].handle_btn_press(button_number=1)
+        logging.debug("Screen '{0}' handling button 1".format(self.current_screen_index))
+        self.current_screen().handle_btn_press(button_number=1)
 
     def handle_btn2_press(self):
-        logging.debug("Screen '{0}' handling button 2".format(self.current_screen))
-        self.screens[self.current_screen].handle_btn_press(button_number=2)
+        logging.debug("Screen '{0}' handling button 2".format(self.current_screen_index))
+        self.current_screen().handle_btn_press(button_number=2)
 
     def handle_btn3_press(self):
-        self.current_screen += 1
-        if self.current_screen >= len(self.screens):
-            self.current_screen = 0
-        logging.debug("Current screen: {0}".format(self.current_screen))
-        self.screens[self.current_screen].print_to_display()
+        self.current_screen_index += 1
+        if self.current_screen_index >= len(self.screens):
+            self.current_screen_index = 0
+        logging.debug("Current screen: {0}".format(self.current_screen_index))
+        self.current_screen().print_to_display()
 
     def add_screen(self, screen_name):
         screen = importlib.import_module("screens." + screen_name)
@@ -109,15 +112,15 @@ class App:
                     loop = 0
                 elif command == "screen":
                     logging.debug("Attempting switch to screen '{0}'".format(parts[1]))
-                    self.current_screen = self.find_screen_index_by_name(parts[1])
-                    if self.current_screen < 0:
-                        self.current_screen = 0
+                    self.current_screen_index = self.find_screen_index_by_name(parts[1])
+                    if self.current_screen_index < 0:
+                        self.current_screen_index = 0
                     loop = 0
                 elif command == "remove_screen":
                     logging.debug("Attempting to remove screen '{0}'".format(parts[1]))
-                    if self.current_screen == self.find_screen_index_by_name(parts[1]):
-                        self.current_screen = 0
-                        self.screens[self.current_screen].print_to_display()
+                    if self.current_screen_index == self.find_screen_index_by_name(parts[1]):
+                        self.current_screen_index = 0
+                        self.screens[self.current_screen_index].print_to_display()
                     self.screens.remove(self.get_screen_by_name(parts[1]))
 
                 elif command == "add_screen":
@@ -138,11 +141,13 @@ class App:
             loop += 1
 
             if loop == 1:
-                self.screens[self.current_screen].print_to_display()
+                self.current_screen().print_to_display()
 
 
 if DEBUG:
-    logging.basicConfig(filename=LOGFILE, level=logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG)
+if LOGFILE:
+    logging.basicConfig(filename=LOGFILE)
 
 app = App()
 app.loop()
