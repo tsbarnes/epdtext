@@ -50,6 +50,14 @@ class App:
         logging.debug("Current screen: {0}".format(self.current_screen))
         self.screens[self.current_screen].print_to_display()
 
+    def find_screen_index_by_name(self, screen_name):
+        for index in range(0, len(self.screens)):
+            name = self.screens[index].__name__
+            if name == screen_name or name.split('.')[-1] == screen_name:
+                return index
+        logging.error("Screen '{0}' doesn't exist".format(screen_name))
+        return -1
+
     def __init__(self):
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
         self.mq.block = False
@@ -89,13 +97,11 @@ class App:
                     loop = 0
                 elif command == "screen":
                     logging.debug("Attempting switch to screen '{0}'".format(parts[1]))
-                    was_set = False
-                    for index in range(0, len(self.screens)):
-                        if self.screens[index].__name__.split('.')[1] == parts[1]:
-                            self.current_screen = index
-                            was_set = True
-                    if not was_set:
-                        logging.error("Screen '{0}' doesn't exist".format(parts[1]))
+                    self.current_screen = self.find_screen_index_by_name(parts[1])
+                    if self.current_screen < 0:
+                        self.current_screen = 0
+                    loop = 0
+
                 else:
                     logging.error("Command '{0}' not recognized".format(command))
 
