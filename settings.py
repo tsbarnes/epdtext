@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 try:
     from local_settings import DEBUG
 except ImportError:
@@ -31,7 +34,7 @@ except ImportError:
 try:
     from local_settings import TIMEZONE
 except ImportError:
-    TIMEZONE = "UTC"
+    TIMEZONE = datetime.now().astimezone().tzinfo
 
 try:
     from local_settings import SCREENS
