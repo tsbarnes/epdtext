@@ -29,6 +29,11 @@ except ImportError:
     CALENDAR_URLS = []
 
 try:
+    from local_settings import TIMEZONE
+except ImportError:
+    TIMEZONE = "UTC"
+
+try:
     from local_settings import SCREENS
 except ImportError:
     SCREENS = [

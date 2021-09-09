@@ -13,6 +13,7 @@ CALENDAR_URLS = [
     { type: 'webcal', url: '<enter your webcal address>' },
     { type: 'caldav', url: '<enter your caldav address>', username: '<caldav username>', password: '<caldav password' },
 ]
+TIMEZONE = "UTC"
 
 SCREENS = [
     'affirmations',

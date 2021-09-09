@@ -65,7 +65,7 @@ class App:
             self.screens.append(importlib.import_module("screens." + module))
 
     def loop(self):
-        loop = 1
+        loop = 0
         while True:
             try:
                 message = self.mq.receive(timeout=10)
