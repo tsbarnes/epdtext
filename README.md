@@ -16,7 +16,7 @@ The included screens are:
 
 ## Making your own
 
-The framework is extensible, so you can write your own screens as well, each screen is a Python module providing the `handle_btn_press` and `print_to_display` functions.
+The framework is extensible, so you can write your own screens as well, each screen is a Python module providing the `handle_btn_press`, `print_to_display`, and `iterate_loop` functions.
 
 For more information on how to create your own screens, check the wiki.
 
