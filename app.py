@@ -86,6 +86,8 @@ class App:
         self.mq.block = False
 
         epd.clear_screen()
+        epd.print_to_display("Loading epdtext...")
+
         btns = epd.get_buttons()
         btns[0].when_pressed = handle_btn0_press
         btns[1].when_pressed = handle_btn1_press
@@ -140,6 +142,9 @@ class App:
 
                 else:
                     logging.error("Command '{0}' not recognized".format(command))
+
+            for screen in self.screens:
+                screen.iterate_loop()
 
             time.sleep(1)
 

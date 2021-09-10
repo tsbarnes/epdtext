@@ -24,12 +24,17 @@ except ImportError:
 try:
     from local_settings import TIME
 except ImportError:
-    TIME = 1000
+    TIME = 900
 
 try:
     from local_settings import CALENDAR_URLS
 except ImportError:
     CALENDAR_URLS = []
+
+try:
+    from local_settings import CALENDAR_REFRESH
+except ImportError:
+    CALENDAR_REFRESH = 900
 
 try:
     from local_settings import TIMEZONE

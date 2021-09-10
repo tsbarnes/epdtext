@@ -11,7 +11,7 @@ LOGO = '/home/pi/epdtext/logo.png'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'
 
 # How long to wait (in seconds) before automatically redrawing the screen
-TIME = 1000
+TIME = 900
 
 # Note: you *must* define at least one calendar to use the 'calendar' screen,
 #       and at least one caldav calendar to use the 'tasks' screen.
@@ -19,6 +19,9 @@ CALENDAR_URLS = [
     { type: 'webcal', url: '<enter your webcal address>' },
     { type: 'caldav', url: '<enter your caldav address>', username: '<caldav username>', password: '<caldav password' },
 ]
+
+# How long to wait before pulling the calendar events from the web again
+CALENDAR_REFRESH = 900
 
 # Default timezone to use for calendar and tasks screens
 TIMEZONE = "UTC"

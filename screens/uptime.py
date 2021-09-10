@@ -48,3 +48,7 @@ def handle_btn_press(button_number=1):
         print_to_display()
     elif button_number == 2:
         pass
+
+
+def iterate_loop():
+    pass

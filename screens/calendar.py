@@ -5,7 +5,7 @@ import logging
 import pytz
 from datetime import date, datetime, timedelta, tzinfo
 from icalevents.icalevents import events
-from settings import CALENDAR_URLS, TIMEZONE
+from settings import CALENDAR_URLS, TIMEZONE, CALENDAR_REFRESH
 
 
 def sort_by_date(obj):
@@ -14,6 +14,8 @@ def sort_by_date(obj):
 
 class Calendar:
     timezone = None
+    refresh_interval = 0
+    events = []
 
     def __init__(self):
         if isinstance(TIMEZONE, tzinfo):
@@ -31,23 +33,23 @@ class Calendar:
             return arg
 
     def get_events_from_webcal(self, url):
-        objects = []
         try:
             timeline = events(url)
             for event in timeline:
                 start = self.standardize_date(event.start)
                 summary = event.summary
 
-                objects.append({'start': start, 'summary': summary})
+                self.events.append({
+                    'start': start,
+                    'summary': summary
+                })
         except ValueError:
             logging.error('Error reading calendar "{0}"'.format(url))
             pass
 
-        return objects
+        return self.events
 
     def get_events_from_caldav(self, url, username, password):
-        objects = []
-
         client = caldav.DAVClient(url=url, username=username, password=password)
         principal = client.principal()
         calendars = principal.calendars()
@@ -60,36 +62,35 @@ class Calendar:
                 start = self.standardize_date(event.vobject_instance.vevent.dtstart.value)
                 summary = event.vobject_instance.vevent.summary.value
 
-                objects.append({
+                self.events.append({
                     'start': start,
                     'summary': summary
                 })
 
-        return objects
+        return self.events
 
     def get_latest_events(self):
         logging.debug("Started reading calendars...")
-        objects = []
+        self.events = []
 
         for connection in CALENDAR_URLS:
             if str(connection["type"]).lower() == 'webcal':
-                objects.extend(self.get_events_from_webcal(connection["url"]))
+                self.get_events_from_webcal(connection["url"])
             elif str(connection['type']).lower() == 'caldav':
-                objects.extend(self.get_events_from_caldav(connection["url"],
-                                                           connection["username"], connection["password"]))
+                self.get_events_from_caldav(connection["url"],
+                                            connection["username"], connection["password"])
             else:
                 logging.error("calendar type not recognized: {0}".format(str(connection["type"])))
 
-        objects.sort(key=sort_by_date)
+        self.events.sort(key=sort_by_date)
 
         logging.debug("done!")
-        return objects
+        return self.events
 
-    def __str__(self):
+    def as_string(self):
         text = ''
 
-        objects = calendar.get_latest_events()
-        for obj in objects:
+        for obj in self.events:
             if obj["start"].date() > datetime.today().date():
                 text += '* ' + humanize.naturaldate(obj["start"]) + '\n'
             else:
@@ -99,13 +100,16 @@ class Calendar:
 
         return text
 
+    def __str__(self):
+        self.as_string()
+
 
 calendar = Calendar()
 
 
 def print_to_display():
     epd.print_to_display('Loading calendars...', fontsize=25)
-    text = str(calendar)
+    text = calendar.as_string()
 
     if text != '':
         epd.print_to_display(text, fontsize=16)
@@ -118,3 +122,10 @@ def handle_btn_press(button_number=1):
         print_to_display()
     elif button_number == 2:
         pass
+
+
+def iterate_loop(force_update=False):
+    calendar.refresh_interval -= 1
+    if calendar.refresh_interval <= 0 or force_update:
+        calendar.refresh_interval = CALENDAR_REFRESH
+        calendar.get_latest_events()
