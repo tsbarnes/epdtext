@@ -11,7 +11,7 @@ The included screens are:
 * `uptime` - a system info viewer
 * `affirmations` - display positive affirmations (or whatever kind you want, really)
 * `fortune` - shows a random fortune from the fortune database (requires the `fortune-mod` package)
- * Install `fortune-mod` with this command: `sudo apt install fortune-mod`
+  * Install `fortune-mod` with this command: `sudo apt install fortune-mod`
 * `calendar` and `tasks` - shows a list of upcoming events or todos from your calendars (see `local_settings.py.example`)
 
 ## Making your own
