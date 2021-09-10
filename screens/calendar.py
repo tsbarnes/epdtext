@@ -85,6 +85,7 @@ class Calendar:
         self.events.sort(key=sort_by_date)
 
         logging.debug("done!")
+
         return self.events
 
     def as_string(self):

@@ -24,8 +24,8 @@ def handle_btn3_press():
 
 
 class App:
-    current_screen_index = 0
-    screens = []
+    current_screen_index: int = 0
+    screens: list = []
 
     def current_screen(self):
         return self.screens[self.current_screen_index]
