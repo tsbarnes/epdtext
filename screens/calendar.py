@@ -108,7 +108,6 @@ calendar = Calendar()
 
 
 def print_to_display():
-    epd.print_to_display('Loading calendars...', fontsize=25)
     text = calendar.as_string()
 
     if text != '':

@@ -64,7 +64,6 @@ tasks = Tasks()
 
 
 def print_to_display():
-    epd.print_to_display('Loading tasks...', fontsize=25)
     text = ''
 
     for obj in tasks.tasks:
