@@ -47,8 +47,8 @@ class Tasks:
 
         for connection in CALENDAR_URLS:
             if str(connection['type']).lower() == 'caldav':
-                self.tasks.extend(self.get_tasks_from_caldav(connection["url"],
-                                                             connection["username"], connection["password"]))
+                self.get_tasks_from_caldav(connection["url"],
+                                           connection["username"], connection["password"])
             elif str(connection['type']).lower() == 'webcal':
                 logging.debug("calendar type doesn't support tasks")
             else:
