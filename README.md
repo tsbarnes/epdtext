@@ -2,11 +2,27 @@
 
 A simple display manager app for the [WaveShare 2.7in e-Paper HAT](https://www.waveshare.com/2.7inch-e-paper-hat.htm)
 
+## Screens
+
 The app provides a number of screens that can be displayed on the e-paper HAT, and allows switching between them with the builtin buttons.
+
+The included screens are:
+
+* `uptime` - a system info viewer
+* `affirmations` - display positive affirmations (or whatever kind you want, really)
+* `fortune` - shows a random fortune from the fortune database (requires the `fortune-mod` package)
+ * Install `fortune-mod` with this command: `sudo apt install fortune-mod`
+* `calendar` and `tasks` - shows a list of upcoming events or todos from your calendars (see `local_settings.py.example`)
+
+## Making your own
 
 The framework is extensible, so you can write your own screens as well, each screen is a Python module providing the `handle_btn_press` and `print_to_display` functions.
 
-There's also a message queue interface to control the screen remotely. (example command line client available in `cli.py`)
+For more information on how to create your own screens, check the wiki.
+
+## Message queue
+
+There's also a message queue interface to control the screen from other apps. (example command line client available in `cli.py`)
 
 ## Setup on Raspberry Pi OS
 
