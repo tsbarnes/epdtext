@@ -80,6 +80,8 @@ class App:
         else:
             logging.basicConfig(filename=LOGFILE)
 
+        logging.info("Starting epdtext...")
+
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
         self.mq.block = False
 
