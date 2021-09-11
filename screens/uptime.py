@@ -1,8 +1,10 @@
+import os
 import time
 import datetime
 import platform
 import epd
 import humanize
+import logging
 from PIL import Image, ImageDraw, ImageFont
 from settings import FONT, LOGO
 
@@ -47,7 +49,8 @@ def handle_btn_press(button_number=1):
     if button_number == 1:
         print_to_display()
     elif button_number == 2:
-        pass
+        logging.info("Rebooting...")
+        os.system("sudo reboot now")
 
 
 def iterate_loop():
