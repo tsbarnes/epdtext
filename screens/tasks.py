@@ -90,7 +90,9 @@ class Screen(AbstractScreen):
             self.reload()
             self.show()
         elif button_number == 2:
-            pass
+            self.iterate_loop(force_update=True)
+            self.reload()
+            self.show()
 
     def iterate_loop(self, force_update=False):
         self.tasks.refresh_interval -= 1
