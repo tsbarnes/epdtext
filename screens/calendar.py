@@ -1,4 +1,4 @@
-import epd
+from requests.exceptions import SSLError
 import humanize
 import caldav
 import logging
@@ -51,8 +51,13 @@ class Calendar:
         return self.events
 
     def get_events_from_caldav(self, url, username, password):
-        client = caldav.DAVClient(url=url, username=username, password=password)
-        principal = client.principal()
+        try:
+            client = caldav.DAVClient(url=url, username=username, password=password)
+            principal = client.principal()
+        except SSLError:
+            logging.error("SSL error loading calendar: " + url)
+            return self.events
+
         calendars = principal.calendars()
 
         for cal in calendars:
@@ -110,6 +115,8 @@ class Screen(AbstractScreen):
     calendar = Calendar()
 
     def reload(self):
+        self.blank()
+
         text = self.calendar.as_string()
 
         if text != '':
@@ -120,6 +127,7 @@ class Screen(AbstractScreen):
     def handle_btn_press(self, button_number=1):
         if button_number == 1:
             self.reload()
+            self.show()
         elif button_number == 2:
             pass
 

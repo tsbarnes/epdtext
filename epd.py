@@ -1,9 +1,5 @@
 from waveshare_epd import epd2in7b
 from gpiozero import Button
-from PIL import Image, ImageDraw, ImageFont
-import settings
-import textwrap
-import logging
 
 
 epd = epd2in7b.EPD()  # get the display

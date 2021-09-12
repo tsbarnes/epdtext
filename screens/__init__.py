@@ -8,21 +8,23 @@ import settings
 
 
 class AbstractScreen:
+    """Abstract screen class, screens should inherit from this"""
     display: EPD = get_epd()
     image: Image = None
     reload_interval: int = 60
     reload_wait: int = 0
 
     def __init__(self):
-        self.image = Image.new("1", get_size(), 0)
+        self.image = Image.new("1", get_size(), 255)
         self.reload()
 
     def blank(self):
-        self.image = Image.new("1", get_size(), 0)
+        self.image = Image.new("1", get_size(), 255)
 
     def show(self):
-        red_image = Image.new("1", get_size(), 0)
-        self.display.display(self.image, red_image)
+        if self.image:
+            red_image = Image.new("1", get_size(), 255)
+            self.display.display(self.display.getbuffer(self.image), self.display.getbuffer(red_image))
 
     def reload(self):
         raise NotImplementedError()
