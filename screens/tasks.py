@@ -73,9 +73,9 @@ class Screen(AbstractScreen):
                 text += "-- Due: " + humanize.naturalday(obj["due"]) + "\n"
 
         if text != '':
-            epd.print_to_display(text, fontsize=16)
+            self.text(text, font_size=16)
         else:
-            epd.print_to_display('No tasks', fontsize=30)
+            self.text('No tasks', font_size=30)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

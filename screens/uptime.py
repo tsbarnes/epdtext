@@ -2,7 +2,6 @@ import os
 import time
 import datetime
 import platform
-import epd
 import humanize
 import logging
 from PIL import Image, ImageDraw, ImageFont
@@ -12,14 +11,13 @@ from screens import AbstractScreen
 
 class Screen(AbstractScreen):
     def reload(self):
-        h_black_image = Image.new('1', epd.get_size(), 255)
-        h_red_image = Image.new('1', epd.get_size(), 255)
+        self.blank()
 
         logo = Image.open(LOGO)
-        h_black_image.paste(logo, (100, 5))
+        self.image.paste(logo, (100, 5))
 
         # Create draw object and pass in the image layer we want to work with (HBlackImage)
-        draw = ImageDraw.Draw(h_black_image)
+        draw = ImageDraw.Draw(self.image)
         # Create our font, passing in the font file and font size
         font = ImageFont.truetype(FONT, 14)
 
@@ -42,7 +40,6 @@ class Screen(AbstractScreen):
         string += '\tUptime:  ' + humanize.naturaldelta(uptime)
 
         draw.text((5, 50), string, font=font, fill=0)
-        self.display.display(self.display.getbuffer(h_black_image), self.display.getbuffer(h_red_image))
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

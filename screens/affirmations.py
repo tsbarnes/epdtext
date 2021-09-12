@@ -1,5 +1,4 @@
 import random
-import epd
 import settings
 from screens import AbstractScreen
 
@@ -17,7 +16,7 @@ class Screen(AbstractScreen):
 
     def reload(self):
         text = self.get_random_affirmation()
-        epd.print_to_display(text, fontsize=25)
+        self.text(text, font_size=25)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

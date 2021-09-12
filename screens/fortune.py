@@ -12,7 +12,7 @@ class Screen(AbstractScreen):
         except OSError:
             logging.error("couldn't run application 'fortune'")
             string = ''
-        epd.print_to_display(string, fontsize=14, margin=5)
+        self.text(string, font_size=14)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

@@ -40,7 +40,7 @@ class App:
         else:
             self.current_screen_index = len(self.screens) - 1
         logging.debug("Current screen: {0}".format(self.current_screen().__module__))
-        self.current_screen().reload()
+        self.current_screen().show()
 
     def handle_btn1_press(self):
         logging.debug("Screen '{0}' handling button 1".format(self.current_screen().__module__))
@@ -55,7 +55,7 @@ class App:
         if self.current_screen_index >= len(self.screens):
             self.current_screen_index = 0
         logging.debug("Current screen: {0}".format(self.current_screen().__module__))
-        self.current_screen().reload()
+        self.current_screen().show()
 
     def add_screen(self, screen_name):
         screen_module = importlib.import_module("screens." + screen_name)
@@ -99,7 +99,6 @@ class App:
         self.mq.block = False
 
         epd.clear_screen()
-        epd.print_to_display("Loading epdtext...")
 
         btns = epd.get_buttons()
         btns[0].when_pressed = handle_btn0_press
@@ -134,6 +133,7 @@ class App:
                 elif command == "reload":
                     loop = 0
                     self.current_screen().reload()
+                    self.current_screen().show()
                 elif command == "screen":
                     logging.debug("Attempting switch to screen '{0}'".format(parts[1]))
                     self.current_screen_index = self.find_screen_index_by_name(parts[1])
@@ -170,7 +170,7 @@ class App:
             loop += 1
 
             if loop == 1:
-                self.current_screen().reload()
+                self.current_screen().show()
 
 
 app = App()

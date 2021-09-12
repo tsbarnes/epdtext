@@ -113,9 +113,9 @@ class Screen(AbstractScreen):
         text = self.calendar.as_string()
 
         if text != '':
-            epd.print_to_display(text, fontsize=16)
+            self.text(text, font_size=16)
         else:
-            epd.print_to_display('No current\nevents', fontsize=25)
+            self.text('No current\nevents', font_size=25)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:
