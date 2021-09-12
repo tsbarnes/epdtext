@@ -25,41 +25,46 @@ def handle_btn3_press():
 
 class App:
     current_screen_index: int = 0
+    screen_modules: list = []
     screens: list = []
 
     def current_screen(self):
         return self.screens[self.current_screen_index]
+
+    def current_screen_module(self):
+        return self.screen_modules[self.current_screen_index]
 
     def handle_btn0_press(self):
         if self.current_screen_index > 0:
             self.current_screen_index -= 1
         else:
             self.current_screen_index = len(self.screens) - 1
-        logging.debug("Current screen: {0}".format(self.current_screen().__name__))
-        self.current_screen().print_to_display()
+        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+        self.current_screen().reload()
 
     def handle_btn1_press(self):
-        logging.debug("Screen '{0}' handling button 1".format(self.current_screen_index))
+        logging.debug("Screen '{0}' handling button 1".format(self.current_screen().__module__))
         self.current_screen().handle_btn_press(button_number=1)
 
     def handle_btn2_press(self):
-        logging.debug("Screen '{0}' handling button 2".format(self.current_screen_index))
+        logging.debug("Screen '{0}' handling button 2".format(self.current_screen().__module__))
         self.current_screen().handle_btn_press(button_number=2)
 
     def handle_btn3_press(self):
         self.current_screen_index += 1
         if self.current_screen_index >= len(self.screens):
             self.current_screen_index = 0
-        logging.debug("Current screen: {0}".format(self.current_screen_index))
-        self.current_screen().print_to_display()
+        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+        self.current_screen().reload()
 
     def add_screen(self, screen_name):
-        screen = importlib.import_module("screens." + screen_name)
-        self.screens.append(screen)
+        screen_module = importlib.import_module("screens." + screen_name)
+        self.screens.append(screen_module.Screen())
+        self.screen_modules.append(screen_module)
 
     def find_screen_index_by_name(self, screen_name):
         for index in range(0, len(self.screens)):
-            name = self.screens[index].__name__
+            name = self.screens[index].__module__
             if name == screen_name or name.split('.')[-1] == screen_name:
                 return index
         logging.error("Screen '{0}' doesn't exist".format(screen_name))
@@ -69,6 +74,14 @@ class App:
         index = self.find_screen_index_by_name(screen_name)
         if index >= 0:
             return self.screens[index]
+        else:
+            logging.error("Screen '{0}' not found".format(screen_name))
+            return None
+
+    def get_screen_module_by_name(self, screen_name):
+        index = self.find_screen_index_by_name(screen_name)
+        if index >= 0:
+            return self.screen_modules[index]
         else:
             logging.error("Screen '{0}' not found".format(screen_name))
             return None
@@ -95,7 +108,7 @@ class App:
         btns[3].when_pressed = handle_btn3_press
 
         for module in SCREENS:
-            self.screens.append(importlib.import_module("screens." + module))
+            self.add_screen(module)
 
     def loop(self):
         loop = 0
@@ -120,18 +133,21 @@ class App:
                     self.handle_btn2_press()
                 elif command == "reload":
                     loop = 0
+                    self.current_screen().reload()
                 elif command == "screen":
                     logging.debug("Attempting switch to screen '{0}'".format(parts[1]))
                     self.current_screen_index = self.find_screen_index_by_name(parts[1])
                     if self.current_screen_index < 0:
+                        logging.error("Couldn't find screen '{0}'".format(parts[1]))
                         self.current_screen_index = 0
                     loop = 0
                 elif command == "remove_screen":
                     logging.debug("Attempting to remove screen '{0}'".format(parts[1]))
                     if self.current_screen_index == self.find_screen_index_by_name(parts[1]):
                         self.current_screen_index = 0
-                        self.screens[self.current_screen_index].print_to_display()
+                        self.current_screen().reload()
                     self.screens.remove(self.get_screen_by_name(parts[1]))
+                    self.screen_modules.remove(self.get_screen_module_by_name(parts[1]))
 
                 elif command == "add_screen":
                     logging.debug("Attempting to add screen '{0}'".format(parts[1]))
@@ -154,7 +170,7 @@ class App:
             loop += 1
 
             if loop == 1:
-                self.current_screen().print_to_display()
+                self.current_screen().reload()
 
 
 app = App()

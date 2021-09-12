@@ -45,9 +45,9 @@ try:
     from local_settings import SCREENS
 except ImportError:
     SCREENS = [
-        'affirmations',
-        'fortune',
         'uptime',
+        'fortune',
+        'affirmations',
     ]
 
 try:

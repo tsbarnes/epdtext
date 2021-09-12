@@ -6,6 +6,7 @@ import pytz
 from datetime import date, datetime, timedelta, tzinfo
 from icalevents.icalevents import events
 from settings import CALENDAR_URLS, TIMEZONE, CALENDAR_REFRESH
+from screens import AbstractScreen
 
 
 def sort_by_date(obj):
@@ -105,27 +106,25 @@ class Calendar:
         self.as_string()
 
 
-calendar = Calendar()
+class Screen(AbstractScreen):
+    calendar = Calendar()
 
+    def reload(self):
+        text = self.calendar.as_string()
 
-def print_to_display():
-    text = calendar.as_string()
+        if text != '':
+            epd.print_to_display(text, fontsize=16)
+        else:
+            epd.print_to_display('No current\nevents', fontsize=25)
 
-    if text != '':
-        epd.print_to_display(text, fontsize=16)
-    else:
-        epd.print_to_display('No current\nevents', fontsize=25)
+    def handle_btn_press(self, button_number=1):
+        if button_number == 1:
+            self.reload()
+        elif button_number == 2:
+            pass
 
-
-def handle_btn_press(button_number=1):
-    if button_number == 1:
-        print_to_display()
-    elif button_number == 2:
-        pass
-
-
-def iterate_loop(force_update=False):
-    calendar.refresh_interval -= 1
-    if calendar.refresh_interval <= 0 or force_update:
-        calendar.refresh_interval = CALENDAR_REFRESH
-        calendar.get_latest_events()
+    def iterate_loop(self, force_update=False):
+        self.calendar.refresh_interval -= 1
+        if self.calendar.refresh_interval <= 0 or force_update:
+            self.calendar.refresh_interval = CALENDAR_REFRESH
+            self.calendar.get_latest_events()

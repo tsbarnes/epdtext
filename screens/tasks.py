@@ -4,6 +4,7 @@ import caldav
 import logging
 from datetime import date, datetime
 from settings import CALENDAR_URLS, CALENDAR_REFRESH
+from screens import AbstractScreen
 
 
 def sort_by_date(obj):
@@ -60,33 +61,31 @@ class Tasks:
         return self.tasks
 
 
-tasks = Tasks()
+class Screen(AbstractScreen):
+    tasks = Tasks()
 
+    def reload(self):
+        text = ''
 
-def print_to_display():
-    text = ''
+        for obj in self.tasks.tasks:
+            text += "* " + obj["summary"].replace('\n', ' ') + '\n'
+            if obj["due"]:
+                text += "-- Due: " + humanize.naturalday(obj["due"]) + "\n"
 
-    for obj in tasks.tasks:
-        text += "* " + obj["summary"].replace('\n', ' ') + '\n'
-        if obj["due"]:
-            text += "-- Due: " + humanize.naturalday(obj["due"]) + "\n"
+        if text != '':
+            epd.print_to_display(text, fontsize=16)
+        else:
+            epd.print_to_display('No tasks', fontsize=30)
 
-    if text != '':
-        epd.print_to_display(text, fontsize=16)
-    else:
-        epd.print_to_display('No tasks', fontsize=30)
+    def handle_btn_press(self, button_number=1):
+        if button_number == 1:
+            self.reload()
+        elif button_number == 2:
+            pass
 
+    def iterate_loop(self, force_update=False):
+        self.tasks.refresh_interval -= 1
 
-def handle_btn_press(button_number=1):
-    if button_number == 1:
-        print_to_display()
-    elif button_number == 2:
-        pass
-
-
-def iterate_loop(force_update=False):
-    tasks.refresh_interval -= 1
-
-    if tasks.refresh_interval <= 0 or force_update:
-        tasks.refresh_interval = CALENDAR_REFRESH
-        tasks.get_current_tasks()
+        if self.tasks.refresh_interval <= 0 or force_update:
+            self.tasks.refresh_interval = CALENDAR_REFRESH
+            self.tasks.get_current_tasks()
