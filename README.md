@@ -54,6 +54,9 @@ sudo pip3 install -r requirements.txt
 ```
 
 * Then (optionally) create local_settings.py and add your settings overrides there.
+  * You can copy `local_settings.py.example` to `local_settings.py` and edit it to configure `epdtext`
+  * See the wiki for more configuration help
+
 * Also optional is installing the systemd unit.
 
 ```shell
