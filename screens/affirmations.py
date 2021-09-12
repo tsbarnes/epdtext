@@ -15,6 +15,7 @@ class Screen(AbstractScreen):
         return affirmation
 
     def reload(self):
+        self.blank()
         text = self.get_random_affirmation()
         self.text(text, font_size=25)
 

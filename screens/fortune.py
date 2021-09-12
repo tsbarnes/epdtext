@@ -11,7 +11,8 @@ class Screen(AbstractScreen):
             string = child.stdout.read().decode().replace('\n', ' ')
         except OSError:
             logging.error("couldn't run application 'fortune'")
-            string = ''
+            string = "Couldn't run 'fortune'"
+        self.blank()
         self.text(string, font_size=14)
 
     def handle_btn_press(self, button_number=1):
