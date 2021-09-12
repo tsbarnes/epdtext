@@ -44,6 +44,7 @@ class Screen(AbstractScreen):
     def handle_btn_press(self, button_number=1):
         if button_number == 1:
             self.reload()
+            self.show()
         elif button_number == 2:
             logging.info("Rebooting...")
             os.system("sudo reboot now")
