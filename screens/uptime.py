@@ -27,17 +27,17 @@ class Screen(AbstractScreen):
             model = model_file.read()
             string += model + '\n'
 
-        string += '\tSystem:  ' + platform.system() + '\n'
+        string += ' System:  ' + platform.system() + '\n'
 
         dist = " ".join(x for x in platform.dist())
-        string += '\tOS:      ' + dist + '\n'
+        string += ' OS:      ' + dist + '\n'
 
-        string += '\tMachine: ' + platform.machine() + '\n'
-        string += '\tNode:    ' + platform.node() + '\n'
-        string += '\tArch:    ' + platform.architecture()[0] + '\n'
+        string += ' Machine: ' + platform.machine() + '\n'
+        string += ' Node:    ' + platform.node() + '\n'
+        string += ' Arch:    ' + platform.architecture()[0] + '\n'
 
         uptime = datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
-        string += '\tUptime:  ' + humanize.naturaldelta(uptime)
+        string += ' Uptime:  ' + humanize.naturaldelta(uptime)
 
         draw.text((5, 50), string, font=font, fill=0)
 
