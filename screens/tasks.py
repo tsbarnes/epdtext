@@ -78,7 +78,7 @@ class Screen(AbstractScreen):
         for obj in self.tasks.tasks:
             text += "* " + obj["summary"].replace('\n', ' ') + '\n'
             if obj["due"]:
-                text += "-- Due: " + humanize.naturalday(obj["due"]) + "\n"
+                text += "  - Due: " + humanize.naturalday(obj["due"]) + "\n"
 
         if text != '':
             self.text(text, font_size=16)

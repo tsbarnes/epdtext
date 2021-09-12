@@ -99,9 +99,9 @@ class Calendar:
 
         for obj in self.events:
             if obj["start"].date() > datetime.today().date():
-                text += '* ' + humanize.naturaldate(obj["start"]) + '\n'
+                text += '-- ' + humanize.naturaldate(obj["start"]) + ' --\n'
             else:
-                text += '* ' + humanize.naturaltime(obj["start"], when=datetime.now(self.timezone)) + '\n'
+                text += '-- ' + humanize.naturaltime(obj["start"], when=datetime.now(self.timezone)) + ' --\n'
 
             text += obj["summary"].replace('\n', ' ') + '\n'
 
