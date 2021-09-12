@@ -1,4 +1,6 @@
 import logging
+from string import ascii_letters
+
 from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd.epd2in7b import EPD
 from epd import get_epd, get_size
@@ -38,18 +40,21 @@ class AbstractScreen:
             self.reload_wait = 0
             self.reload()
 
-    def text(self, text, font=settings.FONT, font_size=20, position=(5, 5), color="black"):
+    def text(self, text, font_name=settings.FONT, font_size=20, position=(5, 5), color="black"):
         wrapped_text = ''
-        line_width = (get_size()[1] / (font_size / 2.5))
+        draw = ImageDraw.Draw(self.image)
+        font = ImageFont.truetype(font_name, font_size)
+
+        avg_char_width: int = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
+        max_char_count: int = int((self.image.size[0] * .95) / avg_char_width)
         logging.debug("Size: {0} x {1}, font size: {2}, line wrap: {3}".format(get_size()[0], get_size()[1],
-                                                                               font_size, line_width))
+                                                                               font_size, max_char_count))
+
         for text_line in text.split('\n'):
-            lines = textwrap.wrap(text_line, width=line_width)
+            lines = textwrap.wrap(text_line, width=max_char_count)
             for line in lines:
                 wrapped_text += line + '\n'
 
-        draw = ImageDraw.Draw(self.image)
-        font = ImageFont.truetype(font, font_size)
         draw.text(position, wrapped_text, font=font, fill=color)
 
 
