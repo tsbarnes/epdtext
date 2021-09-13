@@ -24,7 +24,7 @@ class AbstractScreen:
         """
         This method creates the image for the screen and sets up the class
         """
-        self.filename = '/tmp/' + self.__module__ + str(uuid.uuid4()) + '.png'
+        self.filename = "/tmp/{0}_{1}.png".format(self.__module__, str(uuid.uuid4()))
         self.blank()
         self.reload()
 
