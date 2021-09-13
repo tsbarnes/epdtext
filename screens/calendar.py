@@ -137,4 +137,5 @@ class Screen(AbstractScreen):
         if self.calendar.refresh_interval <= 0 or force_update:
             self.calendar.refresh_interval = CALENDAR_REFRESH
             self.calendar.get_latest_events()
-            self.reload()
+
+        super().iterate_loop()

@@ -1,13 +1,12 @@
 import logging
+import uuid
 from string import ascii_letters
-
 from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd.epd2in7b import EPD
 from epd import get_epd, get_size
 from utils import get_screens
 import textwrap
 import settings
-import uuid
 
 
 class AbstractScreen:
@@ -70,7 +69,10 @@ class AbstractScreen:
             self.reload_wait = 0
             self.reload()
 
-    def text(self, text, font_name=settings.FONT, font_size=20, position=(5, 5), color="black"):
+    def paste(self, image: Image, position: tuple = (0, 0)):
+        logo = Image.open(settings.LOGO)
+
+    def text(self, text: str, font_name: str = settings.FONT, font_size: int = 20, position: tuple = (5, 5), color: any = "black"):
         wrapped_text = ''
         draw = ImageDraw.Draw(self.image)
         font = ImageFont.truetype(font_name, font_size)
@@ -80,7 +82,7 @@ class AbstractScreen:
         logging.debug("Size: {0} x {1}, font size: {2}, line wrap: {3}".format(get_size()[0], get_size()[1],
                                                                                font_size, max_char_count))
 
-        for text_line in text.split('\n'):
+        for text_line in str(text).split('\n'):
             lines = textwrap.wrap(text_line, width=max_char_count)
             for line in lines:
                 wrapped_text += line + '\n'

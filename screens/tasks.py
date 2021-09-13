@@ -99,4 +99,5 @@ class Screen(AbstractScreen):
         if self.tasks.refresh_interval <= 0 or force_update:
             self.tasks.refresh_interval = CALENDAR_REFRESH
             self.tasks.get_current_tasks()
-            self.reload()
+
+        super().iterate_loop()

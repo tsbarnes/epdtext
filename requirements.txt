@@ -8,3 +8,5 @@ posix_ipc~=1.0.5
 pytz~=2021.1
 requests~=2.21.0
 distro~=1.6.0
+python_weather~=0.3.6
+asyncio~=3.4.3
