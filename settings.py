@@ -1,4 +1,5 @@
 from datetime import datetime
+import python_weather
 
 
 try:
@@ -78,3 +79,13 @@ except ImportError:
         "You are strong",
         "You have come a long way"
     ]
+
+try:
+    from local_settings import WEATHER_CITY
+except ImportError:
+    WEATHER_CITY = "Richmond, VA"
+
+try:
+    from local_settings import WEATHER_FORMAT
+except ImportError:
+    WEATHER_FORMAT = python_weather.IMPERIAL

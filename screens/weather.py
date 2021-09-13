@@ -9,8 +9,8 @@ class Weather:
     weather = None
 
     async def getweather(self):
-        client = python_weather.Client(format=python_weather.IMPERIAL)
-        self.weather = await client.find("Washington DC")
+        client = python_weather.Client(format=settings.WEATHER_FORMAT)
+        self.weather = await client.find(settings.WEATHER_CITY)
         await client.close()
 
 
@@ -32,7 +32,8 @@ class Screen(AbstractScreen):
         self.blank()
         logo = Image.open(settings.LOGO)
         self.image.paste(logo, (100, 5))
-        self.text(self.weather.weather.current.temperature)
+        text = str(self.weather.weather.current.temperature) + '°'
+        self.text(text, font_size=40, position=(10, 10))
 
     def iterate_loop(self):
         if self.reload_wait >= self.reload_interval:
