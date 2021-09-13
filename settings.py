@@ -22,6 +22,11 @@ except ImportError:
     LOGFILE = None
 
 try:
+    from local_settings import PAGE_BUTTONS
+except ImportError:
+    PAGE_BUTTONS = True
+
+try:
     from local_settings import LOGO
 except ImportError:
     LOGO = '/home/pi/epdtext/logo.png'

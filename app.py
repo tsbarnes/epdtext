@@ -4,6 +4,7 @@ import importlib
 import logging
 import posix_ipc
 
+import settings
 from settings import TIME, SCREENS, DEBUG, LOGFILE
 
 
@@ -35,12 +36,16 @@ class App:
         return self.screen_modules[self.current_screen_index]
 
     def handle_btn0_press(self):
-        if self.current_screen_index > 0:
-            self.current_screen_index -= 1
+        if settings.PAGE_BUTTONS:
+            if self.current_screen_index > 0:
+                self.current_screen_index -= 1
+            else:
+                self.current_screen_index = len(self.screens) - 1
+            logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+            self.current_screen().show()
         else:
-            self.current_screen_index = len(self.screens) - 1
-        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
-        self.current_screen().show()
+            logging.debug("Screen '{0}' handling button 0".format(self.current_screen().__module__))
+            self.current_screen().handle_btn_press(button_number=0)
 
     def handle_btn1_press(self):
         logging.debug("Screen '{0}' handling button 1".format(self.current_screen().__module__))
@@ -51,11 +56,15 @@ class App:
         self.current_screen().handle_btn_press(button_number=2)
 
     def handle_btn3_press(self):
-        self.current_screen_index += 1
-        if self.current_screen_index >= len(self.screens):
-            self.current_screen_index = 0
-        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
-        self.current_screen().show()
+        if settings.PAGE_BUTTONS:
+            self.current_screen_index += 1
+            if self.current_screen_index >= len(self.screens):
+                self.current_screen_index = 0
+            logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+            self.current_screen().show()
+        else:
+            logging.debug("Screen '{0}' handling button 3".format(self.current_screen().__module__))
+            self.current_screen().handle_btn_press(button_number=3)
 
     def add_screen(self, screen_name):
         screen_module = importlib.import_module("screens." + screen_name)
