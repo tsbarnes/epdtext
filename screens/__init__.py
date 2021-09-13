@@ -16,14 +16,15 @@ class AbstractScreen:
     """
     display: EPD = get_epd()
     image: Image = None
-    filename: str = str(uuid.uuid4()) + '.png'
+    filename: str = None
     reload_interval: int = 60
     reload_wait: int = 0
 
     def __init__(self):
         """
-        This method creates the image for the screen
+        This method creates the image for the screen and sets up the class
         """
+        self.filename = '/tmp/' + self.__module__ + str(uuid.uuid4()) + '.png'
         self.blank()
         self.reload()
 
@@ -43,8 +44,8 @@ class AbstractScreen:
 
         red_image = Image.new("1", get_size(), 255)
 
-        # * Uncomment to save a screenshot every time the display is updated *
-        self.image.save(self.filename)
+        if settings.SAVE_SCREENSHOTS:
+            self.image.save(self.filename)
 
         self.display.display(self.display.getbuffer(self.image), self.display.getbuffer(red_image))
 

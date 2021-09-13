@@ -12,6 +12,11 @@ except ImportError:
     DEBUG = False
 
 try:
+    from local_settings import SAVE_SCREENSHOTS
+except ImportError:
+    SAVE_SCREENSHOTS = False
+
+try:
     from local_settings import LOGFILE
 except ImportError:
     LOGFILE = None
