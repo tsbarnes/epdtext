@@ -1,3 +1,7 @@
+# Set to the appropriate driver for your Waveshare e-paper display
+DRIVER = "epd2in7b"
+
+# Set to True to enable debug messages
 DEBUG = False
 
 # ** Leave commented to log to console **
