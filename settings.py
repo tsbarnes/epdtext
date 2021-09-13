@@ -2,6 +2,11 @@ from datetime import datetime
 
 
 try:
+    from local_settings import DRIVER
+except ImportError:
+    DRIVER = "epd2in7b"
+
+try:
     from local_settings import DEBUG
 except ImportError:
     DEBUG = False
