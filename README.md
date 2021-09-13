@@ -57,6 +57,7 @@ sudo pip3 install -r requirements.txt
 
 * Then (optionally) create local_settings.py and add your settings overrides there.
   * You can copy `local_settings.py.example` to `local_settings.py` and edit it to configure `epdtext`
+  * **NOTE**: if you're using a different Waveshare screen, you can use the `DRIVER` setting to configure it
   * See the wiki for more configuration help
 
 * Also optional is installing the systemd unit.
@@ -68,10 +69,15 @@ sudo systemctl enable epdtext
 
 ## Usage
 
-To start up the app, run this command:
+To start up the app without `systemd`, run this command:
 ```shell
 cd ~/epdtext
 python3 app.py
+```
+
+To start the app with ´systemd´, run this:
+```shell
+sudo systemctl start epdtext
 ```
 
 To reload using the CLI client:
