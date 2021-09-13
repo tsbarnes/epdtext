@@ -4,6 +4,7 @@ import datetime
 import platform
 import humanize
 import logging
+import distro
 from PIL import Image, ImageDraw, ImageFont
 from settings import FONT, LOGO
 from screens import AbstractScreen
@@ -29,7 +30,7 @@ class Screen(AbstractScreen):
 
         string += ' System:  ' + platform.system() + '\n'
 
-        dist = " ".join(x for x in platform.dist())
+        dist = "{0} {1}".format(distro.name(), distro.version())
         string += ' OS:      ' + dist + '\n'
 
         string += ' Machine: ' + platform.machine() + '\n'
