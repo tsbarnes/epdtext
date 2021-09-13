@@ -6,6 +6,7 @@ import posix_ipc
 
 import settings
 from settings import TIME, SCREENS, DEBUG, LOGFILE
+from libs.calendar import Calendar, get_calendar
 
 
 def handle_btn0_press():
@@ -28,6 +29,7 @@ class App:
     current_screen_index: int = 0
     screen_modules: list = []
     screens: list = []
+    calendar: Calendar = get_calendar()
 
     def current_screen(self):
         return self.screens[self.current_screen_index]
@@ -118,6 +120,8 @@ class App:
         for module in SCREENS:
             self.add_screen(module)
 
+        self.calendar.get_latest_events()
+
     def loop(self):
         loop = 0
         while True:
@@ -170,6 +174,11 @@ class App:
 
             for screen in self.screens:
                 screen.iterate_loop()
+
+            self.calendar.refresh_interval -= 1
+            if self.calendar.refresh_interval <= 0:
+                self.calendar.refresh_interval = settings.CALENDAR_REFRESH
+                self.calendar.get_latest_events()
 
             time.sleep(1)
 
