@@ -7,31 +7,60 @@ from epd import get_epd, get_size
 from utils import get_screens
 import textwrap
 import settings
+import uuid
 
 
 class AbstractScreen:
-    """Abstract screen class, screens should inherit from this"""
+    """
+    Abstract screen class, screens should inherit from this
+    """
     display: EPD = get_epd()
     image: Image = None
+    filename: str = str(uuid.uuid4()) + '.png'
     reload_interval: int = 60
     reload_wait: int = 0
 
     def __init__(self):
-        self.image = Image.new("1", get_size(), 255)
+        """
+        This method creates the image for the screen
+        """
+        self.blank()
         self.reload()
 
     def blank(self):
+        """
+        This method clears the image by recreating it
+        """
         self.image = Image.new("1", get_size(), 255)
 
     def show(self):
-        if self.image:
-            red_image = Image.new("1", get_size(), 255)
-            self.display.display(self.display.getbuffer(self.image), self.display.getbuffer(red_image))
+        """
+        This method copies the image to the display
+        """
+        if not self.image:
+            logging.error("show() called with no image defined!")
+            return
+
+        red_image = Image.new("1", get_size(), 255)
+
+        # * Uncomment to save a screenshot every time the display is updated *
+        self.image.save(self.filename)
+
+        self.display.display(self.display.getbuffer(self.image), self.display.getbuffer(red_image))
 
     def reload(self):
+        """
+        This method redraws the contents of the image
+        """
         raise NotImplementedError()
 
-    def handle_btn_press(self):
+    def handle_btn_press(self, button_number=1):
+        """
+        This method handles the button presses.
+        Buttons 0 and 3 are generally used to switch screens, while buttons 1 and 2 are passed
+        to this method. If there's only one screen, or if you set the "NO_WRAP_TEXT" setting to True
+        :param button_number: default is 1
+        """
         raise NotImplementedError()
 
     def iterate_loop(self):
