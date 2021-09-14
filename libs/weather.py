@@ -17,3 +17,7 @@ weather: Weather = Weather()
 
 def get_weather():
     return weather
+
+
+def update_weather():
+    weather.update()

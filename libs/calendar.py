@@ -11,6 +11,11 @@ from settings import CALENDAR_URLS, TIMEZONE
 
 
 def sort_by_date(obj: dict):
+    """
+
+    :param obj:
+    :return:
+    """
     if isinstance(obj["start"], date) and not isinstance(obj["start"], datetime):
         return datetime.combine(obj["start"], datetime.min.time())
     return obj["start"]
@@ -143,3 +148,7 @@ calendar = Calendar()
 
 def get_calendar():
     return calendar
+
+
+def update_calendar():
+    calendar.get_latest_events()

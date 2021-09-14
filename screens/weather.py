@@ -3,18 +3,19 @@ from libs.weather import Weather, get_weather
 from PIL import Image
 import settings
 import logging
-from app import get_app
+import asyncio
 
 
 class Screen(AbstractScreen):
     weather: Weather = get_weather()
+    async_loop = asyncio.get_event_loop()
 
     def handle_btn_press(self, button_number: int = 1):
         if button_number == 1:
             self.reload()
             self.show()
         elif button_number == 2:
-            get_app().update_weather()
+            self.async_loop.run_until_complete(self.weather.update())
             self.reload()
             self.show()
 

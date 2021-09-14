@@ -209,10 +209,4 @@ class App:
 
 
 app = App()
-
-
-def get_app():
-    return app
-
-
 app.loop()

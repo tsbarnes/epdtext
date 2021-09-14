@@ -1,3 +1,5 @@
+import python_weather
+
 # Set to the appropriate driver for your Waveshare e-paper display
 DRIVER = "epd2in7b"
 
@@ -42,3 +44,10 @@ SCREENS = [
 AFFIRMATIONS = [
     '<list your affirmations here>',
 ]
+
+# City to display weather for
+WEATHER_CITY = "Ladysmith, VA"
+# Format for weather output
+WEATHER_FORMAT = python_weather.IMPERIAL
+# Refresh interval in seconds for o
+WEATHER_REFRESH = 900
