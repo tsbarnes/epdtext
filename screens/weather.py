@@ -3,6 +3,7 @@ from libs.weather import Weather, get_weather
 from PIL import Image
 import settings
 import logging
+from app import get_app
 
 
 class Screen(AbstractScreen):
@@ -10,9 +11,12 @@ class Screen(AbstractScreen):
 
     def handle_btn_press(self, button_number: int = 1):
         if button_number == 1:
-            pass
+            self.reload()
+            self.show()
         elif button_number == 2:
-            pass
+            get_app().update_weather()
+            self.reload()
+            self.show()
 
     def reload(self):
         self.blank()

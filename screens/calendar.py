@@ -1,5 +1,6 @@
 from screens import AbstractScreen
 from libs.calendar import Calendar, get_calendar
+from app import get_app
 
 
 class Screen(AbstractScreen):
@@ -20,4 +21,6 @@ class Screen(AbstractScreen):
             self.reload()
             self.show()
         elif button_number == 2:
+            get_app().update_calendar()
+            self.reload()
             self.show()
