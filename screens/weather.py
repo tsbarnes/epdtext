@@ -1,27 +1,12 @@
 from screens import AbstractScreen
-import python_weather
-import asyncio
+from libs.weather import Weather, get_weather
 from PIL import Image
 import settings
 import logging
 
 
-class Weather:
-    weather = None
-
-    async def get_weather(self):
-        client = python_weather.Client(format=settings.WEATHER_FORMAT)
-        self.weather = await client.find(settings.WEATHER_CITY)
-        await client.close()
-
-
 class Screen(AbstractScreen):
-    weather = Weather()
-    loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-
-    def __init__(self):
-        self.loop.run_until_complete(self.weather.get_weather())
-        super().__init__()
+    weather: Weather = get_weather()
 
     def handle_btn_press(self, button_number: int = 1):
         if button_number == 1:
@@ -46,9 +31,3 @@ class Screen(AbstractScreen):
         self.text(text, font_size=20, position=(centered_position, 100))
 
         logging.debug("Sky Code: " + str(self.weather.weather.current.sky_code))
-
-    def iterate_loop(self):
-        if self.reload_wait >= self.reload_interval:
-            self.loop.run_until_complete(self.weather.get_weather())
-
-        super().iterate_loop()

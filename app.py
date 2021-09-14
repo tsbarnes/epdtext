@@ -3,10 +3,12 @@ import epd
 import importlib
 import logging
 import posix_ipc
+import asyncio
 
 import settings
 from settings import TIME, SCREENS, DEBUG, LOGFILE
 from libs.calendar import Calendar, get_calendar
+from libs.weather import Weather, get_weather
 
 
 def handle_btn0_press():
@@ -30,6 +32,8 @@ class App:
     screen_modules: list = []
     screens: list = []
     calendar: Calendar = get_calendar()
+    weather: Weather = get_weather()
+    async_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
     def current_screen(self):
         return self.screens[self.current_screen_index]
@@ -109,6 +113,9 @@ class App:
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
         self.mq.block = False
 
+        self.calendar.get_latest_events()
+        self.async_loop.run_until_complete(self.weather.update())
+
         epd.clear_screen()
 
         btns = epd.get_buttons()
@@ -119,8 +126,6 @@ class App:
 
         for module in SCREENS:
             self.add_screen(module)
-
-        self.calendar.get_latest_events()
 
     def loop(self):
         loop = 0
@@ -179,6 +184,11 @@ class App:
             if self.calendar.refresh_interval <= 0:
                 self.calendar.refresh_interval = settings.CALENDAR_REFRESH
                 self.calendar.get_latest_events()
+
+            self.weather.refresh_interval -= 1
+            if self.weather.refresh_interval < 0:
+                self.weather.refresh_interval = settings.WEATHER_REFRESH
+                self.async_loop.run_until_complete(self.weather.update())
 
             time.sleep(1)
 

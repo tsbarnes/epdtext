@@ -89,3 +89,8 @@ try:
     from local_settings import WEATHER_FORMAT
 except ImportError:
     WEATHER_FORMAT = python_weather.IMPERIAL
+
+try:
+    from local_settings import WEATHER_REFRESH
+except ImportError:
+    WEATHER_REFRESH = 900

@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta, tzinfo
 from icalevents.icalevents import events
 from requests.exceptions import SSLError
 
+import settings
 from settings import CALENDAR_URLS, TIMEZONE
 
 
@@ -17,7 +18,7 @@ def sort_by_date(obj: dict):
 
 class Calendar:
     timezone: tzinfo = None
-    refresh_interval: int = 0
+    refresh_interval: int = settings.CALENDAR_REFRESH
     events: list = []
     tasks: list = []
 
