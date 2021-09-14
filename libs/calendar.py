@@ -96,6 +96,7 @@ class Calendar:
     def get_latest_events(self):
         logging.debug("Started reading calendars...")
         self.events = []
+        self.tasks = []
 
         for connection in CALENDAR_URLS:
             if str(connection["type"]).lower() == 'webcal':
