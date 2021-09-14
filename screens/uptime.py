@@ -48,4 +48,7 @@ class Screen(AbstractScreen):
             self.show()
         elif button_number == 2:
             logging.info("Rebooting...")
+            self.blank()
+            self.text("Rebooting...", font_size=30)
+            self.show()
             os.system("sudo reboot now")
