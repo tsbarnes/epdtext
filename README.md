@@ -16,6 +16,7 @@ The included screens are:
 * `fortune` - shows a random fortune from the fortune database (requires the `fortune-mod` package)
   * Install `fortune-mod` with this command: `sudo apt install fortune-mod`
 * `calendar` and `tasks` - shows a list of upcoming events or todos from your calendars (see `local_settings.py.example`)
+* `weather` - shows the current weather
 
 ## Making your own
 
