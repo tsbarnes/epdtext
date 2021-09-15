@@ -21,6 +21,8 @@ def sort_by_date(obj: dict):
             return datetime.combine(obj["start"], datetime.min.time())
         return obj["start"]
     elif obj.get("due"):
+        if not obj["due"]:
+            return datetime.fromisocalendar(4000, 1, 1)
         if isinstance(obj["due"], date) and not isinstance(obj["due"], datetime):
             return datetime.combine(obj["due"], datetime.min.time())
         return obj["due"]

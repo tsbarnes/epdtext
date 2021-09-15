@@ -70,7 +70,11 @@ class AbstractScreen:
             self.reload()
 
     def paste(self, image: Image, position: tuple = (0, 0)):
-        logo = Image.open(settings.LOGO)
+        self.image.paste(image, position)
+
+    def line(self, position: tuple, fill: any, width: int):
+        draw = ImageDraw.Draw(self.image)
+        draw.line(position, fill, width)
 
     def text(self, text: str, font_name: str = settings.FONT, font_size: int = 20, position: tuple = (5, 5), color: any = "black"):
         wrapped_text = ''
