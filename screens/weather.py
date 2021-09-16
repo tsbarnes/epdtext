@@ -3,21 +3,25 @@ from libs.weather import Weather, get_weather
 from PIL import Image
 import settings
 import logging
-import asyncio
 
 
 class Screen(AbstractScreen):
     weather: Weather = get_weather()
-    async_loop = asyncio.get_event_loop()
 
     def handle_btn_press(self, button_number: int = 1):
-        if button_number == 1:
+        if button_number == 0:
+            pass
+        elif button_number == 1:
             self.reload()
             self.show()
         elif button_number == 2:
-            self.async_loop.run_until_complete(self.weather.update())
+            self.weather.update()
             self.reload()
             self.show()
+        elif button_number == 3:
+            pass
+        else:
+            logging.error("Unknown button pressed: KEY{}".format(button_number + 1))
 
     def reload(self):
         self.blank()
