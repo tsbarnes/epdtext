@@ -25,8 +25,8 @@ class Screen(AbstractScreen):
 
     def reload(self):
         self.blank()
-        logo = Image.open(settings.LOGO)  # TODO: replace with weather images
-        self.image.paste(logo, (20, 30))
+        logo = self.weather.get_icon()
+        self.image.paste(logo, (30, 40))
 
         centered_position: int = round(self.image.size[0] / 2 - 60)
 

@@ -14,8 +14,8 @@ class Screen(AbstractScreen):
     def reload(self):
         self.blank()
 
-        logo = Image.open(settings.LOGO)  # TODO: replace with weather images
-        self.image.paste(logo, (10, 10))
+        logo = self.weather.get_icon()
+        self.image.paste(logo, (20, 20))
 
         text = str(self.weather.weather.current.temperature) + '°'
         self.text(text, font_size=48, position=(60, 5))
