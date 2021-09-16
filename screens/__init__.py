@@ -2,8 +2,7 @@ import logging
 import uuid
 from string import ascii_letters
 from PIL import Image, ImageDraw, ImageFont
-from waveshare_epd.epd2in7b import EPD
-from epd import get_epd, get_size
+from epd import EPD, get_epd, get_size
 from utils import get_screens
 import textwrap
 import settings
@@ -41,12 +40,10 @@ class AbstractScreen:
             logging.error("show() called with no image defined!")
             return
 
-        red_image = Image.new("1", get_size(), 255)
-
         if settings.SAVE_SCREENSHOTS:
             self.image.save(self.filename)
 
-        self.display.display(self.display.getbuffer(self.image), self.display.getbuffer(red_image))
+        self.display.show(self.image)
 
     def reload(self):
         """

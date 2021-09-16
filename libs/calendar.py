@@ -10,6 +10,9 @@ import settings
 from settings import CALENDAR_URLS, TIMEZONE
 
 
+timezone = pytz.timezone(TIMEZONE)
+
+
 def sort_by_date(obj: dict):
     """
     Sort the events or tasks by date
@@ -18,13 +21,17 @@ def sort_by_date(obj: dict):
     """
     if obj.get("start"):
         if isinstance(obj["start"], date) and not isinstance(obj["start"], datetime):
-            return datetime.combine(obj["start"], datetime.min.time())
+            return datetime.combine(obj["start"], datetime.min.time(), timezone)
+        if not obj["start"].tzinfo:
+            return timezone.localize(obj["start"])
         return obj["start"]
     elif obj.get("due"):
         if not obj["due"]:
             return datetime.fromisocalendar(4000, 1, 1)
         if isinstance(obj["due"], date) and not isinstance(obj["due"], datetime):
-            return datetime.combine(obj["due"], datetime.min.time())
+            return datetime.combine(obj["due"], datetime.min.time(), timezone)
+        if not obj["due"].tzinfo:
+            return timezone.localize(obj["due"])
         return obj["due"]
     else:
         raise ValueError("Object has no start or due date")
@@ -43,10 +50,7 @@ class Calendar:
         """
         Initialize the timezone
         """
-        if isinstance(TIMEZONE, tzinfo):
-            self.timezone = TIMEZONE
-        else:
-            self.timezone = pytz.timezone(TIMEZONE)
+        self.timezone = pytz.timezone(TIMEZONE)
 
     def standardize_date(self, arg, ignore_timezone=False):
         """
