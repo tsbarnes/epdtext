@@ -80,7 +80,7 @@ class AbstractScreen:
         """
         self.image.paste(image, position)
 
-    def line(self, position: tuple, fill: any, width: int):
+    def line(self, position: tuple, fill: any = "black", width: int = 5):
         """
         Draw a line onto the buffer
         :param position: tuple position to draw line
@@ -91,31 +91,47 @@ class AbstractScreen:
         draw = ImageDraw.Draw(self.image)
         draw.line(position, fill, width)
 
-    def text(self, text: str, font_name: str = settings.FONT, font_size: int = 20, position: tuple = (5, 5), color: any = "black"):
+    def text(self, text, position=(5, 5), font_name=None, font_size=20, color="black", wrap=True, max_lines=None):
         """
-        Draws text onto the buffer
-        :param text: str text to display
-        :param font_name: str font filename
-        :param font_size: int font size
-        :param position: tuple position to draw text
-        :param color: color to draw text
-        :return: None
+        Draws text onto the app's image
+        :param text: string to draw
+        :param position: tuple representing where to draw the text
+        :param font_name: filename of font to use, None for default
+        :param font_size: integer font size to draw
+        :param color: color of the text
+        :param wrap: boolean whether to wrap the text
+        :param max_lines: number of lines to draw maximum
+        :return: integer number of lines drawn
         """
-        wrapped_text = ''
-        draw = ImageDraw.Draw(self.image)
-        font = ImageFont.truetype(font_name, font_size)
+        if not font_name:
+            font_name = settings.FONT
+        if not self.image:
+            raise ValueError("self.image is None")
 
-        avg_char_width: int = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
-        max_char_count: int = int((self.image.size[0] * .95) / avg_char_width)
-        logging.debug("Size: {0} x {1}, font size: {2}, line wrap: {3}".format(get_size()[0], get_size()[1],
-                                                                               font_size, max_char_count))
+        font: ImageFont = ImageFont.truetype(font_name, font_size)
+        draw: ImageDraw = ImageDraw.Draw(self.image)
+        number_of_lines: int = 0
+        scaled_wrapped_text: str = ''
 
-        for text_line in str(text).split('\n'):
-            lines = textwrap.wrap(text_line, width=max_char_count)
-            for line in lines:
-                wrapped_text += line + '\n'
+        if wrap:
+            avg_char_width: int = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
+            max_char_count: int = int((self.image.size[0] * .95) / avg_char_width)
 
-        draw.text(position, wrapped_text, font=font, fill=color)
+            for line in text.split('\n'):
+                new_wrapped_text = textwrap.fill(text=line, width=max_char_count) + '\n'
+                for wrapped_line in new_wrapped_text.split('\n'):
+                    if not max_lines or number_of_lines < max_lines:
+                        number_of_lines += 1
+                        scaled_wrapped_text += wrapped_line + '\n'
+        else:
+            for line in text.split('\n'):
+                if not max_lines or number_of_lines < max_lines:
+                    number_of_lines += 1
+                    scaled_wrapped_text += line + '\n'
+
+        draw.text(position, scaled_wrapped_text, font=font, fill=color)
+
+        return number_of_lines
 
     def centered_text(self, text: str, y: int, font_size: int = 20):
         """
@@ -127,8 +143,14 @@ class AbstractScreen:
         """
         font = ImageFont.truetype(settings.FONT, font_size)
         avg_char_width: int = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
-        centered_position = (self.image.size[0] / 2) - (avg_char_width * len(text) / 2)
-        self.text(text, font_size=font_size, position=(centered_position, y))
+        number_of_lines = 0
+        for line in text.split('\n'):
+            centered_position = (self.image.size[0] / 2) - (avg_char_width * len(line) / 2)
+            position = (centered_position, y + (number_of_lines * font_size))
+            self.text(text, font_size=font_size, position=position, wrap=False)
+            number_of_lines += 1
+
+        return number_of_lines
 
 
 # When run as main, this module gets the available screens and exits
