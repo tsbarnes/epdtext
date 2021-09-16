@@ -33,10 +33,10 @@ class EPD(threading.Thread):
     def process_epd(self):
         while True:
             if self.dirty and self.image:
+                self.dirty = False
                 logging.debug("Writing image to display")
                 red_image = Image.new("1", get_size(), 255)
                 self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
-                self.dirty = False
 
     def show(self, image: Image):
         logging.debug("Image sent to EPD")
