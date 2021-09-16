@@ -7,6 +7,7 @@ import asyncio
 
 import settings
 from settings import TIME, SCREENS, DEBUG, LOGFILE
+from epd import EPD, get_epd, get_size, get_buttons
 from libs.calendar import Calendar, get_calendar
 from libs.weather import Weather, get_weather
 
@@ -33,6 +34,7 @@ class App:
     screens: list = []
     calendar: Calendar = get_calendar()
     weather: Weather = get_weather()
+    epd: EPD = get_epd()
     async_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
     loop_time: int = 0
 
@@ -111,13 +113,13 @@ class App:
 
         logging.info("Starting epdtext...")
 
+        self.epd.start()
+
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
         self.mq.block = False
 
         self.calendar.get_latest_events()
         self.async_loop.run_until_complete(self.weather.update())
-
-        epd.clear_screen()
 
         btns = epd.get_buttons()
         btns[0].when_pressed = handle_btn0_press

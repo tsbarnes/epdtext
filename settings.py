@@ -55,7 +55,7 @@ except ImportError:
 try:
     from local_settings import TIMEZONE
 except ImportError:
-    TIMEZONE = datetime.now().astimezone().tzinfo
+    TIMEZONE = datetime.now().astimezone().tzname
 
 try:
     from local_settings import SCREENS

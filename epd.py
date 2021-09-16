@@ -1,5 +1,7 @@
 import importlib
 import logging
+import threading
+from PIL import Image
 
 from settings import DRIVER
 from gpiozero import Button
@@ -11,10 +13,38 @@ except ImportError:
     logging.error("Driver '{0}' couldn't be loaded".format(DRIVER))
     raise ImportError("Couldn't load driver")
 
-epd = driver.EPD()  # get the display
-epd.init()  # initialize the display
 
-btns = [Button(5), Button(6), Button(13), Button(19)]
+class EPD(threading.Thread):
+    epd: driver.EPD = driver.EPD()
+    dirty: bool = True
+    image: Image = Image.new("1", (driver.EPD_HEIGHT, driver.EPD_WIDTH), 255)
+
+    def __init__(self):
+        self.epd.init()  # initialize the display
+        self.buttons = [Button(5), Button(6), Button(13), Button(19)]
+        super().__init__()
+
+    def run(self):
+        thread_process = threading.Thread(target=self.process_epd)
+        # run thread as a daemon so it gets cleaned up on exit.
+        thread_process.daemon = True
+        thread_process.start()
+
+    def process_epd(self):
+        while True:
+            if self.dirty and self.image:
+                logging.debug("Writing image to display")
+                red_image = Image.new("1", get_size(), 255)
+                self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
+                self.dirty = False
+
+    def show(self, image: Image):
+        logging.debug("Image sent to EPD")
+        self.image = image
+        self.dirty = True
+
+
+epd = EPD()
 
 
 def get_epd():
@@ -26,9 +56,4 @@ def get_size():
 
 
 def get_buttons():
-    return btns
-
-
-def clear_screen():
-    display = get_epd()
-    display.Clear(0xFF)
+    return epd.buttons
