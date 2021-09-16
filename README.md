@@ -93,3 +93,7 @@ To switch to the uptime screen with the CLI:
 cd ~/epdtext
 ./cli.py screen uptime
 ```
+
+## epdtext-web
+
+There's now a web frontend to epdtext! Check out [epdtext-web](https://github.com/tsbarnes/epdtext-web)
