@@ -1,5 +1,5 @@
 from screens import AbstractScreen
-from libs.weather import Weather, get_weather
+from libs.weather import Weather, get_weather, update_weather
 from PIL import Image
 import settings
 import logging
@@ -15,7 +15,7 @@ class Screen(AbstractScreen):
             self.reload()
             self.show()
         elif button_number == 2:
-            self.weather.update()
+            update_weather()
             self.reload()
             self.show()
         elif button_number == 3:

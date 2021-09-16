@@ -2,6 +2,7 @@ from PIL import Image
 
 import python_weather
 import settings
+import asyncio
 
 
 class Weather:

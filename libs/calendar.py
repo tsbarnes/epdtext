@@ -41,7 +41,7 @@ class Calendar:
     """
     This class handles the calendar events and tasks
     """
-    timezone: tzinfo = None
+    timezone = None
     refresh_interval: int = settings.CALENDAR_REFRESH
     events: list = []
     tasks: list = []
@@ -52,15 +52,15 @@ class Calendar:
         """
         self.timezone = pytz.timezone(TIMEZONE)
 
-    def standardize_date(self, arg, ignore_timezone=False):
+    def standardize_date(self, arg):
         """
         Adds time to dates to make datetimes as needed
         :param arg: an object containing a summary and date
-        :param ignore_timezone: if True, ignore timezones
         :return: a new datetime object, or the same object if no changes were needed
         """
-        if isinstance(arg, datetime) and (not arg.tzinfo or ignore_timezone):
-            return datetime.combine(arg.date(), arg.time(), self.timezone)
+        if isinstance(arg, datetime) and not arg.tzinfo:
+            logging.debug("Object has no timezone")
+            return self.timezone.localize(arg)
         elif isinstance(arg, date) and not isinstance(arg, datetime):
             logging.debug("Object has no time")
             return datetime.combine(arg, datetime.min.time(), self.timezone)
@@ -106,10 +106,10 @@ class Calendar:
 
         calendars = principal.calendars()
 
-        for calendar in calendars:
-            calendar_events = calendar.date_search(start=datetime.today(),
-                                                   end=datetime.today() + timedelta(days=7),
-                                                   expand=True)
+        for cal in calendars:
+            calendar_events = cal.date_search(start=datetime.today(),
+                                              end=datetime.today() + timedelta(days=7),
+                                              expand=True)
             for event in calendar_events:
                 start = self.standardize_date(event.vobject_instance.vevent.dtstart.value)
                 summary = event.vobject_instance.vevent.summary.value
@@ -119,7 +119,7 @@ class Calendar:
                     'summary': summary
                 })
 
-            todos = calendar.todos()
+            todos = cal.todos()
 
             for todo in todos:
                 try:
@@ -137,7 +137,7 @@ class Calendar:
 
     def get_latest_events(self):
         """
-        Force updare of evetnts]
+        Force update of events
         :return:
         """
         logging.debug("Started reading calendars...")
@@ -189,6 +189,10 @@ class Calendar:
                 text += "  - Due: " + humanize.naturalday(obj["due"]) + "\n"
 
         return text
+
+    def humanized_datetime(self, dt: datetime):
+        return '-- ' + humanize.naturaltime(dt, when=datetime.now(self.timezone)) + ' --\n'
+
 
 
 calendar = Calendar()
