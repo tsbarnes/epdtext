@@ -1,7 +1,5 @@
 from screens import AbstractScreen
 from libs.weather import Weather, get_weather, update_weather
-from PIL import Image
-import settings
 import logging
 
 
@@ -28,15 +26,13 @@ class Screen(AbstractScreen):
         logo = self.weather.get_icon()
         self.image.paste(logo, (30, 40))
 
-        centered_position: int = round(self.image.size[0] / 2 - 60)
-
         text = str(self.weather.weather.current.temperature) + '°'
-        self.text(text, font_size=60, position=(centered_position, 10))
+        self.centered_text(text, 10, 60)
 
         text = str(self.weather.weather.current.sky_text)
-        self.text(text, font_size=30, position=(centered_position, 70))
+        self.centered_text(text, 70, 30)
 
         text = str(self.weather.weather.location_name)
-        self.text(text, font_size=20, position=(centered_position, 100))
+        self.centered_text(text, 100, 20)
 
         logging.debug("Sky Code: " + str(self.weather.weather.current.sky_code))

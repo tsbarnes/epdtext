@@ -2,7 +2,7 @@ import humanize
 import caldav
 import logging
 import pytz
-from datetime import date, datetime, timedelta, tzinfo
+from datetime import date, datetime, timedelta
 from icalevents.icalevents import events
 from requests.exceptions import SSLError
 
@@ -191,6 +191,11 @@ class Calendar:
         return text
 
     def humanized_datetime(self, dt: datetime):
+        """
+        Get a human-readable interpretation of a datetime
+        :param dt: datetime to humanize
+        :return: str
+        """
         return '-- ' + humanize.naturaltime(dt, when=datetime.now(self.timezone)) + ' --\n'
 
 
