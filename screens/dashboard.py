@@ -23,12 +23,21 @@ class Screen(AbstractScreen):
         text = str(self.weather.weather.current.sky_text)
         self.text(text, font_size=14, position=(150, 20))
 
+        self.line((0, 60, self.image.size[0], 60), width=1)
+
         start = self.calendar.standardize_date(self.calendar.events[0]["start"])
         text = self.calendar.humanized_datetime(start)
-        self.text(text, font_size=16, position=(5, 60))
+        self.text(text, font_size=16, position=(5, 65))
 
-        text = str(self.calendar.events[0]['summary'])
-        self.text(text, font_size=14, position=(5, 80))
+        if len(self.calendar.events) > 0:
+            text = str(self.calendar.events[0]['summary'])
+            self.text(text, font_size=14, position=(5, 85), max_lines=2)
+
+        self.line((0, 120, self.image.size[0], 120), width=1)
+
+        if len(self.calendar.tasks) > 0:
+            text = str(self.calendar.tasks[0]['summary'])
+            self.text(text, font_size=14, position=(5, 125), max_lines=2)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 0:
