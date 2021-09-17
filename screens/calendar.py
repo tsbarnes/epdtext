@@ -15,7 +15,7 @@ class Screen(AbstractScreen):
         if text != '':
             self.text(text, font_size=16)
         else:
-            self.text('No current\nevents', font_size=25)
+            self.text('No current events', font_size=25)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 0:

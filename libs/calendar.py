@@ -167,11 +167,7 @@ class Calendar:
         text = ''
 
         for obj in self.events:
-            if obj["start"].date() > datetime.today().date():
-                text += '-- ' + humanize.naturaldate(obj["start"]) + ' --\n'
-            else:
-                text += '-- ' + humanize.naturaltime(obj["start"], when=datetime.now(self.timezone)) + ' --\n'
-
+            text += self.humanized_datetime(obj["start"]) + '\n'
             text += obj["summary"].replace('\n', ' ') + '\n'
 
         return text
@@ -196,8 +192,11 @@ class Calendar:
         :param dt: datetime to humanize
         :return: str
         """
-        return '-- ' + humanize.naturaltime(dt, when=datetime.now(self.timezone)) + ' --\n'
-
+        try:
+            obj = self.timezone.localize(dt)
+        except ValueError:
+            obj = dt
+        return '-- ' + humanize.naturaltime(obj, when=datetime.now(self.timezone)) + ' --'
 
 
 calendar = Calendar()
