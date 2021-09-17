@@ -23,11 +23,11 @@ class Screen(AbstractScreen):
 
         self.line((0, 60, self.image.size[0], 60), width=1)
 
-        start = self.calendar.standardize_date(self.calendar.events[0]["start"])
-        text = self.calendar.humanized_datetime(start)
-        self.text(text, font_size=16, position=(5, 65))
-
         if len(self.calendar.events) > 0:
+            start = self.calendar.standardize_date(self.calendar.events[0]["start"])
+            text = self.calendar.humanized_datetime(start)
+            self.text(text, font_size=16, position=(5, 65))
+
             text = str(self.calendar.events[0]['summary'])
             self.text(text, font_size=14, position=(5, 85), max_lines=2)
 
@@ -36,6 +36,10 @@ class Screen(AbstractScreen):
         if len(self.calendar.tasks) > 0:
             text = str(self.calendar.tasks[0]['summary'])
             self.text(text, font_size=14, position=(5, 125), max_lines=2)
+
+            if self.calendar.tasks[0].get('due'):
+                text = self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
+                self.text(text, font_size=14, position=(5, 165), max_lines=1)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 0:

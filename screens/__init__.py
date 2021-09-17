@@ -133,7 +133,6 @@ class AbstractScreen:
 
         draw.text(position, scaled_wrapped_text, font=font, fill=color)
 
-        logging.debug("Number of lines drawn: {}".format(number_of_lines))
         return number_of_lines
 
     def centered_text(self, text: str, y: int, font_size: int = 20):
