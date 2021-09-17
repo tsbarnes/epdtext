@@ -39,7 +39,7 @@ class Screen(AbstractScreen):
 
             if self.calendar.tasks[0].get('due'):
                 text = self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
-                self.text(text, font_size=14, position=(5, 165), max_lines=1)
+                self.text(text, font_size=14, position=(5, 160), max_lines=1)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 0:
