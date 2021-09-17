@@ -1,14 +1,14 @@
-import humanize
-import caldav
 import logging
-import pytz
 from datetime import date, datetime, timedelta
+
+import caldav
+import humanize
+import pytz
 from icalevents.icalevents import events
 from requests.exceptions import SSLError
 
 import settings
 from settings import CALENDAR_URLS, TIMEZONE
-
 
 timezone = pytz.timezone(TIMEZONE)
 

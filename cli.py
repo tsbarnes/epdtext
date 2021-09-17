@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import sys
 import logging
-import posix_ipc
+import sys
 
+import posix_ipc
 
 if len(sys.argv) < 2:
     logging.error("No command specified")

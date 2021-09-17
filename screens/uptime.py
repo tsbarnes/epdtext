@@ -1,13 +1,15 @@
-import os
-import time
 import datetime
-import platform
-import humanize
 import logging
+import os
+import platform
+import time
+
 import distro
+import humanize
 from PIL import Image, ImageDraw, ImageFont
-from settings import FONT, LOGO
+
 from screens import AbstractScreen
+from settings import FONT, LOGO
 
 
 class Screen(AbstractScreen):

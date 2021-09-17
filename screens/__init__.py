@@ -1,11 +1,13 @@
 import logging
+import textwrap
 import uuid
 from string import ascii_letters
+
 from PIL import Image, ImageDraw, ImageFont
+
+import settings
 from epd import EPD, get_epd, get_size
 from utils import get_screens
-import textwrap
-import settings
 
 
 class AbstractScreen:

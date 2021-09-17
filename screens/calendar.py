@@ -1,7 +1,7 @@
 import logging
 
-from screens import AbstractScreen
 from libs.calendar import Calendar, get_calendar, update_calendar
+from screens import AbstractScreen
 
 
 class Screen(AbstractScreen):

@@ -1,6 +1,6 @@
 from datetime import datetime
-import python_weather
 
+import python_weather
 
 try:
     from local_settings import DRIVER

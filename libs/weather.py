@@ -1,7 +1,8 @@
 import logging
-from PIL import Image
 
 import python_weather
+from PIL import Image
+
 import settings
 
 

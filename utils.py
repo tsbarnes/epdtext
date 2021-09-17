@@ -1,7 +1,7 @@
-import os
 import inspect
-import pathlib
 import logging
+import os
+import pathlib
 from collections import Generator
 
 

@@ -1,15 +1,16 @@
-import time
-import epd
+import asyncio
 import importlib
 import logging
-import posix_ipc
-import asyncio
+import time
 
+import posix_ipc
+
+import epd
 import settings
-from settings import TIME, SCREENS, DEBUG, LOGFILE
-from epd import EPD, get_epd, get_size, get_buttons
+from epd import EPD, get_epd
 from libs.calendar import Calendar, get_calendar
 from libs.weather import Weather, get_weather
+from settings import TIME, SCREENS, DEBUG, LOGFILE
 
 
 def handle_btn0_press():

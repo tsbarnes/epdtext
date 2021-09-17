@@ -1,11 +1,11 @@
 import importlib
 import logging
 import threading
-from PIL import Image
 
-from settings import DRIVER
+from PIL import Image
 from gpiozero import Button
 
+from settings import DRIVER
 
 try:
     driver = importlib.import_module("waveshare_epd." + DRIVER)

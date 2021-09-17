@@ -1,6 +1,6 @@
-import epd
-import subprocess
 import logging
+import subprocess
+
 from screens import AbstractScreen
 
 

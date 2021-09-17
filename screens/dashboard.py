@@ -1,10 +1,8 @@
 import logging
-from PIL import Image
 
-import settings
-from screens import AbstractScreen
 from libs.calendar import Calendar, get_calendar, update_calendar
 from libs.weather import Weather, get_weather, update_weather
+from screens import AbstractScreen
 
 
 class Screen(AbstractScreen):

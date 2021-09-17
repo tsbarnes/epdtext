@@ -1,4 +1,5 @@
 import random
+
 import settings
 from screens import AbstractScreen
 
