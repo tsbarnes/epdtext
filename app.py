@@ -113,6 +113,7 @@ class App:
             logging.basicConfig(filename=LOGFILE)
 
         logging.info("Starting epdtext...")
+        logging.info("Timezone selected: {}".format(settings.TIMEZONE))
 
         self.epd.start()
 

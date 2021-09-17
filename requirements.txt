@@ -10,3 +10,4 @@ requests~=2.21.0
 distro~=1.6.0
 python_weather~=0.3.6
 asyncio~=3.4.3
+tzlocal~=3.0.0

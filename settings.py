@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import tzlocal
 import python_weather
 
 try:
@@ -55,7 +56,7 @@ except ImportError:
 try:
     from local_settings import TIMEZONE
 except ImportError:
-    TIMEZONE = datetime.now().astimezone().tzname
+    TIMEZONE = tzlocal.get_localzone().key
 
 try:
     from local_settings import SCREENS
