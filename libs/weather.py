@@ -30,14 +30,14 @@ class Weather:
         # TODO: this function should check the sky code and choose the icon accordingly
         # For now it just uses the sun icon for all weather
         if self.weather.current.sky_code == 0:
-            return Image.open("sun.png")
+            return Image.open("images/sun.png")
         elif self.weather.current.sky_code == 28:
-            return Image.open("cloud.png")
+            return Image.open("images/cloud.png")
         elif self.weather.current.sky_code == 30:
-            return Image.open("cloud_sun.png")
+            return Image.open("images/cloud_sun.png")
         else:
             logging.warning("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
-            return Image.open("sun.png")
+            return Image.open("images/sun.png")
 
 
 weather: Weather = Weather()
