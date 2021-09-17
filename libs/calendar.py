@@ -182,7 +182,7 @@ class Calendar:
         for obj in self.tasks:
             text += "* " + obj["summary"].replace('\n', ' ') + '\n'
             if obj["due"]:
-                text += "  - Due: " + humanize.naturalday(obj["due"]) + "\n"
+                text += "  - Due: " + self.humanized_datetime(obj["due"]) + "\n"
 
         return text
 

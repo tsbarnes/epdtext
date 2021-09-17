@@ -120,7 +120,7 @@ class AbstractScreen:
             max_char_count: int = int((self.image.size[0] * .95) / avg_char_width)
 
             for line in text.split('\n'):
-                new_wrapped_text = textwrap.fill(text=line, width=max_char_count) + '\n'
+                new_wrapped_text = textwrap.fill(text=line, width=max_char_count)
                 for wrapped_line in new_wrapped_text.split('\n'):
                     if not max_lines or number_of_lines < max_lines:
                         number_of_lines += 1
@@ -133,6 +133,7 @@ class AbstractScreen:
 
         draw.text(position, scaled_wrapped_text, font=font, fill=color)
 
+        logging.debug("Number of lines drawn: {}".format(number_of_lines))
         return number_of_lines
 
     def centered_text(self, text: str, y: int, font_size: int = 20):
