@@ -1,13 +1,17 @@
 import logging
 import textwrap
 import uuid
+import inspect
+import logging
+import os
+import pathlib
+from collections import Generator
 from string import ascii_letters
 
 from PIL import Image, ImageDraw, ImageFont
 
 import settings
 from epd import EPD, get_epd, get_size
-from utils import get_screens
 
 
 class AbstractScreen:
@@ -153,6 +157,22 @@ class AbstractScreen:
             number_of_lines += 1
 
         return number_of_lines
+
+
+def get_screens():
+    screens: list = []
+
+    path: str = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    screen_directory: Generator[pathlib.Path, None, None] = pathlib.Path(path).rglob("*.py")
+
+    for file in screen_directory:
+        if file.name == "__init__.py":
+            continue
+        module_name = file.name.split(".")[0]
+        logging.debug("Found '{0}' in '{1}'".format(module_name, path))
+        screens.append(module_name)
+
+    return screens
 
 
 # When run as main, this module gets the available screens and exits
