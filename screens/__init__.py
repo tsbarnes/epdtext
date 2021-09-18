@@ -122,14 +122,14 @@ class AbstractScreen:
             avg_char_width: int = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
             max_char_count: int = int((self.image.size[0] * .95) / avg_char_width)
 
-            for line in text.split('\n'):
+            for line in str(text).split('\n'):
                 new_wrapped_text = textwrap.fill(text=line, width=max_char_count)
                 for wrapped_line in new_wrapped_text.split('\n'):
                     if not max_lines or number_of_lines < max_lines:
                         number_of_lines += 1
                         scaled_wrapped_text += wrapped_line + '\n'
         else:
-            for line in text.split('\n'):
+            for line in str(text).split('\n'):
                 if not max_lines or number_of_lines < max_lines:
                     number_of_lines += 1
                     scaled_wrapped_text += line + '\n'
