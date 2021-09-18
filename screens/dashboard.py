@@ -25,7 +25,7 @@ class Screen(AbstractScreen):
 
         if len(self.calendar.events) > 0:
             start = self.calendar.standardize_date(self.calendar.events[0]["start"])
-            text = self.calendar.humanized_datetime(start)
+            text = ' -- ' + self.calendar.humanized_datetime(start) + ' -- '
             self.text(text, font_size=16, position=(5, 65))
 
             text = str(self.calendar.events[0]['summary'])
@@ -38,7 +38,7 @@ class Screen(AbstractScreen):
             self.text(text, font_size=14, position=(5, 125), max_lines=2)
 
             if self.calendar.tasks[0].get('due'):
-                text = self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
+                text = ' - Due: ' + self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
                 self.text(text, font_size=14, position=(5, 160), max_lines=1)
 
     def handle_btn_press(self, button_number=1):

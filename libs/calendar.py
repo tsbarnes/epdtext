@@ -196,7 +196,7 @@ class Calendar:
             obj = self.timezone.localize(dt)
         except ValueError:
             obj = dt
-        return '-- ' + humanize.naturaltime(obj, when=datetime.now(self.timezone)) + ' --'
+        return humanize.naturaltime(obj, when=datetime.now(self.timezone))
 
 
 calendar = Calendar()
