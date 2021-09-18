@@ -2,6 +2,7 @@
 
 A simple display manager app for the [WaveShare 2.7in e-Paper HAT](https://www.waveshare.com/2.7inch-e-paper-hat.htm)
 
+![Screenshot](/screenshots/dashboard.png)
 ![Screenshot](/screenshots/system.png)
 ![Screenshot](/screenshots/fortune.png)
 

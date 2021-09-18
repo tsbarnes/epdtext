@@ -13,7 +13,7 @@ class Screen(AbstractScreen):
         self.blank()
 
         logo = self.weather.get_icon()
-        self.image.paste(logo, (20, 20))
+        self.image.paste(logo, (15, 15))
 
         text = str(self.weather.weather.current.temperature) + '°'
         self.text(text, font_size=48, position=(60, 5))
