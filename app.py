@@ -5,9 +5,9 @@ import time
 
 import posix_ipc
 
-import epd
+from libs import epd
 import settings
-from epd import EPD, get_epd
+from libs.epd import EPD, get_epd
 from libs.calendar import Calendar, get_calendar
 from libs.weather import Weather, get_weather
 from settings import TIME, SCREENS, DEBUG, LOGFILE

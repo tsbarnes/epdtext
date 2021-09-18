@@ -1,4 +1,3 @@
-import logging
 import textwrap
 import uuid
 import inspect
@@ -11,7 +10,7 @@ from string import ascii_letters
 from PIL import Image, ImageDraw, ImageFont
 
 import settings
-from epd import EPD, get_epd, get_size
+from libs.epd import EPD, get_epd, get_size
 
 
 class AbstractScreen:
