@@ -2,6 +2,7 @@ import asyncio
 import importlib
 import logging
 import time
+import signal
 
 import posix_ipc
 
@@ -115,6 +116,9 @@ class App:
         logging.info("Starting epdtext...")
         logging.info("Timezone selected: {}".format(settings.TIMEZONE))
 
+        signal.signal(signal.SIGINT, self.shutdown)
+        signal.signal(signal.SIGTERM, self.shutdown)
+
         self.epd.start()
 
         self.mq = posix_ipc.MessageQueue("/epdtext_ipc", flags=posix_ipc.O_CREAT)
@@ -131,6 +135,12 @@ class App:
 
         for module in SCREENS:
             self.add_screen(module)
+
+    def shutdown(self, *args):
+        logging.info("epdtext shutting down gracefully...")
+        while len(self.screens) > 0:
+            del self.screens[0]
+        exit(0)
 
     def process_message(self):
         try:
