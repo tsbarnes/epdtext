@@ -2,20 +2,23 @@
 
 A simple display manager app for the [WaveShare 2.7in e-Paper HAT](https://www.waveshare.com/2.7inch-e-paper-hat.htm)
 
-![Screenshot](/screenshots/dashboard.png)
-![Screenshot](/screenshots/system.png)
-![Screenshot](/screenshots/fortune.png)
-
 ## Screens
 
 The app provides a number of screens that can be displayed on the e-paper HAT, and allows switching between them with the builtin buttons.
 
 The included screens are:
 
+* `dashboard` - a dashboard widget showing the current weather, next calendar event, and next task
+
+![Screenshot](/screenshots/dashboard.png)
 * `uptime` - a system info viewer
+
+![Screenshot](/screenshots/system.png)
 * `affirmations` - display positive affirmations (or whatever kind you want, really)
 * `fortune` - shows a random fortune from the fortune database (requires the `fortune-mod` package)
   * Install `fortune-mod` with this command: `sudo apt install fortune-mod`
+
+![Screenshot](/screenshots/fortune.png)
 * `calendar` and `tasks` - shows a list of upcoming events or todos from your calendars (see `local_settings.py.example`)
 * `weather` - shows the current weather
 
