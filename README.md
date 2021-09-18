@@ -11,15 +11,24 @@ The included screens are:
 * `dashboard` - a dashboard widget showing the current weather, next calendar event, and next task
 
 ![Screenshot](/screenshots/dashboard.png)
+
 * `uptime` - a system info viewer
 
 ![Screenshot](/screenshots/system.png)
+
 * `affirmations` - display positive affirmations (or whatever kind you want, really)
+
+![Screenshot](/screenshots/affirmations.png)
+
 * `fortune` - shows a random fortune from the fortune database (requires the `fortune-mod` package)
   * Install `fortune-mod` with this command: `sudo apt install fortune-mod`
 
 ![Screenshot](/screenshots/fortune.png)
 * `calendar` and `tasks` - shows a list of upcoming events or todos from your calendars (see `local_settings.py.example`)
+
+![Screenshot](/screenshots/calendar.png)
+![Screenshot](/screenshots/tasks.png)
+
 * `weather` - shows the current weather
 
 ## Making your own
