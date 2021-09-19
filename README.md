@@ -2,6 +2,8 @@
 
 A simple display manager app for the [WaveShare 2.7in e-Paper HAT](https://www.waveshare.com/2.7inch-e-paper-hat.htm)
 
+![Picture](/screenshots/picture.jpg)
+
 ## Screens
 
 The app provides a number of screens that can be displayed on the e-paper HAT, and allows switching between them with the builtin buttons.
