@@ -68,13 +68,10 @@ class AbstractScreen:
     def iterate_loop(self):
         """
         Called once per cycle (roughly every one second). If you need to do something in the main loop,
-        do it here. Make sure to call super().iterate_loop() if you override this.
+        do it here.
         :return: None
         """
-        self.reload_wait += 1
-        if self.reload_wait >= self.reload_interval:
-            self.reload_wait = 0
-            self.reload()
+        pass
 
     def paste(self, image: Image, position: tuple = (0, 0)):
         """

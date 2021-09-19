@@ -46,14 +46,26 @@ class App:
     def current_screen_module(self):
         return self.screen_modules[self.current_screen_index]
 
+    def previous_screen(self):
+        if self.current_screen_index > 0:
+            self.current_screen_index -= 1
+        else:
+            self.current_screen_index = len(self.screens) - 1
+        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+        self.current_screen().reload()
+        self.current_screen().show()
+
+    def next_screen(self):
+        self.current_screen_index += 1
+        if self.current_screen_index >= len(self.screens):
+            self.current_screen_index = 0
+        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+        self.current_screen().reload()
+        self.current_screen().show()
+
     def handle_btn0_press(self):
         if settings.PAGE_BUTTONS:
-            if self.current_screen_index > 0:
-                self.current_screen_index -= 1
-            else:
-                self.current_screen_index = len(self.screens) - 1
-            logging.debug("Current screen: {0}".format(self.current_screen().__module__))
-            self.current_screen().show()
+            self.previous_screen()
         else:
             logging.debug("Screen '{0}' handling button 0".format(self.current_screen().__module__))
             self.current_screen().handle_btn_press(button_number=0)
@@ -68,11 +80,7 @@ class App:
 
     def handle_btn3_press(self):
         if settings.PAGE_BUTTONS:
-            self.current_screen_index += 1
-            if self.current_screen_index >= len(self.screens):
-                self.current_screen_index = 0
-            logging.debug("Current screen: {0}".format(self.current_screen().__module__))
-            self.current_screen().show()
+            self.next_screen()
         else:
             logging.debug("Screen '{0}' handling button 3".format(self.current_screen().__module__))
             self.current_screen().handle_btn_press(button_number=3)
@@ -153,14 +161,18 @@ class App:
 
             command = parts[0]
             logging.debug("Received IPC command: " + command)
-            if command == "previous" or command == "button0":
+            if command == "button0":
                 self.handle_btn0_press()
-            elif command == "next" or command == "button3":
+            elif command == "button3":
                 self.handle_btn3_press()
             elif command == "button1":
                 self.handle_btn1_press()
             elif command == "button2":
                 self.handle_btn2_press()
+            elif command == "previous":
+                self.previous_screen()
+            elif command == "next":
+                self.next_screen()
             elif command == "reload":
                 self.current_screen().reload()
                 self.current_screen().show()
@@ -210,6 +222,11 @@ class App:
             self.weather.refresh_interval -= 1
             if self.weather.refresh_interval < 0:
                 self.update_weather()
+
+            self.current_screen().reload_wait += 1
+            if self.current_screen().reload_wait >= self.current_screen().reload_interval:
+                self.current_screen().reload_wait = 0
+                self.current_screen().reload()
 
             time.sleep(1)
 
