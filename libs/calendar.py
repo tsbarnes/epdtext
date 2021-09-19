@@ -2,8 +2,11 @@ import logging
 from datetime import date, datetime, timedelta
 
 import caldav
+import httplib2.error
 import humanize
 import pytz
+import requests.exceptions
+import urllib3.exceptions
 from icalevents.icalevents import events
 from requests.exceptions import SSLError
 
@@ -83,8 +86,13 @@ class Calendar:
                     'start': start,
                     'summary': summary
                 })
-        except ValueError:
+        except ValueError as error:
             logging.error('Error reading calendar "{0}"'.format(url))
+            logging.error(error)
+            pass
+        except httplib2.error.ServerNotFoundError as error:
+            logging.error('Error reading calendar "{0}"'.format(url))
+            logging.error(error)
             pass
 
         return self.events
@@ -100,8 +108,21 @@ class Calendar:
         try:
             client = caldav.DAVClient(url=url, username=username, password=password)
             principal = client.principal()
-        except SSLError:
+        except SSLError as error:
             logging.error("SSL error connecting to CalDAV server")
+            logging.error(error)
+            return self.events
+        except urllib3.exceptions.NewConnectionError as error:
+            logging.error("Error establishing connection to '{}'".format(url))
+            logging.error(error)
+            return self.events
+        except caldav.lib.error.AuthorizationError as error:
+            logging.error("Authorization error connecting to '{}'".format(url))
+            logging.error(error)
+            return self.events
+        except requests.exceptions.ConnectionError as error:
+            logging.error("SSL error connecting to CalDAV server")
+            logging.error(error)
             return self.events
 
         calendars = principal.calendars()
@@ -146,10 +167,21 @@ class Calendar:
 
         for connection in CALENDAR_URLS:
             if str(connection["type"]).lower() == 'webcal':
-                self.get_events_from_webcal(connection["url"])
+                try:
+                    self.get_events_from_webcal(connection["url"])
+                except KeyError as error:
+                    logging.error("No URL specified for calendar")
+                    logging.error(error)
             elif str(connection['type']).lower() == 'caldav':
-                self.get_events_from_caldav(connection["url"],
-                                            connection["username"], connection["password"])
+                try:
+                    self.get_events_from_caldav(connection["url"],
+                                                connection["username"], connection["password"])
+                except KeyError as error:
+                    if connection.get('url'):
+                        logging.error("Error reading calendar: {}".format(connection['url']))
+                    else:
+                        logging.error("No URL specified for calendar")
+                    logging.error(error)
             else:
                 logging.error("calendar type not recognized: {0}".format(str(connection["type"])))
 
