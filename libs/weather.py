@@ -1,5 +1,6 @@
 import logging
 
+import asyncio
 import python_weather
 from PIL import Image
 
@@ -56,4 +57,4 @@ def update_weather():
     Update the weather info
     :return: None
     """
-    weather.update()
+    asyncio.get_event_loop().run_until_complete(weather.update())

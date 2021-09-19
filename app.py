@@ -9,25 +9,9 @@ import posix_ipc
 from libs import epd
 import settings
 from libs.epd import EPD, get_epd
-from libs.calendar import Calendar, get_calendar
-from libs.weather import Weather, get_weather
+from libs.calendar import Calendar, get_calendar, update_calendar
+from libs.weather import Weather, get_weather, update_weather
 from settings import TIME, SCREENS, DEBUG, LOGFILE
-
-
-def handle_btn0_press():
-    app.handle_btn0_press()
-
-
-def handle_btn1_press():
-    app.handle_btn1_press()
-
-
-def handle_btn2_press():
-    app.handle_btn2_press()
-
-
-def handle_btn3_press():
-    app.handle_btn3_press()
 
 
 class App:
@@ -86,9 +70,20 @@ class App:
             self.current_screen().handle_btn_press(button_number=3)
 
     def add_screen(self, screen_name):
-        screen_module = importlib.import_module("screens." + screen_name)
-        self.screens.append(screen_module.Screen())
-        self.screen_modules.append(screen_module)
+        try:
+            screen_module = importlib.import_module("screens." + screen_name)
+        except ImportError:
+            try:
+                screen_module = importlib.import_module(screen_name)
+            except ImportError:
+                screen_module = None
+        if screen_module:
+            new_screen = screen_module.Screen()
+            self.screens.append(new_screen)
+            self.screen_modules.append(screen_module)
+            new_screen.start()
+        else:
+            logging.error("Failed to load app: {}".format(screen_name))
 
     def find_screen_index_by_name(self, screen_name):
         for index in range(0, len(self.screens)):
@@ -136,10 +131,10 @@ class App:
         self.async_loop.run_until_complete(self.weather.update())
 
         btns = epd.get_buttons()
-        btns[0].when_pressed = handle_btn0_press
-        btns[1].when_pressed = handle_btn1_press
-        btns[2].when_pressed = handle_btn2_press
-        btns[3].when_pressed = handle_btn3_press
+        btns[0].when_pressed = self.handle_btn0_press
+        btns[1].when_pressed = self.handle_btn1_press
+        btns[2].when_pressed = self.handle_btn2_press
+        btns[3].when_pressed = self.handle_btn3_press
 
         for module in SCREENS:
             self.add_screen(module)
@@ -200,43 +195,29 @@ class App:
             else:
                 logging.error("Command '{0}' not recognized".format(command))
 
-    def update_weather(self):
-        self.weather.refresh_interval = settings.WEATHER_REFRESH
-        self.async_loop.run_until_complete(self.weather.update())
-
-    def update_calendar(self):
-        self.calendar.refresh_interval = settings.CALENDAR_REFRESH
-        self.calendar.get_latest_events()
-
     def loop(self):
         while True:
             self.process_message()
 
-            for screen in self.screens:
-                screen.iterate_loop()
-
             self.calendar.refresh_interval -= 1
             if self.calendar.refresh_interval <= 0:
-                self.update_calendar()
+                self.calendar.refresh_interval = settings.CALENDAR_REFRESH
+                update_calendar()
 
             self.weather.refresh_interval -= 1
             if self.weather.refresh_interval < 0:
-                self.update_weather()
-
-            self.current_screen().reload_wait += 1
-            if self.current_screen().reload_wait >= self.current_screen().reload_interval:
-                self.current_screen().reload_wait = 0
-                self.current_screen().reload()
+                self.weather.refresh_interval = settings.WEATHER_REFRESH
+                update_weather()
 
             time.sleep(1)
 
-            if self.loop_time == TIME:
+            if self.loop_time >= TIME:
                 self.loop_time = 0
 
             self.loop_time += 1
 
             if self.loop_time == 1:
-                self.current_screen().show()
+                self.current_screen().show_in_thread()
 
 
 app = App()
