@@ -6,26 +6,21 @@ import time
 
 import distro
 import humanize
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 from screens import AbstractScreen
-from settings import FONT, LOGO
+from settings import LOGO
 
 
 class Screen(AbstractScreen):
     def reload(self):
         self.blank()
+        self.draw_titlebar("System/Uptime")
 
         logo = Image.open(LOGO)
-        self.image.paste(logo, (100, 5))
-
-        # Create draw object and pass in the image layer we want to work with (HBlackImage)
-        draw = ImageDraw.Draw(self.image)
-        # Create our font, passing in the font file and font size
-        font = ImageFont.truetype(FONT, 14)
+        self.image.paste(logo, (100, 30))
 
         string = ''
-
         with open('/sys/firmware/devicetree/base/model', 'r') as model_file:
             model = model_file.read()
             string += model + '\n'
@@ -42,7 +37,7 @@ class Screen(AbstractScreen):
         uptime = datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
         string += ' Uptime:  ' + humanize.naturaldelta(uptime)
 
-        draw.text((5, 55), string, font=font, fill=0)
+        self.text(string, font_size=13, position=(5, 85), wrap=False)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

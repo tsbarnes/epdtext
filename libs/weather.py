@@ -1,6 +1,6 @@
+import asyncio
 import logging
 
-import asyncio
 import python_weather
 from PIL import Image
 

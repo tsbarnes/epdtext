@@ -1,6 +1,6 @@
-import time
 import logging
 import threading
+import time
 from datetime import date, datetime, timedelta
 
 import caldav
@@ -39,7 +39,7 @@ def sort_by_date(obj: dict):
             return timezone.localize(obj["due"])
         return obj["due"]
     else:
-        raise ValueError("Object has no start or due date")
+        return datetime.max
 
 
 class Calendar(threading.Thread):

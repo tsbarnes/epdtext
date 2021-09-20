@@ -1,7 +1,5 @@
-from datetime import datetime
-
-import tzlocal
 import python_weather
+import tzlocal
 
 try:
     from local_settings import DRIVER
@@ -36,7 +34,17 @@ except ImportError:
 try:
     from local_settings import FONT
 except ImportError:
-    FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'
+    FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+
+try:
+    from local_settings import BOLD_FONT
+except ImportError:
+    BOLD_FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+
+try:
+    from local_settings import MONOSPACE_FONT
+except ImportError:
+    MONOSPACE_FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'
 
 try:
     from local_settings import TIME

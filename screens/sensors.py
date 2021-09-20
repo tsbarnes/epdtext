@@ -1,6 +1,7 @@
 """Sensors screen"""
-from screens import AbstractScreen
 import sensors
+
+from screens import AbstractScreen
 
 
 class Screen(AbstractScreen):

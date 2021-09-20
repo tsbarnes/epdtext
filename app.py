@@ -1,15 +1,15 @@
 import asyncio
 import importlib
 import logging
-import time
 import signal
+import time
 
 import posix_ipc
 
-from libs import epd
 import settings
+from libs import epd
+from libs.calendar import Calendar, get_calendar
 from libs.epd import EPD, get_epd
-from libs.calendar import Calendar, get_calendar, update_calendar
 from libs.weather import Weather, get_weather, update_weather
 from settings import TIME, SCREENS, DEBUG, LOGFILE
 
