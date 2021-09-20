@@ -220,5 +220,6 @@ class App:
                 self.current_screen().show_in_thread()
 
 
-app = App()
-app.loop()
+if __name__ == '__main__':
+    app = App()
+    app.loop()
