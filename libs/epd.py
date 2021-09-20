@@ -22,7 +22,7 @@ class EPD(threading.Thread):
     def __init__(self):
         self.epd.init()  # initialize the display
         self.buttons = [Button(5), Button(6), Button(13), Button(19)]
-        super().__init__()
+        super().__init__(name="EPD")
 
     def run(self):
         thread_process = threading.Thread(target=self.process_epd)

@@ -30,7 +30,7 @@ class AbstractScreen(threading.Thread):
         """
         This method creates the image for the screen and sets up the class
         """
-        super().__init__()
+        super().__init__(name=self.__module__)
         self.filename = "/tmp/{0}_{1}.png".format(self.__module__, str(uuid.uuid4()))
 
     def run(self) -> None:

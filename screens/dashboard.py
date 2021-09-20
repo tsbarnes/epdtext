@@ -1,4 +1,5 @@
 import logging
+import threading
 
 from libs.calendar import Calendar, get_calendar, update_calendar
 from libs.weather import Weather, get_weather, update_weather
@@ -42,9 +43,14 @@ class Screen(AbstractScreen):
                 self.text(text, font_size=14, position=(5, 160), max_lines=1)
 
     def handle_btn_press(self, button_number=1):
+        thread_lock = threading.Lock()
+        thread_lock.acquire()
         if button_number == 0:
             pass
         elif button_number == 1:
+            self.blank()
+            self.text("Please wait...", font_size=40)
+            self.show()
             update_calendar()
             update_weather()
             self.reload()
@@ -55,3 +61,4 @@ class Screen(AbstractScreen):
             pass
         else:
             logging.error("Unknown button pressed: KEY{}".format(button_number + 1))
+        thread_lock.release()
