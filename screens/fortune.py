@@ -13,7 +13,8 @@ class Screen(AbstractScreen):
             logging.error("couldn't run application 'fortune'")
             string = "Couldn't run 'fortune'"
         self.blank()
-        self.text(string, font_size=14)
+        self.draw_titlebar("Fortune")
+        self.text(string, font_size=14, position=(5, 30))
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

@@ -24,16 +24,19 @@ class Screen(AbstractScreen):
 
     def reload(self):
         self.blank()
+
+        self.draw_titlebar("Weather")
+
         logo = self.weather.get_icon()
-        self.image.paste(logo, (30, 40))
+        self.image.paste(logo, (30, 60))
 
         text = str(self.weather.weather.current.temperature) + '°'
-        self.centered_text(text, 10, 60)
+        self.centered_text(text, 40, 60)
 
         text = str(self.weather.weather.current.sky_text)
-        self.centered_text(text, 70, 30)
+        self.centered_text(text, 105, 30)
 
         text = str(self.weather.weather.location_name)
-        self.centered_text(text, 100, 20)
+        self.centered_text(text, 140, 20)
 
         logging.debug("Sky Code: " + str(self.weather.weather.current.sky_code))

@@ -33,13 +33,15 @@ class Screen(AbstractScreen):
 
         self.blank()
 
+        self.draw_titlebar("Sensors")
+
         current_line = 0
         for chip in sensors.iter_detected_chips():
-            current_line += self.text(chip.adapter_name, font_size=20, position=(5, 5 + current_line * 20))
+            current_line += self.text(chip.adapter_name, font_size=20, position=(5, 30 + current_line * 20))
 
             for feature in chip:
                 line = "{}: {}".format(feature.label, feature.get_value())
-                current_line += self.text(line, font_size=20, position=(5, 5 + current_line * 20))
+                current_line += self.text(line, font_size=20, position=(5, 30 + current_line * 20))
 
     def iterate_loop(self):
         """

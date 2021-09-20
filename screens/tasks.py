@@ -10,6 +10,8 @@ class Screen(AbstractScreen):
     def reload(self):
         self.blank()
 
+        self.draw_titlebar("Tasks")
+
         text = ''
 
         for obj in self.calendar.tasks:
@@ -18,9 +20,9 @@ class Screen(AbstractScreen):
                 text += "  - Due: " + humanize.naturalday(obj["due"]) + "\n"
 
         if text != '':
-            self.text(text, font_size=16)
+            self.text(text, font_size=16, position=(5, 30))
         else:
-            self.text('No tasks', font_size=30)
+            self.text('No tasks', font_size=30, position=(5, 30))
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:
