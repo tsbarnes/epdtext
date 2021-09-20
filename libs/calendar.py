@@ -1,4 +1,6 @@
+import time
 import logging
+import threading
 from datetime import date, datetime, timedelta
 
 import caldav
@@ -40,7 +42,7 @@ def sort_by_date(obj: dict):
         raise ValueError("Object has no start or due date")
 
 
-class Calendar:
+class Calendar(threading.Thread):
     """
     This class handles the calendar events and tasks
     """
@@ -53,7 +55,20 @@ class Calendar:
         """
         Initialize the timezone
         """
+        super().__init__()
         self.timezone = pytz.timezone(TIMEZONE)
+        self.name = "Calendar"
+
+    def run(self):
+        thread_process = threading.Thread(target=self.calendar_loop)
+        # run thread as a daemon so it gets cleaned up on exit.
+        thread_process.daemon = True
+        thread_process.start()
+
+    def calendar_loop(self):
+        while True:
+            time.sleep(self.refresh_interval)
+            update_calendar()
 
     def standardize_date(self, arg):
         """

@@ -128,6 +128,7 @@ class App:
         self.mq.block = False
 
         self.calendar.get_latest_events()
+        self.calendar.start()
         self.async_loop.run_until_complete(self.weather.update())
 
         btns = epd.get_buttons()
@@ -198,11 +199,6 @@ class App:
     def loop(self):
         while True:
             self.process_message()
-
-            self.calendar.refresh_interval -= 1
-            if self.calendar.refresh_interval <= 0:
-                self.calendar.refresh_interval = settings.CALENDAR_REFRESH
-                update_calendar()
 
             self.weather.refresh_interval -= 1
             if self.weather.refresh_interval < 0:
