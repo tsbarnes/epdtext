@@ -70,11 +70,11 @@ class Calendar:
         else:
             return arg
 
-    def get_events_from_webcal(self, url):
+    def get_events_from_webcal(self, new_events, url):
         """
         Retrieve events from webcal and append them to the list
+        :param new_events: list of new events
         :param url: the URL of the webcal
-        :return: list of events
         """
         try:
             timeline: list = events(url)
@@ -82,7 +82,7 @@ class Calendar:
                 start = event.start
                 summary = event.summary
 
-                self.events.append({
+                new_events.append({
                     'start': start,
                     'summary': summary
                 })
@@ -95,11 +95,11 @@ class Calendar:
             logging.error(error)
             pass
 
-        return self.events
-
-    def get_events_from_caldav(self, url, username, password):
+    def get_events_from_caldav(self, new_events, new_tasks, url, username, password):
         """
         Retrieve events and tasks from CalDAV
+        :param new_events: list of new events
+        :param new_tasks: list of new tasks
         :param url: URL of CalDAV server
         :param username: CalDAV user name
         :param password: CalDAV password
@@ -111,19 +111,19 @@ class Calendar:
         except SSLError as error:
             logging.error("SSL error connecting to CalDAV server")
             logging.error(error)
-            return self.events
+            return
         except urllib3.exceptions.NewConnectionError as error:
             logging.error("Error establishing connection to '{}'".format(url))
             logging.error(error)
-            return self.events
+            return
         except caldav.lib.error.AuthorizationError as error:
             logging.error("Authorization error connecting to '{}'".format(url))
             logging.error(error)
-            return self.events
+            return
         except requests.exceptions.ConnectionError as error:
             logging.error("SSL error connecting to CalDAV server")
             logging.error(error)
-            return self.events
+            return
 
         calendars = principal.calendars()
 
@@ -135,7 +135,7 @@ class Calendar:
                 start = self.standardize_date(event.vobject_instance.vevent.dtstart.value)
                 summary = event.vobject_instance.vevent.summary.value
 
-                self.events.append({
+                new_events.append({
                     'start': start,
                     'summary': summary
                 })
@@ -150,31 +150,29 @@ class Calendar:
 
                 summary = todo.vobject_instance.vtodo.summary.value
 
-                self.tasks.append({
+                new_tasks.append({
                     'due': due,
                     'summary': summary
                 })
-        return self.events
 
     def get_latest_events(self):
         """
-        Force update of events
-        :return:
+        Update events and tasks
         """
         logging.debug("Started reading calendars...")
-        self.events = []
-        self.tasks = []
+        new_events = []
+        new_tasks = []
 
         for connection in CALENDAR_URLS:
             if str(connection["type"]).lower() == 'webcal':
                 try:
-                    self.get_events_from_webcal(connection["url"])
+                    self.get_events_from_webcal(new_events, connection["url"])
                 except KeyError as error:
                     logging.error("No URL specified for calendar")
                     logging.error(error)
             elif str(connection['type']).lower() == 'caldav':
                 try:
-                    self.get_events_from_caldav(connection["url"],
+                    self.get_events_from_caldav(new_events, new_tasks, connection["url"],
                                                 connection["username"], connection["password"])
                 except KeyError as error:
                     if connection.get('url'):
@@ -185,11 +183,13 @@ class Calendar:
             else:
                 logging.error("calendar type not recognized: {0}".format(str(connection["type"])))
 
-        self.events.sort(key=sort_by_date)
+        new_events.sort(key=sort_by_date)
+        new_tasks.sort(key=sort_by_date)
 
         logging.debug("done!")
 
-        return self.events
+        self.events = new_events
+        self.tasks = new_tasks
 
     def events_as_string(self):
         """
