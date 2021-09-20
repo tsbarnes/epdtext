@@ -46,6 +46,7 @@ class Calendar(threading.Thread):
     """
     This class handles the calendar events and tasks
     """
+    thread_lock = threading.Lock()
     timezone = None
     refresh_interval: int = settings.CALENDAR_REFRESH
     events: list = []
@@ -68,7 +69,7 @@ class Calendar(threading.Thread):
     def calendar_loop(self):
         while True:
             time.sleep(self.refresh_interval)
-            update_calendar()
+            self.get_latest_events()
 
     def standardize_date(self, arg):
         """

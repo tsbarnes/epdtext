@@ -3,6 +3,7 @@ import importlib
 import logging
 import signal
 import time
+import threading
 
 import posix_ipc
 
@@ -23,6 +24,7 @@ class App:
     epd: EPD = get_epd()
     async_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
     loop_time: int = 0
+    thread_lock: threading.Lock = threading.Lock()
 
     def current_screen(self):
         return self.screens[self.current_screen_index]
@@ -81,7 +83,6 @@ class App:
             new_screen = screen_module.Screen()
             self.screens.append(new_screen)
             self.screen_modules.append(screen_module)
-            new_screen.start()
         else:
             logging.error("Failed to load app: {}".format(screen_name))
 
@@ -207,13 +208,15 @@ class App:
 
             time.sleep(1)
 
+            self.current_screen().iterate_loop()
+
             if self.loop_time >= TIME:
                 self.loop_time = 0
 
             self.loop_time += 1
 
             if self.loop_time == 1:
-                self.current_screen().show_in_thread()
+                self.current_screen().show()
 
 
 if __name__ == '__main__':

@@ -18,6 +18,7 @@ class EPD(threading.Thread):
     epd: driver.EPD = driver.EPD()
     dirty: bool = True
     image: Image = Image.new("1", (driver.EPD_HEIGHT, driver.EPD_WIDTH), 255)
+    thread_lock = threading.Lock()
 
     def __init__(self):
         super().__init__()

@@ -15,7 +15,7 @@ import settings
 from libs.epd import EPD, get_epd, get_size
 
 
-class AbstractScreen(threading.Thread):
+class AbstractScreen:
     """
     Abstract screen class, screens should inherit from this
     """
@@ -30,36 +30,7 @@ class AbstractScreen(threading.Thread):
         """
         This method creates the image for the screen and sets up the class
         """
-        super().__init__(name=self.__module__)
         self.filename = "/tmp/{0}_{1}.png".format(self.__module__, str(uuid.uuid4()))
-
-    def run(self) -> None:
-        """
-        Start the screen thread
-        :return: None
-        """
-        thread_process = threading.Thread(target=self.main_loop)
-        # run thread as a daemon so it gets cleaned up on exit.
-        thread_process.daemon = True
-        thread_process.start()
-
-    def main_loop(self) -> None:
-        """
-        Main loop, don't override! Use iterate_loop instead
-        :return:
-        """
-        while True:
-            if not self.image:
-                self.reload()
-            if self.show_now:
-                self.show()
-                self.show_now = False
-            self.iterate_loop()
-            self.reload_wait += 1
-            if self.reload_wait >= self.reload_interval:
-                self.reload_wait = 0
-                self.reload()
-            time.sleep(1)
 
     def blank(self) -> None:
         """
@@ -88,24 +59,11 @@ class AbstractScreen(threading.Thread):
 
         self.display.show(self.image)
 
-    def show_in_thread(self) -> None:
-        """
-        This method schedules a draw to the display in the app thread
-        :return: None
-        """
-        self.show_now = True
-
     def reload(self) -> None:
         """
         This method redraws the contents of the image
         """
         raise NotImplementedError()
-
-    def reload_in_thread(self) -> None:
-        """
-        This method schedules a redraw in the app thread
-        """
-        self.reload_wait = self.reload_interval
 
     def handle_btn_press(self, button_number=1) -> None:
         """
@@ -119,10 +77,15 @@ class AbstractScreen(threading.Thread):
     def iterate_loop(self) -> None:
         """
         Called once per cycle (roughly every one second). If you need to do something in the main loop,
-        do it here.
+        do it here. If you override this, call super().iterate_loop()
         :return: None
         """
-        pass
+        if not self.image:
+            self.reload()
+        self.reload_wait += 1
+        if self.reload_wait >= self.reload_interval:
+            self.reload_wait = 0
+            self.reload()
 
     def paste(self, image: Image, position: tuple = (0, 0)) -> None:
         """
