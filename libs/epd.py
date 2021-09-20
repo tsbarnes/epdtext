@@ -20,9 +20,15 @@ class EPD(threading.Thread):
     image: Image = Image.new("1", (driver.EPD_HEIGHT, driver.EPD_WIDTH), 255)
 
     def __init__(self):
+        super().__init__()
         self.epd.init()  # initialize the display
         self.buttons = [Button(5), Button(6), Button(13), Button(19)]
-        super().__init__(name="EPD")
+        self.name = "EPD"
+
+    def __del__(self):
+        self.image = Image.new("1", get_size(), 255)
+        red_image = Image.new("1", get_size(), 255)
+        self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
 
     def run(self):
         thread_process = threading.Thread(target=self.process_epd)
