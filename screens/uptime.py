@@ -42,7 +42,7 @@ class Screen(AbstractScreen):
         uptime = datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
         string += ' Uptime:  ' + humanize.naturaldelta(uptime)
 
-        draw.text((5, 50), string, font=font, fill=0)
+        draw.text((5, 55), string, font=font, fill=0)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:
