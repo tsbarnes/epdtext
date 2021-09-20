@@ -12,35 +12,36 @@ class Screen(AbstractScreen):
 
     def reload(self):
         self.blank()
+        self.draw_titlebar("Dashboard")
 
         logo = self.weather.get_icon()
-        self.image.paste(logo, (15, 15))
+        self.image.paste(logo, (15, 30))
 
         text = str(self.weather.weather.current.temperature) + '°'
-        self.text(text, font_size=48, position=(60, 5))
+        self.text(text, font_size=35, position=(60, 25))
 
         text = str(self.weather.weather.current.sky_text)
-        self.text(text, font_size=14, position=(150, 20))
+        self.text(text, font_size=14, position=(150, 35))
 
-        self.line((0, 60, self.image.size[0], 60), width=1)
+        self.line((0, 70, self.image.size[0], 70), width=1)
 
         if len(self.calendar.events) > 0:
             start = self.calendar.standardize_date(self.calendar.events[0]["start"])
             text = ' -- ' + self.calendar.humanized_datetime(start) + ' -- '
-            self.text(text, font_size=16, position=(5, 65))
+            self.text(text, font_size=16, position=(5, 75))
 
             text = str(self.calendar.events[0]['summary'])
-            self.text(text, font_size=14, position=(5, 85), max_lines=2)
+            self.text(text, font_size=14, position=(5, 95), max_lines=2)
 
-        self.line((0, 120, self.image.size[0], 120), width=1)
+        self.line((0, 130, self.image.size[0], 130), width=1)
 
         if len(self.calendar.tasks) > 0:
             text = str(self.calendar.tasks[0]['summary'])
-            self.text(text, font_size=14, position=(5, 125), max_lines=2)
+            self.text(text, font_size=14, position=(5, 135), max_lines=2)
 
             if self.calendar.tasks[0].get('due'):
                 text = ' - Due: ' + self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
-                self.text(text, font_size=14, position=(5, 160), max_lines=1)
+                self.text(text, font_size=14, position=(5, 170), max_lines=1)
 
     def handle_btn_press(self, button_number=1):
         thread_lock = threading.Lock()

@@ -72,7 +72,7 @@ class AbstractScreen(threading.Thread):
         This method draws a titlebar if desired
         :param title:
         """
-        self.centered_text(title, font_size=15, y=0)
+        self.centered_text(title, font_size=15, y=0, font_name=settings.BOLD_FONT)
         self.line((0, 20, self.display.get_size()[0], 20), width=1)
 
     def show(self) -> None:
@@ -187,21 +187,22 @@ class AbstractScreen(threading.Thread):
 
         return number_of_lines
 
-    def centered_text(self, text: str, y: int, font_size: int = 20) -> int:
+    def centered_text(self, text: str, y: int, font_size: int = 20, font_name: str = settings.FONT) -> int:
         """
         Draws text centered horizontally
         :param text: str text to be displayed
         :param y: vertical starting position
         :param font_size: size of font
+        :param font_name: name of font
         :return: None
         """
-        font = ImageFont.truetype(settings.FONT, font_size)
+        font = ImageFont.truetype(font_name, font_size)
         avg_char_width: int = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
         number_of_lines = 0
         for line in text.split('\n'):
             centered_position = (self.image.size[0] / 2) - (avg_char_width * len(line) / 2)
             position = (centered_position, y + (number_of_lines * font_size))
-            self.text(text, font_size=font_size, position=position, wrap=False)
+            self.text(text, font_size=font_size, font_name=font_name, position=position, wrap=False)
             number_of_lines += 1
 
         return number_of_lines
