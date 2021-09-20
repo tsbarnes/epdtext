@@ -2,6 +2,13 @@
 from screens import AbstractScreen
 
 
+# Example of how to include a user setting
+try:
+    from local_settings import HELLO
+except ImportError:
+    HELLO = "Hello World!"
+
+
 class Example:
     """
     Just another class, feel free to make it do whatever you want
@@ -11,7 +18,7 @@ class Example:
         This method just returns some text, yours can do anything you want
         :return: str
         """
-        return "Hello World!"
+        return HELLO
 
 
 class Screen(AbstractScreen):
