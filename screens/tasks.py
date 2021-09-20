@@ -20,9 +20,9 @@ class Screen(AbstractScreen):
                 text += "  - Due: " + humanize.naturalday(obj["due"]) + "\n"
 
         if text != '':
-            self.text(text, font_size=16, position=(5, 30))
+            self.text(text, font_size=16, position=(5, 25))
         else:
-            self.text('No tasks', font_size=30, position=(5, 30))
+            self.text('No tasks', font_size=30, position=(5, 25))
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

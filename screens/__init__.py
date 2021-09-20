@@ -72,8 +72,8 @@ class AbstractScreen(threading.Thread):
         This method draws a titlebar if desired
         :param title:
         """
-        self.text(title, font_size=20, position=(0, 0))
-        self.line((0, 25, self.display.get_size()[0], 25), width=1)
+        self.centered_text(title, font_size=15, y=0)
+        self.line((0, 20, self.display.get_size()[0], 20), width=1)
 
     def show(self) -> None:
         """

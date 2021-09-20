@@ -14,7 +14,7 @@ class Screen(AbstractScreen):
             string = "Couldn't run 'fortune'"
         self.blank()
         self.draw_titlebar("Fortune")
-        self.text(string, font_size=14, position=(5, 30))
+        self.text(string, font_size=14, position=(5, 25))
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:

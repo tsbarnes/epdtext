@@ -19,9 +19,9 @@ class Screen(AbstractScreen):
         current_line = 0
         for event in self.calendar.events:
             text = ' -- ' + self.calendar.humanized_datetime(event["start"]) + ' -- '
-            current_line += self.text(text, (5, 30 + current_line * 20), font_size=15, wrap=False)
+            current_line += self.text(text, (5, 25 + current_line * 20), font_size=15, wrap=False)
             text = event["summary"].strip('\n')
-            current_line += self.text(text, (5, 30 + current_line * 20), font_size=15)
+            current_line += self.text(text, (5, 25 + current_line * 20), font_size=15)
 
     def handle_btn_press(self, button_number=1):
         if button_number == 0:
