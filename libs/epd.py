@@ -43,6 +43,9 @@ class EPD(threading.Thread):
         self.image = image
         self.dirty = True
 
+    def get_size(self):
+        return get_size()
+
 
 epd = EPD()
 

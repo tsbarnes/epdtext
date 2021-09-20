@@ -17,8 +17,10 @@ class Screen(AbstractScreen):
 
     def reload(self):
         self.blank()
+        self.text("Affirmation", font_size=20, position=(0, 0))
+        self.line((0, 25, self.display.get_size()[0], 25), width=1)
         text = self.get_random_affirmation()
-        self.text(text, font_size=25)
+        self.text(text, font_size=25, position=(5, 30))
 
     def handle_btn_press(self, button_number=1):
         if button_number == 1:
