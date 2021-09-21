@@ -179,6 +179,8 @@ class App:
                 if self.current_screen_index < 0:
                     logging.error("Couldn't find screen '{0}'".format(parts[1]))
                     self.current_screen_index = 0
+                self.current_screen().reload()
+                self.current_screen().show()
             elif command == "remove_screen":
                 logging.debug("Attempting to remove screen '{0}'".format(parts[1]))
                 if self.current_screen_index == self.find_screen_index_by_name(parts[1]):
@@ -186,7 +188,6 @@ class App:
                     self.current_screen().reload()
                 self.screens.remove(self.get_screen_by_name(parts[1]))
                 self.screen_modules.remove(self.get_screen_module_by_name(parts[1]))
-
             elif command == "add_screen":
                 logging.debug("Attempting to add screen '{0}'".format(parts[1]))
                 if self.get_screen_by_name(parts[1]):
