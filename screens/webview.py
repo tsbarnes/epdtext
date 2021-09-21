@@ -1,6 +1,6 @@
-import logging
 from PIL import Image
 from htmlwebshot import WebShot
+
 from screens import AbstractScreen
 
 try:
