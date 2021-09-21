@@ -3,8 +3,6 @@ import logging
 import os
 import pathlib
 import textwrap
-import threading
-import time
 import uuid
 from collections import Generator
 from string import ascii_letters

@@ -2,8 +2,8 @@ import asyncio
 import importlib
 import logging
 import signal
-import time
 import threading
+import time
 
 import posix_ipc
 
