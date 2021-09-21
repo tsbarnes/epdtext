@@ -32,6 +32,8 @@ class Weather:
         # For now it just uses the sun icon for all weather
         if self.weather.current.sky_code == 0:
             return Image.open("images/sun.png")
+        elif self.weather.current.sky_code == 26:
+            return Image.open("images/cloud.png")
         elif self.weather.current.sky_code == 28:
             return Image.open("images/cloud.png")
         elif self.weather.current.sky_code == 30:

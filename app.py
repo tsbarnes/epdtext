@@ -2,7 +2,6 @@ import asyncio
 import importlib
 import logging
 import signal
-import threading
 import time
 
 import posix_ipc
@@ -24,7 +23,6 @@ class App:
     epd: EPD = get_epd()
     async_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
     loop_time: int = 0
-    thread_lock: threading.Lock = threading.Lock()
 
     def current_screen(self):
         return self.screens[self.current_screen_index]
