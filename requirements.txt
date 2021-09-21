@@ -12,3 +12,4 @@ python_weather~=0.3.6
 asyncio~=3.4.3
 tzlocal~=3.0.0
 PySensors~=0.0.4
+htmlwebshot~=0.1.2
