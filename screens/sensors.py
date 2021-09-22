@@ -1,6 +1,5 @@
 """Sensors screen"""
-import sensors
-
+from libs import system
 from screens import AbstractScreen
 
 
@@ -8,13 +7,7 @@ class Screen(AbstractScreen):
     """
     This class provides the screen methods needed by epdtext
     """
-
-    def __init__(self):
-        """
-        Initialize sensors library
-        """
-        sensors.init()
-        super().__init__()
+    system = system.get_system()
 
     def handle_btn_press(self, button_number: int = 1):
         """
@@ -36,13 +29,9 @@ class Screen(AbstractScreen):
 
         self.draw_titlebar("Sensors")
 
-        current_line = 0
-        for chip in sensors.iter_detected_chips():
-            current_line += self.text(chip.adapter_name, font_size=20, position=(5, 25 + current_line * 20))
-
-            for feature in chip:
-                line = "{}: {}".format(feature.label, feature.get_value())
-                current_line += self.text(line, font_size=20, position=(5, 25 + current_line * 20))
+        text = "Temperature:\t" + str(round(self.system.temperature)) + '°\n'
+        text += "Voltage:   \t" + str(self.system.voltage)
+        self.text(text, font_size=16, position=(5, 30))
 
     def iterate_loop(self):
         """

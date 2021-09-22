@@ -70,7 +70,7 @@ try:
     from local_settings import SCREENS
 except ImportError:
     SCREENS = [
-        'uptime',
+        'system',
         'fortune',
         'affirmations',
     ]

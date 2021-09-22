@@ -148,7 +148,7 @@ class Calendar(threading.Thread):
                                               end=datetime.today() + timedelta(days=7),
                                               expand=True)
             for event in calendar_events:
-                start = self.standardize_date(event.vobject_instance.vevent.dtstart.value)
+                start = event.vobject_instance.vevent.dtstart.value
                 summary = event.vobject_instance.vevent.summary.value
 
                 new_events.append({
@@ -160,7 +160,7 @@ class Calendar(threading.Thread):
 
             for todo in todos:
                 try:
-                    due = self.standardize_date(todo.vobject_instance.vtodo.due.value)
+                    due = todo.vobject_instance.vtodo.due.value
                 except AttributeError:
                     due = None
 

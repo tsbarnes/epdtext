@@ -37,7 +37,7 @@ SCREENS = [
     'affirmations',
     'calendar',
     'fortune',
-    'uptime',
+    'system',
 ]
 
 # The affirmations to display, include anything that would help to be occasionally reminded of!

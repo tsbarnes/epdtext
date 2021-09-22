@@ -1,43 +1,36 @@
-import datetime
 import logging
 import os
-import platform
-import time
 
-import distro
 import humanize
 from PIL import Image
 
 import settings
 from screens import AbstractScreen
 from settings import LOGO
+from libs import system
 
 
 class Screen(AbstractScreen):
+    system = system.get_system()
+
     def reload(self):
         self.blank()
-        self.draw_titlebar("System/Uptime")
+        self.draw_titlebar("System")
 
         logo = Image.open(LOGO)
         self.image.paste(logo, (100, 25))
 
-        string = ''
-        with open('/sys/firmware/devicetree/base/model', 'r') as model_file:
-            model = model_file.read()
-            string += model + '\n'
-
+        string = self.system.model + '\n'
         self.text(string, font_size=14, font_name=settings.BOLD_FONT, position=(5, 75), wrap=False)
 
         string = ''
 
-        dist = "{0} {1}".format(distro.name(), distro.version())
-        string += 'OS:      ' + dist + '\n'
+        string += 'OS:      ' + self.system.dist + '\n'
 
-        string += 'Machine: ' + platform.machine() + '\n'
-        string += 'Node:    ' + platform.node() + '\n'
+        string += 'Machine: ' + self.system.machine + '\n'
+        string += 'Node:    ' + self.system.node + '\n'
 
-        uptime = datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
-        string += 'Uptime:  ' + humanize.naturaldelta(uptime)
+        string += 'Uptime:  ' + humanize.naturaldelta(self.system.uptime)
 
         self.text(string, font_size=14, font_name=settings.MONOSPACE_FONT, position=(5, 90), wrap=False)
 
