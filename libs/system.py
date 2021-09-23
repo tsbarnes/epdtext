@@ -4,6 +4,7 @@ import distro
 import platform
 import time
 import datetime
+import psutil
 
 
 class System:
@@ -22,6 +23,23 @@ class System:
             logging.warning("Couldn't find temperature sensor")
         if not self.voltage_sensor:
             logging.warning("Couldn't find voltage sensor")
+
+    @staticmethod
+    def get_size(data, suffix="B"):
+        """
+        Scale bytes to its proper format
+        e.g:
+            1253656 => '1.20MB'
+            1253656678 => '1.17GB'
+        :param data: the size in bytes
+        :param suffix: which suffix to use as a single letter
+        :return the size converted to the proper suffix
+        """
+        factor = 1024
+        for unit in ["", "K", "M", "G", "T", "P"]:
+            if data < factor:
+                return f"{data:.2f}{unit}{suffix}"
+            data /= factor
 
     @property
     def temperature(self):
@@ -59,6 +77,30 @@ class System:
     @property
     def uptime(self):
         return datetime.timedelta(seconds=time.clock_gettime(time.CLOCK_BOOTTIME))
+
+    @property
+    def network_total_sent(self):
+        net_io = psutil.net_io_counters()
+        suffix = 'B'
+        if net_io > 1000000000:
+            suffix = 'G'
+        elif net_io > 1000000:
+            suffix = 'M'
+        elif net_io > 1000:
+            suffix = 'K'
+        return self.get_size(net_io.bytes_sent, suffix)
+
+    @property
+    def network_total_received(self):
+        net_io = psutil.net_io_counters()
+        suffix = 'B'
+        if net_io > 1000000000:
+            suffix = 'G'
+        elif net_io > 1000000:
+            suffix = 'M'
+        elif net_io > 1000:
+            suffix = 'K'
+        return self.get_size(net_io.bytes_recv, suffix)
 
 
 system = System()
