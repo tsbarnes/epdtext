@@ -7,7 +7,18 @@ import datetime
 import psutil
 
 
+try:
+    # Try to load the network interface setting from local_settings.py
+    from local_settings import NETWORK_INTERFACE
+except ImportError:
+    # Set the default to wlan0
+    NETWORK_INTERFACE = "wlan0"
+
+
 class System:
+    """
+    This class provides access to system information
+    """
     temperature_sensor = None
     voltage_sensor = None
 
@@ -81,26 +92,21 @@ class System:
     @property
     def network_total_sent(self):
         net_io = psutil.net_io_counters()
-        suffix = 'B'
-        if net_io > 1000000000:
-            suffix = 'G'
-        elif net_io > 1000000:
-            suffix = 'M'
-        elif net_io > 1000:
-            suffix = 'K'
-        return self.get_size(net_io.bytes_sent, suffix)
+        return self.get_size(net_io.bytes_sent)
 
     @property
     def network_total_received(self):
         net_io = psutil.net_io_counters()
-        suffix = 'B'
-        if net_io > 1000000000:
-            suffix = 'G'
-        elif net_io > 1000000:
-            suffix = 'M'
-        elif net_io > 1000:
-            suffix = 'K'
-        return self.get_size(net_io.bytes_recv, suffix)
+        return self.get_size(net_io.bytes_recv)
+
+    @property
+    def local_ipv4_address(self):
+        for interface_name, interface_addresses in psutil.net_if_addrs().items():
+            for address in interface_addresses:
+                if interface_name == NETWORK_INTERFACE:
+                    if str(address.family) == 'AddressFamily.AF_INET':
+                        return address.address
+        return None
 
 
 system = System()
@@ -108,3 +114,8 @@ system = System()
 
 def get_system():
     return system
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Local IPv4 address: {}".format(system.local_ipv4_address))
