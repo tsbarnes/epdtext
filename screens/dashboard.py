@@ -32,6 +32,9 @@ class Screen(AbstractScreen):
 
             text = str(self.calendar.events[0]['summary'])
             self.text(text, font_size=14, position=(5, 95), max_lines=2)
+        else:
+            text = "No calendar events"
+            self.centered_text(text, y=85)
 
         self.line((0, 130, self.image.size[0], 130), width=1)
 
@@ -42,6 +45,9 @@ class Screen(AbstractScreen):
             if self.calendar.tasks[0].get('due'):
                 text = ' - Due: ' + self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
                 self.text(text, font_size=14, position=(5, 170), max_lines=1)
+        else:
+            text = "No current tasks"
+            self.centered_text(text, y=145)
 
     def handle_btn_press(self, button_number=1):
         thread_lock = threading.Lock()
