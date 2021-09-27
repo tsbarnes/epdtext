@@ -3,6 +3,7 @@ import importlib
 import logging
 import signal
 import time
+import asyncio
 
 import posix_ipc
 
@@ -205,7 +206,7 @@ class App:
                 self.weather.refresh_interval = settings.WEATHER_REFRESH
                 update_weather()
 
-            time.sleep(1)
+            asyncio.sleep(1)
 
             self.current_screen().iterate_loop()
 

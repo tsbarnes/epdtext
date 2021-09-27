@@ -59,5 +59,4 @@ def update_weather():
     Update the weather info
     :return: None
     """
-    # asyncio.coroutine(weather.update)
-    asyncio.get_event_loop().run_until_complete(weather.update)
+    asyncio.coroutine(weather.update)
