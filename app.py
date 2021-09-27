@@ -206,7 +206,7 @@ class App:
                 self.weather.refresh_interval = settings.WEATHER_REFRESH
                 update_weather()
 
-            asyncio.sleep(1)
+            self.async_loop.run_until_complete(asyncio.sleep(1))
 
             self.current_screen().iterate_loop()
 
