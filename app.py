@@ -130,6 +130,7 @@ class App:
         self.calendar.get_latest_events()
         self.calendar.start()
         self.async_loop.run_until_complete(self.weather.update())
+        self.weather.start()
 
         btns = epd.get_buttons()
         btns[0].when_pressed = self.handle_btn0_press
@@ -197,16 +198,11 @@ class App:
             else:
                 logging.error("Command '{0}' not recognized".format(command))
 
-    async def loop(self):
+    def loop(self):
         while True:
             self.process_message()
 
-            self.weather.refresh_interval -= 1
-            if self.weather.refresh_interval < 0:
-                self.weather.refresh_interval = settings.WEATHER_REFRESH
-                update_weather()
-
-            await asyncio.sleep(1)
+            time.sleep(1)
 
             self.current_screen().iterate_loop()
 
@@ -221,4 +217,4 @@ class App:
 
 if __name__ == '__main__':
     app = App()
-    asyncio.get_event_loop().run_until_complete(app.loop())
+    app.loop()
