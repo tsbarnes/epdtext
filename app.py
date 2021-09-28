@@ -197,7 +197,7 @@ class App:
             else:
                 logging.error("Command '{0}' not recognized".format(command))
 
-    def loop(self):
+    async def loop(self):
         while True:
             self.process_message()
 
@@ -206,7 +206,7 @@ class App:
                 self.weather.refresh_interval = settings.WEATHER_REFRESH
                 update_weather()
 
-            self.async_loop.run_until_complete(asyncio.sleep(1))
+            await asyncio.sleep(1)
 
             self.current_screen().iterate_loop()
 
@@ -221,4 +221,4 @@ class App:
 
 if __name__ == '__main__':
     app = App()
-    app.loop()
+    asyncio.get_event_loop().run_until_complete(app.loop())
