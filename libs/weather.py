@@ -7,31 +7,13 @@ import settings
 from PIL import Image
 
 
-class Weather(threading.Thread):
+class Weather:
     """
     This class provides access to the weather info
     """
     weather = None
     refresh_interval: int = settings.WEATHER_REFRESH
     loop = asyncio.get_event_loop()
-
-    def __init__(self):
-        super().__init__()
-        self.name = "Weather"
-
-    def run(self) -> None:
-        thread_process = threading.Thread(target=self.weather_loop)
-        # run thread as a daemon so it gets cleaned up on exit.
-        thread_process.daemon = True
-        thread_process.start()
-
-    def weather_loop(self):
-        while True:
-            self.refresh_interval -= 1
-            time.sleep(1)
-            if self.refresh_interval < 1:
-                self.loop.run_until_complete(self.update())
-                self.refresh_interval = settings.WEATHER_REFRESH
 
     async def update(self):
         """

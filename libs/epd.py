@@ -22,6 +22,7 @@ class EPD(threading.Thread):
 
     def __init__(self):
         super().__init__()
+        self.image = Image.new("1", self.get_size(), 255)
         self.epd.init()  # initialize the display
         self.buttons = [Button(5), Button(6), Button(13), Button(19)]
         self.name = "EPD"
@@ -52,7 +53,7 @@ class EPD(threading.Thread):
         self.dirty = True
 
     def get_size(self):
-        return get_size()
+        return driver.EPD_HEIGHT, driver.EPD_WIDTH
 
 
 epd = EPD()
