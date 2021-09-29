@@ -58,7 +58,7 @@ class Weather(threading.Thread):
         elif self.weather.current.sky_code == 30:
             return Image.open("images/cloud_sun.png")
         else:
-            logging.warning("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
+            logging.debug("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
             return Image.open("images/sun.png")
 
 

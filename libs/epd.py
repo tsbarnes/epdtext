@@ -16,7 +16,7 @@ except ImportError:
 
 class EPD(threading.Thread):
     epd: driver.EPD = driver.EPD()
-    dirty: bool = True
+    dirty: bool = False
     image: Image = Image.new("1", (driver.EPD_HEIGHT, driver.EPD_WIDTH), 255)
     thread_lock = threading.Lock()
 
@@ -32,6 +32,7 @@ class EPD(threading.Thread):
         self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
 
     def run(self):
+        self.epd.Clear()
         thread_process = threading.Thread(target=self.process_epd)
         # run thread as a daemon so it gets cleaned up on exit.
         thread_process.daemon = True
