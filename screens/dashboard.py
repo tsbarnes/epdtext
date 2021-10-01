@@ -28,7 +28,7 @@ class Screen(AbstractScreen):
         if len(self.calendar.events) > 0:
             start = self.calendar.standardize_date(self.calendar.events[0]["start"])
             text = ' -- ' + self.calendar.humanized_datetime(start) + ' -- '
-            self.text(text, font_size=16, position=(5, 75))
+            self.centered_text(text, font_size=16, y=75)
 
             text = str(self.calendar.events[0]['summary'])
             self.text(text, font_size=14, position=(5, 95), max_lines=2)
