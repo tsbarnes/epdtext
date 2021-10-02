@@ -40,11 +40,11 @@ class Screen(AbstractScreen):
 
         if len(self.calendar.tasks) > 0:
             text = str(self.calendar.tasks[0]['summary'])
-            self.text(text, font_size=14, position=(5, 135), max_lines=2)
+            self.text(text, font_size=14, position=(5, 135), max_lines=1)
 
             if self.calendar.tasks[0].get('due'):
                 text = ' - Due: ' + self.calendar.humanized_datetime(self.calendar.tasks[0]['due'])
-                self.text(text, font_size=14, position=(5, 170), max_lines=1)
+                self.text(text, font_size=14, position=(5, 150), max_lines=1)
         else:
             text = "No current tasks"
             self.centered_text(text, font_size=14, y=145)
