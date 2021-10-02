@@ -13,6 +13,8 @@ except ImportError:
     logging.error("Driver '{0}' couldn't be loaded".format(DRIVER))
     raise ImportError("Couldn't load driver")
 
+logger = logging.getLogger("epdtext:libs.epd")
+
 
 class EPD(threading.Thread):
     epd: driver.EPD = driver.EPD()
@@ -43,12 +45,12 @@ class EPD(threading.Thread):
         while True:
             if self.dirty and self.image:
                 self.dirty = False
-                logging.debug("Writing image to display")
+                logger.debug("Writing image to display")
                 red_image = Image.new("1", get_size(), 255)
                 self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
 
     def show(self, image: Image):
-        logging.debug("Image sent to EPD")
+        logger.debug("Image sent to EPD")
         self.image = image
         self.dirty = True
 

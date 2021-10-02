@@ -16,6 +16,7 @@ from settings import TIME, SCREENS, DEBUG, LOGFILE
 
 
 class App:
+    logger = logging.getLogger("epdtext:app")
     current_screen_index: int = 0
     screen_modules: list = []
     screens: list = []
@@ -36,7 +37,7 @@ class App:
             self.current_screen_index -= 1
         else:
             self.current_screen_index = len(self.screens) - 1
-        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+        self.logger.debug("Current screen: {0}".format(self.current_screen().__module__))
         self.current_screen().reload()
         self.current_screen().show()
 
@@ -44,7 +45,7 @@ class App:
         self.current_screen_index += 1
         if self.current_screen_index >= len(self.screens):
             self.current_screen_index = 0
-        logging.debug("Current screen: {0}".format(self.current_screen().__module__))
+        self.logger.debug("Current screen: {0}".format(self.current_screen().__module__))
         self.current_screen().reload()
         self.current_screen().show()
 
@@ -52,22 +53,22 @@ class App:
         if settings.PAGE_BUTTONS:
             self.previous_screen()
         else:
-            logging.debug("Screen '{0}' handling button 0".format(self.current_screen().__module__))
+            self.logger.debug("Screen '{0}' handling button 0".format(self.current_screen().__module__))
             self.current_screen().handle_btn_press(button_number=0)
 
     def handle_btn1_press(self):
-        logging.debug("Screen '{0}' handling button 1".format(self.current_screen().__module__))
+        self.logger.debug("Screen '{0}' handling button 1".format(self.current_screen().__module__))
         self.current_screen().handle_btn_press(button_number=1)
 
     def handle_btn2_press(self):
-        logging.debug("Screen '{0}' handling button 2".format(self.current_screen().__module__))
+        self.logger.debug("Screen '{0}' handling button 2".format(self.current_screen().__module__))
         self.current_screen().handle_btn_press(button_number=2)
 
     def handle_btn3_press(self):
         if settings.PAGE_BUTTONS:
             self.next_screen()
         else:
-            logging.debug("Screen '{0}' handling button 3".format(self.current_screen().__module__))
+            self.logger.debug("Screen '{0}' handling button 3".format(self.current_screen().__module__))
             self.current_screen().handle_btn_press(button_number=3)
 
     def add_screen(self, screen_name):
@@ -83,14 +84,14 @@ class App:
             self.screens.append(new_screen)
             self.screen_modules.append(screen_module)
         else:
-            logging.error("Failed to load app: {}".format(screen_name))
+            self.logger.error("Failed to load app: {}".format(screen_name))
 
     def find_screen_index_by_name(self, screen_name):
         for index in range(0, len(self.screens)):
             name = self.screens[index].__module__
             if name == screen_name or name.split('.')[-1] == screen_name:
                 return index
-        logging.error("Screen '{0}' doesn't exist".format(screen_name))
+        self.logger.error("Screen '{0}' doesn't exist".format(screen_name))
         return -1
 
     def get_screen_by_name(self, screen_name):
@@ -98,7 +99,7 @@ class App:
         if index >= 0:
             return self.screens[index]
         else:
-            logging.error("Screen '{0}' not found".format(screen_name))
+            self.logger.error("Screen '{0}' not found".format(screen_name))
             return None
 
     def get_screen_module_by_name(self, screen_name):
@@ -106,18 +107,18 @@ class App:
         if index >= 0:
             return self.screen_modules[index]
         else:
-            logging.error("Screen '{0}' not found".format(screen_name))
+            self.logger.error("Screen '{0}' not found".format(screen_name))
             return None
 
     def __init__(self):
         if DEBUG:
-            logging.basicConfig(level=logging.DEBUG, filename=LOGFILE)
-            logging.info("Debug messages enabled")
+            self.logger.basicConfig(level=self.logger.DEBUG, filename=LOGFILE)
+            self.logger.info("Debug messages enabled")
         else:
-            logging.basicConfig(filename=LOGFILE)
+            self.logger.basicConfig(filename=LOGFILE)
 
-        logging.info("Starting epdtext...")
-        logging.info("Timezone selected: {}".format(settings.TIMEZONE))
+        self.logger.info("Starting epdtext...")
+        self.logger.info("Timezone selected: {}".format(settings.TIMEZONE))
 
         signal.signal(signal.SIGINT, self.shutdown)
         signal.signal(signal.SIGTERM, self.shutdown)
@@ -141,7 +142,7 @@ class App:
             self.add_screen(module)
 
     def shutdown(self, *args):
-        logging.info("epdtext shutting down gracefully...")
+        self.logger.info("epdtext shutting down gracefully...")
         while len(self.screens) > 0:
             del self.screens[0]
         exit(0)
@@ -156,7 +157,7 @@ class App:
             parts = message[0].decode().split()
 
             command = parts[0]
-            logging.debug("Received IPC command: " + command)
+            self.logger.debug("Received IPC command: " + command)
             if command == "button0":
                 self.handle_btn0_press()
             elif command == "button3":
@@ -173,29 +174,29 @@ class App:
                 self.current_screen().reload()
                 self.current_screen().show()
             elif command == "screen":
-                logging.debug("Attempting switch to screen '{0}'".format(parts[1]))
+                self.logger.debug("Attempting switch to screen '{0}'".format(parts[1]))
                 self.current_screen_index = self.find_screen_index_by_name(parts[1])
                 if self.current_screen_index < 0:
-                    logging.error("Couldn't find screen '{0}'".format(parts[1]))
+                    self.logger.error("Couldn't find screen '{0}'".format(parts[1]))
                     self.current_screen_index = 0
                 self.current_screen().reload()
                 self.current_screen().show()
             elif command == "remove_screen":
-                logging.debug("Attempting to remove screen '{0}'".format(parts[1]))
+                self.logger.debug("Attempting to remove screen '{0}'".format(parts[1]))
                 if self.current_screen_index == self.find_screen_index_by_name(parts[1]):
                     self.current_screen_index = 0
                     self.current_screen().reload()
                 self.screens.remove(self.get_screen_by_name(parts[1]))
                 self.screen_modules.remove(self.get_screen_module_by_name(parts[1]))
             elif command == "add_screen":
-                logging.debug("Attempting to add screen '{0}'".format(parts[1]))
+                self.logger.debug("Attempting to add screen '{0}'".format(parts[1]))
                 if self.get_screen_by_name(parts[1]):
-                    logging.error("Screen '{0}' already added".format(parts[1]))
+                    self.logger.error("Screen '{0}' already added".format(parts[1]))
                 else:
                     self.add_screen(parts[1])
 
             else:
-                logging.error("Command '{0}' not recognized".format(command))
+                self.logger.error("Command '{0}' not recognized".format(command))
 
     def loop(self):
         while True:

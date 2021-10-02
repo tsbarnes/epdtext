@@ -6,6 +6,8 @@ import logging
 import settings
 from PIL import Image
 
+logger = logging.getLogger("epdtext:libs.weather")
+
 
 class Weather:
     """
@@ -40,7 +42,7 @@ class Weather:
         elif self.weather.current.sky_code == 30:
             return Image.open("images/cloud_sun.png")
         else:
-            logging.debug("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
+            logger.debug("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
             return Image.open("images/sun.png")
 
 

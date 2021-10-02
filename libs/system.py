@@ -15,6 +15,8 @@ except ImportError:
     NETWORK_INTERFACE = "wlan0"
 
 
+logger = logging.getLogger('epdtext:libs.system')
+
 class System:
     """
     This class provides access to system information
@@ -31,9 +33,9 @@ class System:
                 elif str(chip) == "rpi_volt-isa-0000" and feature.label == "in0":
                     self.voltage_sensor = feature
         if not self.temperature_sensor:
-            logging.warning("Couldn't find temperature sensor")
-        if not self.voltage_sensor:
-            logging.warning("Couldn't find voltage sensor")
+            logger.warning("Couldn't find temperature sensor")
+        if not seddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd  lf.voltage_sensor:
+            logger.warning("Couldn't find voltage sensor")
 
     @staticmethod
     def get_size(data, suffix="B"):

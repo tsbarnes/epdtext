@@ -5,6 +5,9 @@ import pathlib
 from collections import Generator
 
 
+logger = logging.getLogger('epdtext:libs')
+
+
 def get_libs():
     libs: list = []
 
@@ -15,7 +18,7 @@ def get_libs():
         if file.name == "__init__.py":
             continue
         module_name = file.name.split(".")[0]
-        logging.debug("Found '{0}' in '{1}'".format(module_name, path))
+        logger.debug("Found '{0}' in '{1}'".format(module_name, path))
         libs.append(module_name)
 
     return libs
