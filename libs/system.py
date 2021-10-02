@@ -34,7 +34,7 @@ class System:
                     self.voltage_sensor = feature
         if not self.temperature_sensor:
             logger.warning("Couldn't find temperature sensor")
-        if not seddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd  lf.voltage_sensor:
+        if not self.voltage_sensor:
             logger.warning("Couldn't find voltage sensor")
 
     @staticmethod
