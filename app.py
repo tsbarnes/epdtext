@@ -112,10 +112,10 @@ class App:
 
     def __init__(self):
         if DEBUG:
-            self.logger.basicConfig(level=self.logger.DEBUG, filename=LOGFILE)
+            logging.basicConfig(level=logging.DEBUG, filename=LOGFILE)
             self.logger.info("Debug messages enabled")
         else:
-            self.logger.basicConfig(filename=LOGFILE)
+            logging.basicConfig(filename=LOGFILE)
 
         self.logger.info("Starting epdtext...")
         self.logger.info("Timezone selected: {}".format(settings.TIMEZONE))
