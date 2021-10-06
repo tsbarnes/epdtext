@@ -5,9 +5,9 @@ import humanize
 from PIL import Image
 
 import settings
+from libs import system
 from screens import AbstractScreen
 from settings import LOGO
-from libs import system
 
 
 class Screen(AbstractScreen):

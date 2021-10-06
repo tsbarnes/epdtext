@@ -1,5 +1,5 @@
-from screens import AbstractScreen
 from libs.system import System, get_system
+from screens import AbstractScreen
 
 
 class Screen(AbstractScreen):

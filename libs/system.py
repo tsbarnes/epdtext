@@ -1,11 +1,11 @@
-import sensors
+import datetime
 import logging
-import distro
 import platform
 import time
-import datetime
-import psutil
 
+import distro
+import psutil
+import sensors
 
 try:
     # Try to load the network interface setting from local_settings.py

@@ -3,7 +3,6 @@ import importlib
 import logging
 import signal
 import time
-import asyncio
 
 import posix_ipc
 
@@ -11,7 +10,7 @@ import settings
 from libs import epd
 from libs.calendar import Calendar, get_calendar
 from libs.epd import EPD, get_epd
-from libs.weather import Weather, get_weather, update_weather
+from libs.weather import Weather, get_weather
 from settings import TIME, SCREENS, DEBUG, LOGFILE
 
 

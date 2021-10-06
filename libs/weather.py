@@ -1,10 +1,10 @@
-import threading
-import time
-import python_weather
 import asyncio
 import logging
-import settings
+
+import python_weather
 from PIL import Image
+
+import settings
 
 logger = logging.getLogger("epdtext:libs.weather")
 
