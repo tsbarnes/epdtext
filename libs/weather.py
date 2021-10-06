@@ -6,7 +6,7 @@ from PIL import Image
 
 import settings
 
-logger = logging.getLogger("epdtext:libs.weather")
+logger = logging.getLogger("epdtext.libs.weather")
 
 
 class Weather:

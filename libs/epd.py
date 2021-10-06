@@ -13,7 +13,7 @@ except ImportError:
     logging.error("Driver '{0}' couldn't be loaded".format(DRIVER))
     raise ImportError("Couldn't load driver")
 
-logger = logging.getLogger("epdtext:libs.epd")
+logger = logging.getLogger("epdtext.libs.epd")
 
 
 class EPD(threading.Thread):

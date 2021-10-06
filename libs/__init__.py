@@ -5,7 +5,7 @@ import pathlib
 from collections import Generator
 
 
-logger = logging.getLogger('epdtext:libs')
+logger = logging.getLogger('epdtext.libs')
 
 
 def get_libs():

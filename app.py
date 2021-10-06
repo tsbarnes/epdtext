@@ -15,7 +15,7 @@ from settings import TIME, SCREENS, DEBUG, LOGFILE
 
 
 class App:
-    logger = logging.getLogger("epdtext:app")
+    logger = logging.getLogger("epdtext.app")
     current_screen_index: int = 0
     screen_modules: list = []
     screens: list = []

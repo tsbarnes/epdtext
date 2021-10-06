@@ -15,7 +15,7 @@ except ImportError:
     NETWORK_INTERFACE = "wlan0"
 
 
-logger = logging.getLogger('epdtext:libs.system')
+logger = logging.getLogger('epdtext.libs.system')
 
 class System:
     """

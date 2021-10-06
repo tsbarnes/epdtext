@@ -16,7 +16,7 @@ import settings
 from settings import CALENDAR_URLS, TIMEZONE
 
 timezone = pytz.timezone(TIMEZONE)
-logger = logging.getLogger("epdtext:libs.calendar")
+logger = logging.getLogger("epdtext.libs.calendar")
 
 
 def sort_by_date(obj: dict):

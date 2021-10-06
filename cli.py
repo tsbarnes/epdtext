@@ -5,7 +5,7 @@ import sys
 
 import posix_ipc
 
-logger = logging.getLogger('epdtext:cli')
+logger = logging.getLogger('epdtext.cli')
 
 if len(sys.argv) < 2:
     logger.error("No command specified")
