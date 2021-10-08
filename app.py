@@ -142,6 +142,7 @@ class App:
 
     def shutdown(self, *args):
         self.logger.info("epdtext shutting down gracefully...")
+        self.epd.clear()
         while len(self.screens) > 0:
             del self.screens[0]
         exit(0)
