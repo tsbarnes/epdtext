@@ -25,12 +25,13 @@ class Screen(AbstractScreen):
 
         string = ''
 
-        string += 'OS:      ' + self.system.dist + '\n'
+        string += 'OS:       ' + self.system.dist + '\n'
 
-        string += 'Machine: ' + self.system.machine + '\n'
-        string += 'Node:    ' + self.system.node + '\n'
+        string += 'Local IP: ' + self.system.local_ipv4_address + '\n'
+        string += 'Node:     ' + self.system.node + '\n'
 
-        string += 'Uptime:  ' + humanize.naturaldelta(self.system.uptime)
+        string += 'CPU Temp: ' + str(round(self.system.temperature)) + '°\n'
+        string += 'Uptime:   ' + humanize.naturaldelta(self.system.uptime)
 
         self.text(string, font_size=14, font_name=settings.MONOSPACE_FONT, position=(5, 90), wrap=False)
 
@@ -43,4 +44,4 @@ class Screen(AbstractScreen):
             self.blank()
             self.text("Rebooting...", font_size=30)
             self.show()
-            os.system("sudo reboot now")
+            os.system("sudo systemctl reboot")
