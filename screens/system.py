@@ -17,7 +17,10 @@ class Screen(AbstractScreen):
         self.blank()
         self.draw_titlebar("System")
 
-        logo = Image.open(LOGO)
+        if LOGO:
+            logo = Image.open(LOGO)
+        else:
+            logo = Image.open(self.system.icon)
         self.image.paste(logo, (100, 25))
 
         string = self.system.model + '\n'

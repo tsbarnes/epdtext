@@ -29,7 +29,7 @@ except ImportError:
 try:
     from local_settings import LOGO
 except ImportError:
-    LOGO = '/home/pi/epdtext/images/logo.png'
+    LOGO = None
 
 try:
     from local_settings import FONT

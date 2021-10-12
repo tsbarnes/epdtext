@@ -17,6 +17,7 @@ except ImportError:
 
 logger = logging.getLogger('epdtext.libs.system')
 
+
 class System:
     """
     This class provides access to system information
@@ -109,6 +110,12 @@ class System:
                     if str(address.family) == 'AddressFamily.AF_INET':
                         return address.address
         return None
+
+    @property
+    def icon(self):
+        if distro.name() == "Arch Linux ARM":
+            return "images/arch.png"
+        return "images/logo.png"
 
 
 system = System()
