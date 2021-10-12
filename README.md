@@ -84,6 +84,51 @@ cp ~/epdtext/epdtext.service /etc/systemd/system
 sudo systemctl enable epdtext
 ```
 
+## Setup on Arch Linux ARM
+
+* First, enable the SPI inferface on the Pi if you haven't already.
+* Then, install the Python requirements
+
+```shell
+sudo apt install python-pip python-pillow python-numpy python-gpiozero
+```
+
+* Then install the drivers for Python
+
+```shell
+git clone https://github.com/waveshare/e-Paper ~/e-Paper
+cd ~/e-Paper/RaspberryPi_JetsonNano/python
+python3 setup.py install
+```
+
+* Check out the code if you haven't already:
+
+```shell
+git clone https://github.com/tsbarnes/epdtext.git ~/epdtext
+```
+
+* Install the remaining Python dependencies
+```shell
+cd ~/epdtext
+sudo pip install -r requirements.txt
+```
+
+* Then (optionally) create local_settings.py and add your settings overrides there.
+  * You can copy `local_settings.py.example` to `local_settings.py` and edit it to configure `epdtext`
+  * **NOTE**: if you're using a different Waveshare screen, you can use the `DRIVER` setting to configure it
+  * See the wiki for more configuration help
+
+* Also optional is installing the systemd unit.
+
+```shell
+cp ~/epdtext/epdtext.service /etc/systemd/system
+```
+
+You'll need to edit the `/etc/systemd/system/epdtext.service` file and change `/home/pi` to `/home/alarm`
+(or the home directory of the user you checked it out as) and change the User line to root.
+
+Also of note, on Arch Linux ARM, epdtext must be run as root.
+
 ## Usage
 
 To start up the app without `systemd`, run this command:
