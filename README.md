@@ -90,7 +90,7 @@ sudo systemctl enable epdtext
 * Then, install the Python requirements
 
 ```shell
-sudo apt install python-pip python-pillow python-numpy python-gpiozero
+sudo pacman -S python-pip python-pillow python-numpy python-gpiozero
 ```
 
 * Then install the drivers for Python
