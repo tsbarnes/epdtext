@@ -145,6 +145,7 @@ class App:
         self.epd.clear()
         while len(self.screens) > 0:
             del self.screens[0]
+        time.sleep(2)
         exit(0)
 
     def process_message(self):

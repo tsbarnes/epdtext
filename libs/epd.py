@@ -59,6 +59,10 @@ class EPD(threading.Thread):
                 red_image = Image.new("1", get_size(), 255)
                 self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
 
+    def clear(self):
+        image = Image.new("1", get_size(), 255)
+        self.show(image)
+
     def show(self, image: Image):
         """
         Draws an image to the image buffer
