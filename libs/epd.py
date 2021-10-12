@@ -1,4 +1,5 @@
 import importlib
+import time
 import logging
 import threading
 
@@ -51,6 +52,7 @@ class EPD(threading.Thread):
         Main display loop, handled in a separate thread
         """
         while True:
+            time.sleep(1)
             if self.dirty and self.image:
                 self.dirty = False
                 logger.debug("Writing image to display")
