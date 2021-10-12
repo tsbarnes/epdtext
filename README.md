@@ -116,6 +116,7 @@ sudo pip install -r requirements.txt
 * Then (optionally) create local_settings.py and add your settings overrides there.
   * You can copy `local_settings.py.example` to `local_settings.py` and edit it to configure `epdtext`
   * **NOTE**: if you're using a different Waveshare screen, you can use the `DRIVER` setting to configure it
+  * You'll have to set the `LOGO` setting, as it defaults to assuming it's installed in `/home/pi`
   * See the wiki for more configuration help
 
 * Also optional is installing the systemd unit.
