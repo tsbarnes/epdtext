@@ -145,6 +145,7 @@ class App:
         self.epd.clear()
         while len(self.screens) > 0:
             del self.screens[0]
+        time.sleep(5)
         self.epd.join()
         exit(0)
 
