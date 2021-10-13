@@ -3,11 +3,16 @@ import subprocess
 
 from screens import AbstractScreen
 
+try:
+    from local_settings import FORTUNE_PATH
+except ImportError:
+    FORTUNE_PATH = "fortune"
+
 
 class Screen(AbstractScreen):
     def reload(self):
         try:
-            child = subprocess.Popen(['/usr/games/fortune'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            child = subprocess.Popen([FORTUNE_PATH], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             string = child.stdout.read().decode().replace('\n', ' ')
         except OSError:
             logging.error("couldn't run application 'fortune'")
