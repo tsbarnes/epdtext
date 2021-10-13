@@ -22,7 +22,7 @@ logger = logging.getLogger("epdtext.libs.calendar")
 def sort_by_date(obj: dict):
     """
     Sort the events or tasks by date
-    :param obj: dict containing sumary and start/due date
+    :param obj: dict containing summary and start/due date
     :return: the same object, with time added if needed
     """
     if obj.get("start"):
@@ -32,15 +32,13 @@ def sort_by_date(obj: dict):
             return timezone.localize(obj["start"])
         return obj["start"]
     elif obj.get("due"):
-        if not obj["due"]:
-            return datetime.fromisocalendar(4000, 1, 1)
         if isinstance(obj["due"], date) and not isinstance(obj["due"], datetime):
             return datetime.combine(obj["due"], datetime.min.time(), timezone)
         if not obj["due"].tzinfo:
             return timezone.localize(obj["due"])
         return obj["due"]
     else:
-        return datetime.max
+        return timezone.localize(datetime.fromisocalendar(4000, 1, 1))
 
 
 class Calendar(threading.Thread):
