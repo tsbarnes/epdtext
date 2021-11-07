@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+import aiohttp.client_exceptions
 import python_weather
 from PIL import Image
 
@@ -23,7 +24,10 @@ class Weather:
         :return: None
         """
         client = python_weather.Client(format=settings.WEATHER_FORMAT)
-        self.weather = await client.find(settings.WEATHER_CITY)
+        try:
+            self.weather = await client.find(settings.WEATHER_CITY)
+        except aiohttp.client_exceptions.ClientConnectorError as err:
+            logger.warning(err)
         await client.close()
 
     def get_icon(self):
