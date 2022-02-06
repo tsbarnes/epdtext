@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="thea@melpomene.local:22" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="pi@melpomene.local:22" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="pi@oghma.local:22">
+      <paths name="pi@melpomene.local:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_234" local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="thea@melpomene.local:22">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/pycharm_project_85" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_186" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
