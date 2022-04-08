@@ -3,6 +3,8 @@ import importlib
 import logging
 import signal
 import time
+import sys
+import os
 
 import posix_ipc
 
@@ -73,15 +75,19 @@ class App:
     def add_screen(self, screen_name):
         try:
             screen_module = importlib.import_module("screens." + screen_name)
-        except ImportError:
+        except ImportError as error:
+            self.logger.error(error)
             try:
                 screen_module = importlib.import_module(screen_name)
             except ImportError:
                 screen_module = None
         if screen_module:
-            new_screen = screen_module.Screen()
-            self.screens.append(new_screen)
-            self.screen_modules.append(screen_module)
+            try:
+                new_screen = screen_module.Screen()
+                self.screens.append(new_screen)
+                self.screen_modules.append(screen_module)
+            except AttributeError:
+                self.logger.error("Screen '{0}' has no Screen class".format(screen_name))
         else:
             self.logger.error("Failed to load app: {}".format(screen_name))
 
@@ -223,5 +229,7 @@ class App:
 
 
 if __name__ == '__main__':
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
     app = App()
     app.loop()

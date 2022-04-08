@@ -4,7 +4,7 @@ import os
 import pathlib
 import textwrap
 import uuid
-from collections import Generator
+from collections.abc import Generator
 from string import ascii_letters
 
 from PIL import Image, ImageDraw, ImageFont
