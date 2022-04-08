@@ -2,7 +2,7 @@ import inspect
 import logging
 import os
 import pathlib
-from collections import Generator
+from collections.abc import Generator
 
 
 logger = logging.getLogger('epdtext.libs')
