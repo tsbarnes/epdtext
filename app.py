@@ -135,7 +135,7 @@ class App:
 
         self.calendar.get_latest_events()
         self.calendar.start()
-        self.async_loop.run_until_complete(self.weather.update())
+        self.weather.start()
 
         btns = epd.get_buttons()
         btns[0].when_pressed = self.handle_btn0_press
@@ -151,8 +151,15 @@ class App:
         self.epd.clear()
         while len(self.screens) > 0:
             del self.screens[0]
-        time.sleep(5)
+
+        self.epd.stop()
+        self.calendar.stop()
+        self.weather.stop()
+
         self.epd.join()
+        self.calendar.join()
+        self.weather.join()
+
         exit(0)
 
     def process_message(self):

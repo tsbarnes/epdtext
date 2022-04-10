@@ -5,7 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/.cache" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.10.4 (sftp://alarm@melpomene.local:22/usr/bin/python)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.10.4 (sftp://thea@melpomene.local:22/usr/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

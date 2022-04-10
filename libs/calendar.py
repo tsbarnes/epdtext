@@ -1,6 +1,6 @@
+import time
 import logging
 import threading
-import time
 from datetime import date, datetime, timedelta
 
 import caldav
@@ -13,10 +13,21 @@ from icalevents.icalevents import events
 from requests.exceptions import SSLError
 
 import settings
-from settings import CALENDAR_URLS, TIMEZONE
+from settings import TIMEZONE
+
+
+try:
+    from local_settings import CALENDAR_URLS
+except ImportError:
+    CALENDAR_URLS = None
+
+try:
+    from local_settings import CALENDAR_REFRESH
+except ImportError:
+    CALENDAR_REFRESH = 900
 
 timezone = pytz.timezone(TIMEZONE)
-logger = logging.getLogger("epdtext.libs.calendar")
+logger = logging.getLogger('pitftmanager.libs.calendar')
 
 
 def sort_by_date(obj: dict):
@@ -32,22 +43,23 @@ def sort_by_date(obj: dict):
             return timezone.localize(obj["start"])
         return obj["start"]
     elif obj.get("due"):
+        if not obj["due"]:
+            return datetime.fromisocalendar(4000, 1, 1)
         if isinstance(obj["due"], date) and not isinstance(obj["due"], datetime):
             return datetime.combine(obj["due"], datetime.min.time(), timezone)
         if not obj["due"].tzinfo:
             return timezone.localize(obj["due"])
         return obj["due"]
     else:
-        return timezone.localize(datetime.fromisocalendar(4000, 1, 1))
+        return timezone.localize(datetime.max)
 
 
 class Calendar(threading.Thread):
     """
     This class handles the calendar events and tasks
     """
-    thread_lock = threading.Lock()
     timezone = None
-    refresh_interval: int = settings.CALENDAR_REFRESH
+    refresh_interval: int = CALENDAR_REFRESH
     events: list = []
     tasks: list = []
 
@@ -58,17 +70,25 @@ class Calendar(threading.Thread):
         super().__init__()
         self.timezone = pytz.timezone(TIMEZONE)
         self.name = "Calendar"
+        self.shutdown = threading.Event()
 
     def run(self):
         thread_process = threading.Thread(target=self.calendar_loop)
         # run thread as a daemon so it gets cleaned up on exit.
         thread_process.daemon = True
         thread_process.start()
+        self.shutdown.wait()
 
     def calendar_loop(self):
-        while True:
-            time.sleep(self.refresh_interval)
-            self.get_latest_events()
+        while not self.shutdown.is_set():
+            self.refresh_interval -= 1
+            time.sleep(1)
+            if self.refresh_interval < 1:
+                self.get_latest_events()
+                self.refresh_interval = CALENDAR_REFRESH
+
+    def stop(self):
+        self.shutdown.set()
 
     def standardize_date(self, arg):
         """
@@ -147,7 +167,7 @@ class Calendar(threading.Thread):
                                               end=datetime.today() + timedelta(days=7),
                                               expand=True)
             for event in calendar_events:
-                start = event.vobject_instance.vevent.dtstart.value
+                start = self.standardize_date(event.vobject_instance.vevent.dtstart.value)
                 summary = event.vobject_instance.vevent.summary.value
 
                 new_events.append({
@@ -159,7 +179,7 @@ class Calendar(threading.Thread):
 
             for todo in todos:
                 try:
-                    due = todo.vobject_instance.vtodo.due.value
+                    due = self.standardize_date(todo.vobject_instance.vtodo.due.value)
                 except AttributeError:
                     due = None
 
@@ -245,7 +265,7 @@ class Calendar(threading.Thread):
             obj = dt
         except AttributeError:
             obj = dt
-        if isinstance(obj, date) or obj.date() > datetime.today().date():
+        if (isinstance(obj, date) and not isinstance(obj, datetime)) or obj.date() > datetime.today().date():
             return humanize.naturaldate(obj)
         else:
             return humanize.naturaltime(obj, when=datetime.now(self.timezone))
@@ -267,4 +287,12 @@ def update_calendar():
     Update calendar events and tasks
     :return: None
     """
+    calendar.refresh_interval = 0
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     calendar.get_latest_events()
+    for event in calendar.events:
+        logger.info(event.start)
+        logger.info(event.summary)

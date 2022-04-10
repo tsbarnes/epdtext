@@ -25,6 +25,7 @@ class EPD(threading.Thread):
     dirty: bool = False
     image: Image = Image.new("1", (driver.EPD_HEIGHT, driver.EPD_WIDTH), 255)
     thread_lock = threading.Lock()
+    shutdown = threading.Event()
 
     def __init__(self):
         """
@@ -46,18 +47,25 @@ class EPD(threading.Thread):
         # run thread as a daemon so it gets cleaned up on exit.
         thread_process.daemon = True
         thread_process.start()
+        self.shutdown.wait()
 
     def process_epd(self):
         """
         Main display loop, handled in a separate thread
         """
-        while True:
+        while not self.shutdown.is_set():
             time.sleep(1)
             if self.dirty and self.image:
                 self.dirty = False
                 logger.debug("Writing image to display")
                 red_image = Image.new("1", get_size(), 255)
                 self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
+
+    def stop(self):
+        """
+        Stop the display thread
+        """
+        self.shutdown.set()
 
     def clear(self):
         image = Image.new("1", get_size(), 255)

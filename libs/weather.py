@@ -1,33 +1,72 @@
-import asyncio
-import logging
-
-import aiohttp.client_exceptions
+import threading
+import time
 import python_weather
+import asyncio
+import xml
+import logging
 from PIL import Image
 
-import settings
 
-logger = logging.getLogger("epdtext.libs.weather")
+try:
+    from local_settings import WEATHER_FORMAT
+except ImportError:
+    WEATHER_FORMAT = python_weather.IMPERIAL
+
+try:
+    from local_settings import WEATHER_CITY
+except ImportError:
+    WEATHER_CITY = "Richmond, VA"
+
+try:
+    from local_settings import WEATHER_REFRESH
+except ImportError:
+    WEATHER_REFRESH = 900
 
 
-class Weather:
+logger = logging.getLogger("pitftmanager.libs.weather")
+
+
+class Weather(threading.Thread):
     """
     This class provides access to the weather info
     """
     weather = None
-    refresh_interval: int = settings.WEATHER_REFRESH
+    refresh_interval: int = WEATHER_REFRESH
     loop = asyncio.get_event_loop()
+
+    def __init__(self):
+        super().__init__()
+        self.name = "Weather"
+        self.shutdown = threading.Event()
+
+    def run(self) -> None:
+        thread_process = threading.Thread(target=self.weather_loop)
+        # run thread as a daemon so it gets cleaned up on exit.
+        thread_process.daemon = True
+        thread_process.start()
+        self.shutdown.wait()
+
+    def weather_loop(self):
+        while not self.shutdown.is_set():
+            self.refresh_interval -= 1
+            time.sleep(1)
+            if self.refresh_interval < 1:
+                try:
+                    self.loop.run_until_complete(self.update())
+                except xml.parsers.expat.ExpatError as error:
+                    logger.warning(error)
+                self.refresh_interval = WEATHER_REFRESH
+
+    def stop(self):
+        self.shutdown.set()
 
     async def update(self):
         """
         Update the weather info
         :return: None
         """
-        client = python_weather.Client(format=settings.WEATHER_FORMAT)
-        try:
-            self.weather = await client.find(settings.WEATHER_CITY)
-        except aiohttp.client_exceptions.ClientConnectorError as err:
-            logger.warning(err)
+        client = python_weather.Client(format=WEATHER_FORMAT)
+        self.weather = await client.find(WEATHER_CITY)
         await client.close()
 
     def get_icon(self):
@@ -38,16 +77,24 @@ class Weather:
         # TODO: this function should check the sky code and choose the icon accordingly
         # For now it just uses the sun icon for all weather
         if self.weather.current.sky_code == 0:
-            return Image.open("images/sun.png")
+            image = Image.open("images/sun.png")
+            return image.resize((32, 32))
         elif self.weather.current.sky_code == 26:
-            return Image.open("images/cloud.png")
+            image = Image.open("images/cloud.png")
+            return image.resize((32, 32))
         elif self.weather.current.sky_code == 28:
-            return Image.open("images/cloud.png")
+            image = Image.open("images/cloud.png")
+            return image.resize((32, 32))
         elif self.weather.current.sky_code == 30:
-            return Image.open("images/cloud_sun.png")
+            image = Image.open("images/cloud_sun.png")
+            return image.resize((32, 32))
+        elif self.weather.current.sky_code == 32:
+            image = Image.open("images/sun.png")
+            return image.resize((32, 32))
         else:
-            logger.debug("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
-            return Image.open("images/sun.png")
+            logger.warning("Unable to find icon for sky code: {}".format(self.weather.current.sky_code))
+            image = Image.open("images/sun.png")
+            return image.resize((32, 32))
 
 
 weather: Weather = Weather()
@@ -68,3 +115,9 @@ def update_weather():
     """
     loop = asyncio.get_event_loop()
     loop.run_until_complete(weather.update())
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    update_weather()
+    logger.info(weather.weather.current.sky_text)
