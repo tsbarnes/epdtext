@@ -24,7 +24,7 @@ class App:
     calendar: Calendar = get_calendar()
     weather: Weather = get_weather()
     epd: EPD = get_epd()
-    async_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    async_loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
     loop_time: int = 0
 
     def current_screen(self):

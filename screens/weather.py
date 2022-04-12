@@ -30,13 +30,16 @@ class Screen(AbstractScreen):
         logo = self.weather.get_icon()
         self.image.paste(logo, (30, 60))
 
-        text = str(self.weather.weather.current.temperature) + '°'
-        self.centered_text(text, 40, 60)
+        if self.weather.weather:
+            text = str(self.weather.weather.current.temperature) + '°'
+            self.centered_text(text, 40, 60)
 
-        text = str(self.weather.weather.current.sky_text)
-        self.centered_text(text, 105, 30)
+            text = str(self.weather.weather.current.sky_text)
+            self.centered_text(text, 105, 30)
 
-        text = str(self.weather.weather.location_name)
-        self.centered_text(text, 140, 20)
+            text = str(self.weather.weather.location_name)
+            self.centered_text(text, 140, 20)
 
-        logging.debug("Sky Code: " + str(self.weather.weather.current.sky_code))
+            logging.debug("Sky Code: " + str(self.weather.weather.current.sky_code))
+        else:
+            self.centered_text("No data", 105, 30)
