@@ -152,7 +152,7 @@ class App:
         while len(self.screens) > 0:
             del self.screens[0]
 
-        time.sleep(1)
+        time.sleep(5)
 
         self.epd.stop()
         self.calendar.stop()

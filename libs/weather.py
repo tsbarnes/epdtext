@@ -69,6 +69,46 @@ class Weather(threading.Thread):
         self.weather = await client.find(WEATHER_CITY)
         await client.close()
 
+    def get_temperature(self):
+        """
+        Get the temperature
+        :return: String of the temperature
+        """
+        if not self.weather:
+            return "--"
+
+        return self.weather.current.temperature
+
+    def get_sky_code(self):
+        """
+        Get the sky code
+        :return: String of the sky code
+        """
+        if not self.weather:
+            return 0
+
+        return self.weather.current.sky_code
+
+    def get_sky_text(self):
+        """
+        Get the sky text
+        :return: String of the sky text
+        """
+        if not self.weather:
+            return "--"
+
+        return self.weather.current.sky_text
+
+    def get_location_name(self):
+        """
+        Get the location name
+        :return: String of the location name
+        """
+        if not self.weather:
+            return "--"
+
+        return self.weather.location_name
+
     def get_icon(self):
         """
         Get the icon for the current weather

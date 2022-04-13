@@ -17,15 +17,11 @@ class Screen(AbstractScreen):
         logo = self.weather.get_icon()
         self.image.paste(logo, (15, 30))
 
-        if self.weather.weather:
-            text = str(self.weather.weather.current.temperature) + '°'
-        else:
-            text = 'Weather unavailable'
+        text = str(self.weather.get_temperature()) + '°'
         self.text(text, font_size=35, position=(60, 25))
 
-        if self.weather.weather:
-            text = str(self.weather.weather.current.sky_text)
-            self.text(text, font_size=14, position=(150, 35))
+        text = str(self.weather.get_sky_text())
+        self.text(text, font_size=14, position=(150, 35))
 
         self.line((0, 70, self.image.size[0], 70), width=1)
 
