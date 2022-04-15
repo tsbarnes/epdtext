@@ -62,6 +62,7 @@ class Calendar(threading.Thread):
     refresh_interval: int = CALENDAR_REFRESH
     events: list = []
     tasks: list = []
+    thread_lock: threading.Lock = threading.Lock()
 
     def __init__(self):
         """
