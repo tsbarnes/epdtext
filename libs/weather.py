@@ -33,6 +33,7 @@ class Weather(threading.Thread):
     weather = None
     refresh_interval: int = WEATHER_REFRESH
     loop = asyncio.get_event_loop()
+    thread_lock = threading.Lock()
 
     def __init__(self):
         super().__init__()
