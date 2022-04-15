@@ -195,6 +195,7 @@ class Calendar(threading.Thread):
         Update events and tasks
         """
         logger.debug("Started reading calendars...")
+        self.thread_lock.acquire()
         new_events = []
         new_tasks = []
 
@@ -225,6 +226,8 @@ class Calendar(threading.Thread):
 
         self.events = new_events
         self.tasks = new_tasks
+
+        self.thread_lock.release()
 
     def events_as_string(self):
         """

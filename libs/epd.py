@@ -56,10 +56,12 @@ class EPD(threading.Thread):
         while not self.shutdown.is_set():
             time.sleep(1)
             if self.dirty and self.image:
+                self.thread_lock.acquire()
                 self.dirty = False
                 logger.debug("Writing image to display")
                 red_image = Image.new("1", get_size(), 255)
                 self.epd.display(self.epd.getbuffer(self.image), self.epd.getbuffer(red_image))
+                self.thread_lock.release()
 
     def stop(self):
         """

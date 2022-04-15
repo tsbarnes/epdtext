@@ -65,9 +65,11 @@ class Weather(threading.Thread):
         Update the weather info
         :return: None
         """
+        self.thread_lock.acquire()
         client = python_weather.Client(format=WEATHER_FORMAT)
         self.weather = await client.find(WEATHER_CITY)
         await client.close()
+        self.thread_lock.release()
 
     def get_temperature(self):
         """
