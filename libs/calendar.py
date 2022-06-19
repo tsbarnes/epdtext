@@ -113,7 +113,8 @@ class Calendar(threading.Thread):
         :param url: the URL of the webcal
         """
         try:
-            timeline: list = events(url)
+            timeline: list = events(url, start=datetime.today(),
+                                    end=datetime.today() + timedelta(days=7))
             for event in timeline:
                 start = event.start
                 summary = event.summary
